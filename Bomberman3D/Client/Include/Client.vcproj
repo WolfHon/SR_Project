@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib Resources.lib Utility.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\Reference\Library"
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib Resources.lib Utility.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\Reference\Library"
 				GenerateDebugInformation="true"
@@ -231,6 +231,50 @@
 			<Filter
 				Name="01.Scene"
 				>
+				<File
+					RelativePath="..\Code\SceneSelector.h"
+					>
+				</File>
+				<Filter
+					Name="00.Logo"
+					>
+					<File
+						RelativePath="..\Code\Logo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Logo.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.Stage"
+					>
+					<File
+						RelativePath="..\Code\Stage.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\Code\Stage.h"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="02.Object"

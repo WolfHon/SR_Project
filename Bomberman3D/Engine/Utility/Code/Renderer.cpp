@@ -28,7 +28,10 @@ void Engine::CRenderer::Render(const float& fTime)
 		m_pScene->Render();
 
 #ifdef _DEBUG
-	RECT		rc = {100, 100, 300, 200};
+
+	D3DXMATRIX matFps;
+	D3DXMatrixTranslation(&matFps, 20.f, 20.f, 0.f);
+
 	++m_iFrameCnt;
 	m_fTime += fTime;
 
@@ -39,7 +42,11 @@ void Engine::CRenderer::Render(const float& fTime)
 		m_iFrameCnt = 0;
 	}
 
-	m_pD3DXFont->DrawTextW(NULL, m_szFps, 0, &rc, DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pD3DXSprite->Begin(D3DXSPRITE_ALPHABLEND);
+	m_pD3DXSprite->SetTransform(&matFps);
+	m_pD3DXFont->DrawTextW(m_pD3DXSprite, m_szFps, lstrlen(m_szFps), NULL, NULL, D3DCOLOR_ARGB(255, 0, 255, 0));
+	m_pD3DXSprite->End();
+
 #endif
 }
 
@@ -55,10 +62,13 @@ Engine::CRenderer* Engine::CRenderer::Create(LPDIRECT3DDEVICE9 pDevice)
 HRESULT Engine::CRenderer::InitRenderer(void)
 {
 #ifdef _DEBUG
+	if (FAILED(D3DXCreateSprite(m_pDevice, &m_pD3DXSprite)))
+		return E_FAIL;
+
 	D3DXFONT_DESC		hFont;
 	ZeroMemory(&hFont, sizeof(D3DXFONT_DESC));
-	hFont.Width = 10;
-	hFont.Height = 15;
+	hFont.Width = 15;
+	hFont.Height = 20;
 	hFont.Weight = FW_NORMAL;
 	lstrcpy(hFont.FaceName, L"±¼¸²");
 	hFont.CharSet = HANGEUL_CHARSET;
@@ -73,6 +83,7 @@ HRESULT Engine::CRenderer::InitRenderer(void)
 void Engine::CRenderer::Release(void)
 {
 #ifdef _DEBUG
+	Safe_Release(m_pD3DXSprite);
 	Safe_Release(m_pD3DXFont);
 #endif
 }
