@@ -255,7 +255,6 @@
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
-							ExcludedFromBuild="true"
 							>
 							<Tool
 								Name="VCCLCompilerTool"
@@ -267,7 +266,6 @@
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
-							ExcludedFromBuild="true"
 							>
 							<Tool
 								Name="VCCustomBuildTool"
@@ -279,6 +277,18 @@
 			<Filter
 				Name="02.Object"
 				>
+				<Filter
+					Name="00.LogoBack"
+					>
+					<File
+						RelativePath="..\Code\LogoBack.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\LogoBack.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

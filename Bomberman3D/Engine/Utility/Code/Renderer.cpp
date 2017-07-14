@@ -44,7 +44,7 @@ void Engine::CRenderer::Render(const float& fTime)
 
 	m_pD3DXSprite->Begin(D3DXSPRITE_ALPHABLEND);
 	m_pD3DXSprite->SetTransform(&matFps);
-	m_pD3DXFont->DrawTextW(m_pD3DXSprite, m_szFps, lstrlen(m_szFps), NULL, NULL, D3DCOLOR_ARGB(255, 0, 255, 0));
+	m_pD3DXFont->DrawTextW(m_pD3DXSprite, m_szFps, lstrlen(m_szFps), NULL, NULL, D3DCOLOR_ARGB(255, 255, 0, 0));
 	m_pD3DXSprite->End();
 
 #endif
@@ -70,7 +70,7 @@ HRESULT Engine::CRenderer::InitRenderer(void)
 	hFont.Width = 15;
 	hFont.Height = 20;
 	hFont.Weight = FW_NORMAL;
-	lstrcpy(hFont.FaceName, L"±¼¸²");
+	lstrcpy(hFont.FaceName, L"±Ã¼­");
 	hFont.CharSet = HANGEUL_CHARSET;
 
 	HRESULT hr = D3DXCreateFontIndirect(m_pDevice, &hFont, &m_pD3DXFont);

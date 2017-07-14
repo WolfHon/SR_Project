@@ -4,7 +4,7 @@
 #include "Export_Function.h"
 #include "SceneSelector.h"
 #include "Layer.h"
-//#include "LogoBack.h"
+#include "LogoBack.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -21,7 +21,7 @@ HRESULT CLogo::Initialize(void)
 	HRESULT		hr = NULL;
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_LogoBack"
-		, L"../bin/Texture/LogoBack/LogoBack_%d.png", 38);
+		, L"../bin/Texture/LogoBack/LogoBack_%d.png", 1);
 	FAILED_CHECK(hr);
 
 	FAILED_CHECK(Add_Enviroment_Layer());
@@ -69,11 +69,11 @@ HRESULT CLogo::Add_Enviroment_Layer(void)
 HRESULT CLogo::Add_GameLogic_Layer(void)
 {
 	Engine::CLayer*			pLayer = Engine::CLayer::Create();
-	/*Engine::CGameObject*	pGameObject = NULL;
+	Engine::CGameObject*	pGameObject = NULL;
 
 	pGameObject = CLogoBack::Create(m_pDevice);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"LogoBack", pGameObject);*/
+	pLayer->AddObject(L"LogoBack", pGameObject);
 
 	m_mapLayer.insert(MAPLAYER::value_type(LAYER_GAMELOGIC, pLayer));
 	return S_OK;
