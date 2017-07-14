@@ -4,6 +4,12 @@
 #include "Export_Function.h"
 #include "Layer.h"
 
+#include "Skybox.h"
+#include "Player.h"
+#include "StaticCamera.h"
+
+#include "Transform.h"
+
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
 {
@@ -17,6 +23,22 @@ CStage::~CStage(void)
 HRESULT CStage::Initialize(void)
 {
 	HRESULT		hr = NULL;
+
+	//Texture
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player1Head"
+		, L"../bin/Texture/Player1/Player1Head.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
+		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
+	FAILED_CHECK(hr);
+
+	//Buffer
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
+	FAILED_CHECK(hr);
 
 	FAILED_CHECK(Add_Enviroment_Layer());
 	FAILED_CHECK(Add_GameLogic_Layer());
@@ -51,12 +73,28 @@ void CStage::Release(void)
 
 HRESULT CStage::Add_Enviroment_Layer(void)
 {
+	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+
+	Engine::CGameObject*	pGameObject = NULL;
+
+	pGameObject = CSkybox::Create(m_pDevice);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Skybox", pGameObject);
+
+	m_mapLayer.insert(MAPLAYER::value_type(LAYER_ENVIROMENT, pLayer));
+
 	return S_OK;
 }
 
 HRESULT CStage::Add_GameLogic_Layer(void)
 {
 	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+
+	Engine::CGameObject*	pGameObject = NULL;
+	
+	pGameObject = CPlayer::Create(m_pDevice);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Player", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(LAYER_GAMELOGIC, pLayer));
 
@@ -66,6 +104,20 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 HRESULT CStage::Add_UI_Layer(void)
 {
 	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+
+	Engine::CGameObject*	pGameObject = NULL;
+
+	MAPLAYER::iterator iter = m_mapLayer.find(LAYER_GAMELOGIC);
+	if(iter == m_mapLayer.end())
+		return E_FAIL;
+
+	const Engine::CComponent*	pComponent = iter->second->GetComponent(L"Player", L"Transform");
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+
+	pGameObject = CStaticCamera::Create(m_pDevice
+		, dynamic_cast<const Engine::CTransform*>(pComponent));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"StaticCamera", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(LAYER_UI, pLayer));
 

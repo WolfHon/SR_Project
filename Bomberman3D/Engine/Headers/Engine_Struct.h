@@ -54,7 +54,7 @@ namespace Engine
 		D3DXVECTOR3				vPos;
 		TILETYPE				eTileOption;
 		TILETEXTURE				eTexture;
-	}TILEINFO
+	}TILEINFO;
 }
 
 #endif // __Engine_Struct_h__

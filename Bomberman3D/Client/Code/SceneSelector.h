@@ -42,9 +42,9 @@ public:
 			*ppScene = CLogo::Create(pDevice);
 			break;
 
-		/*case SCENE_STAGE:
+		case SCENE_STAGE:
 			*ppScene = CStage::Create(pDevice);
-			break;*/
+			break;
 		}
 		NULL_CHECK_RETURN(*ppScene, E_FAIL);
 

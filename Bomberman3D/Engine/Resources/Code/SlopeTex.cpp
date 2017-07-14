@@ -1,4 +1,4 @@
-#include "TerrainTex.h"
+#include "SlopeTex.h"
 
 Engine::CSlopeTex::CSlopeTex(LPDIRECT3DDEVICE9 pDevice)
 : CVIBuffer(pDevice)

@@ -1,4 +1,23 @@
-
+/*!
+ * \class CSlopeTex
+ *
+ * \ingroup GroupName
+ *
+ * \brief 
+ *
+ * TODO: SlopeTexture
+ *
+ * \note 
+ *
+ * \author Han
+ *
+ * \version 1.0
+ *
+ * \date July 2017
+ *
+ * Contact: user@company.com
+ *
+ */
 
 #ifndef __SlopeTex_h__
 #define __SlopeTex_h__

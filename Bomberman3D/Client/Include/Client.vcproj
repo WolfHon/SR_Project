@@ -289,6 +289,46 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="01.Player"
+					>
+					<File
+						RelativePath="..\Code\Player.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Player.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="99.Camera"
+					>
+					<Filter
+						Name="00.StaticCamera"
+						>
+						<File
+							RelativePath="..\Code\StaticCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\StaticCamera.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="02.SkyBox"
+					>
+					<File
+						RelativePath="..\Code\Skybox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Skybox.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

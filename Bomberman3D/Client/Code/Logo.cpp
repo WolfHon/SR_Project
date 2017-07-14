@@ -21,7 +21,7 @@ HRESULT CLogo::Initialize(void)
 	HRESULT		hr = NULL;
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_LogoBack"
-		, L"../bin/Texture/LogoBack/LogoBack_%d.png", 1);
+		, L"../bin/Texture/LogoBack/LogoBack.png", 1);
 	FAILED_CHECK(hr);
 
 	FAILED_CHECK(Add_Enviroment_Layer());
