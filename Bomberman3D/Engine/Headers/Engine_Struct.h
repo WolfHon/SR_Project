@@ -48,6 +48,13 @@ namespace Engine
 	{
 		DWORD			_1, _2, _3;
 	}INDEX32;
+
+	typedef struct tagTileInfo
+	{
+		D3DXVECTOR3				vPos;
+		TILETYPE				eTileOption;
+		TILETEXTURE				eTexture;
+	}TILEINFO
 }
 
 #endif // __Engine_Struct_h__

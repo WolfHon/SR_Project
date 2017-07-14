@@ -1,19 +1,26 @@
 /*!
- * \file Stage.h
- * \date 2017/07/04 11:37
+ * \class CStage
  *
- * \author Administrator
- * Contact: user@company.com
+ * \ingroup GroupName
  *
  * \brief 
  *
  * TODO: long description
  *
- * \note
-*/
+ * \note 
+ *
+ * \author Han
+ *
+ * \version 1.0
+ *
+ * \date July 2017
+ *
+ * Contact: user@company.com
+ *
+ */
 
-#ifndef Stage_h__
-#define Stage_h__
+#ifndef __Stage_h__
+#define __Stage_h__
 
 #include "Scene.h"
 
@@ -47,4 +54,4 @@ private:
 };
 
 
-#endif // Stage_h__
+#endif // __Stage_h__
