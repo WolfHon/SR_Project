@@ -19,10 +19,10 @@ HRESULT CMainApp::InitApp(void)
 {
 	HRESULT		hr = NULL;
 	hr = m_pGraphicDev->InitGraphicDev(Engine::CGraphicDev::MODE_WIN, g_hWnd, WINCX, WINCY);
-	FAILED_CHECK(hr);
+	FAILED_CHECK_MSG(hr, L"Device Initialize Fail");
 
 	m_pDevice = m_pGraphicDev->GetDevice();
-	NULL_CHECK_RETURN(m_pDevice, E_FAIL);
+	NULL_CHECK_RETURN_MSG(m_pDevice, E_FAIL, L"Get Device Fail");
 
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
