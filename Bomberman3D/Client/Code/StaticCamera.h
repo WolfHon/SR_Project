@@ -63,7 +63,8 @@ private:
 
 private:
 	float		m_fTargetDistance;
-	float		m_fAngle;
+	float		m_fAngleY;
+	float		m_fAngleX;
 	float		m_fCamSpeed;
 };
 

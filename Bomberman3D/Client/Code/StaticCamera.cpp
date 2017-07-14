@@ -8,7 +8,8 @@
 CStaticCamera::CStaticCamera(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CCamera(pDevice)
 , m_fTargetDistance(0.f)
-, m_fAngle(0.f)
+, m_fAngleY(0.f)
+, m_fAngleX(0.f)
 , m_fCamSpeed(0.f)
 , m_pTargetInfo(NULL)
 {
@@ -29,7 +30,8 @@ void CStaticCamera::Update(void)
 HRESULT CStaticCamera::Initialize(void)
 {
 	m_fTargetDistance = 20.f;
-	m_fAngle = D3DXToRadian(25.f);
+	m_fAngleX = D3DXToRadian(25.f);
+	m_fAngleY = D3DXToRadian(0.f);
 	m_fCamSpeed = 10.f;
 
 	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 1500.f);
@@ -57,10 +59,16 @@ void CStaticCamera::KeyCheck(void)
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
 
 	if(GetAsyncKeyState(VK_UP))
-		m_fAngle += D3DXToRadian(45.f) * fTime;
+		m_fAngleX += D3DXToRadian(45.f) * fTime;
 
 	if(GetAsyncKeyState(VK_DOWN))
-		m_fAngle -= D3DXToRadian(45.f) * fTime;
+		m_fAngleX -= D3DXToRadian(45.f) * fTime;
+
+	if(GetAsyncKeyState(VK_LEFT))
+		m_fAngleY += D3DXToRadian(45.f) * fTime;
+
+	if(GetAsyncKeyState(VK_RIGHT))
+		m_fAngleY -= D3DXToRadian(45.f) * fTime;
 
 	if(GetAsyncKeyState('O'))
 		m_fTargetDistance += m_fCamSpeed * fTime;
@@ -73,12 +81,15 @@ void CStaticCamera::TargetRenewal(void)
 {
 	m_vEye = m_pTargetInfo->m_vDir * -1 * m_fTargetDistance;
 
-	D3DXVECTOR3		vRight;
+	D3DXVECTOR3		vRight, vUp;
 	memcpy(&vRight, &m_pTargetInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
+	memcpy(&vUp, &m_pTargetInfo->m_matWorld.m[1][0], sizeof(D3DXVECTOR3));
 
-	D3DXMATRIX		matRotAxis;
-	D3DXMatrixRotationAxis(&matRotAxis, &vRight, m_fAngle);
-	D3DXVec3TransformNormal(&m_vEye, &m_vEye, &matRotAxis);
+	D3DXMATRIX		matRotAxisX, matRotAxisY;
+	D3DXMatrixRotationAxis(&matRotAxisX, &vRight, m_fAngleX);
+	D3DXMatrixRotationAxis(&matRotAxisY, &vUp, m_fAngleY);
+	D3DXVec3TransformNormal(&m_vEye, &m_vEye, &matRotAxisX);
+	D3DXVec3TransformNormal(&m_vEye, &m_vEye, &matRotAxisY);
 
 	m_vAt = m_pTargetInfo->m_vPos;
 	m_vEye += m_pTargetInfo->m_vPos;
