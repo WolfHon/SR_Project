@@ -309,6 +309,18 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="01.FirstCamera"
+						>
+						<File
+							RelativePath="..\Code\FirstCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\FirstCamera.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="02.SkyBox"

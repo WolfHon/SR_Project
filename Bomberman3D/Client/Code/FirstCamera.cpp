@@ -57,7 +57,7 @@ void CFirstCamera::ViewCheck(void)
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	m_fAngleY -= vMouseMove.y * D3DXToRadian(5.f) * fTime;
+	m_fAngleY -= vMouseMove.y * D3DXToRadian(90.f) * fTime;
 
 	if(m_fAngleY >= D3DXToRadian(45.f))
 		m_fAngleY = D3DXToRadian(45.f);

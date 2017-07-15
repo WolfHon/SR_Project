@@ -98,7 +98,7 @@ void CPlayer::MoveCheck(void)
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	m_fAngle -= vMouseMove.x * D3DXToRadian(20.f) * fTime;
+	m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;
 
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
 
