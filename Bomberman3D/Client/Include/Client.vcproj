@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib Resources.lib Utility.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\Reference\Library"
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib"
+				AdditionalDependencies="d3d9.lib d3dx9.lib System.lib Resources.lib Utility.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\Reference\Library"
 				GenerateDebugInformation="true"
@@ -231,10 +231,121 @@
 			<Filter
 				Name="01.Scene"
 				>
+				<File
+					RelativePath="..\Code\SceneSelector.h"
+					>
+				</File>
+				<Filter
+					Name="00.Logo"
+					>
+					<File
+						RelativePath="..\Code\Logo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Logo.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.Stage"
+					>
+					<File
+						RelativePath="..\Code\Stage.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Stage.h"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="02.Object"
 				>
+				<Filter
+					Name="00.LogoBack"
+					>
+					<File
+						RelativePath="..\Code\LogoBack.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\LogoBack.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.Player"
+					>
+					<File
+						RelativePath="..\Code\Player.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Player.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="99.Camera"
+					>
+					<Filter
+						Name="00.StaticCamera"
+						>
+						<File
+							RelativePath="..\Code\StaticCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\StaticCamera.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="01.FirstCamera"
+						>
+						<File
+							RelativePath="..\Code\FirstCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\FirstCamera.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="02.SkyBox"
+					>
+					<File
+						RelativePath="..\Code\Skybox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Skybox.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="98.Temp"
+					>
+					<File
+						RelativePath="..\Code\Cube.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Cube.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

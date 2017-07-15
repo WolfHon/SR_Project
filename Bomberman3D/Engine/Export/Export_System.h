@@ -17,11 +17,13 @@
 
 #include "GraphicDev.h"
 #include "TimeMgr.h"
+#include "MouseMgr.h"
 
 BEGIN(Engine)
 
 inline CGraphicDev* Get_GraphicDev(void);
 inline CTimeMgr* Get_TimeMgr(void);
+inline CMouseMgr* Get_MouseMgr(void);
 
 #include "Export_System.inl"
 

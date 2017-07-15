@@ -58,6 +58,8 @@ private:
 	float			m_fTime;
 	int				m_iFrameCnt;
 	TCHAR			m_szFps[128];
+
+	LPD3DXSPRITE	m_pD3DXSprite;		
 };
 
 END

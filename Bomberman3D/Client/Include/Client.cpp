@@ -106,6 +106,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 #ifdef _DEBUG
 	hWnd = CreateWindow(szWindowClass, szTitle, /*WS_POPUPWINDOW*/WS_OVERLAPPEDWINDOW, GetSystemMetrics(SM_CXSCREEN) / 2 - WINCX / 2, GetSystemMetrics(SM_CYSCREEN) / 2 - WINCY / 2,
 		rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance, NULL);
+	//hWnd = CreateWindow(szWindowClass, szTitle, WS_POPUPWINDOW, GetSystemMetrics(SM_CXSCREEN) + GetSystemMetrics(SM_CXSCREEN) / 2 - WINCX / 2,
+	//	GetSystemMetrics(SM_CYSCREEN) / 2 - WINCY / 2, WINCX, WINCY, NULL, NULL, hInstance, NULL);
 #else
 	hWnd = CreateWindow(szWindowClass, szTitle, WS_POPUPWINDOW, GetSystemMetrics(SM_CXSCREEN) / 2 - WINCX / 2, GetSystemMetrics(SM_CYSCREEN) / 2 - WINCY / 2,
 		rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hInstance, NULL);

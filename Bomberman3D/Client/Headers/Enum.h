@@ -15,6 +15,6 @@
 #ifndef __Enum_h__
 #define __Enum_h__
 
-//enum SCENEID {SCENE_LOGO, SCENE_STAGE};
+enum SCENEID {SCENE_LOGO, SCENE_STAGE};
 
 #endif // __Enum_h__

@@ -1,10 +1,8 @@
 #include "ResourceMgr.h"
 
-#include "TriColor.h"
-#include "RcColor.h"
 #include "RcTex.h"
 #include "Texture.h"
-#include "TerrainTex.h"
+#include "SlopeTex.h"
 #include "CubeTex.h"
 
 IMPLEMENT_SINGLETON(Engine::CResouceMgr)
@@ -38,20 +36,12 @@ HRESULT Engine::CResouceMgr::AddBuffer(LPDIRECT3DDEVICE9 pDevice
 
 	switch(eBufferID)
 	{
-	case BUFFER_TRICOL:
-		pResource = CTriColor::Create(pDevice);
-		break;
-
-	case BUFFER_RCCOL:
-		pResource = CRcColor::Create(pDevice);
-		break;
-
 	case BUFFER_RCTEX:
 		pResource = CRcTex::Create(pDevice);
 		break;
 
-	case BUFFER_TERRAINTEX:
-		pResource = CTerrainTex::Create(pDevice, wCntX, wCntZ, wItv);
+	case BUFFER_SLOPETEX:
+		pResource = CSlopeTex::Create(pDevice);
 		break;
 
 	case BUFFER_CUBETEX:
