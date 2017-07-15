@@ -124,5 +124,15 @@ void CPlayer::MoveCheck(void)
 
 		if(GetAsyncKeyState('S'))
 			m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+
+		D3DXVECTOR3		vRight;
+		memcpy(&vRight, &m_pInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
+		D3DXVec3Normalize(&vRight, &vRight);
+
+		if(GetAsyncKeyState('A'))
+			m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+
+		if(GetAsyncKeyState('D'))
+			m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 	}
 }
