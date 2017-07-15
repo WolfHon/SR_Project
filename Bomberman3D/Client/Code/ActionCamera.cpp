@@ -28,10 +28,10 @@ void CActionCamera::Update(void)
 
 HRESULT CActionCamera::Initialize(void)
 {
-	m_fMaxDistance = 50.f;
+	m_fMaxDistance = 60.f;
 	m_fTargetDistance = 0.f;
 	m_fAngleY = D3DXToRadian(45.f);
-	m_fCamSpeed = 20.f;
+	m_fCamSpeed = 80.f;
 
 	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 1500.f);
 
