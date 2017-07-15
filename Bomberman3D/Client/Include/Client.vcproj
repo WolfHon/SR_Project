@@ -325,6 +325,14 @@
 				<Filter
 					Name="99.Camera"
 					>
+					<File
+						RelativePath="..\Code\CameraControl.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\CameraControl.h"
+						>
+					</File>
 					<Filter
 						Name="01.FirstCamera"
 						>
@@ -334,6 +342,18 @@
 						</File>
 						<File
 							RelativePath="..\Code\FirstCamera.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="00.ActionCamera"
+						>
+						<File
+							RelativePath="..\Code\ActionCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\ActionCamera.h"
 							>
 						</File>
 					</Filter>
