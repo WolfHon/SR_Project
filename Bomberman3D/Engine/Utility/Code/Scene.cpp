@@ -50,3 +50,12 @@ const Engine::CComponent* Engine::CScene::GetComponent(const WORD& LayerID, cons
 	return iter->second->GetComponent(wstrObjKey, wstrComponentKey);
 }
 
+Engine::CGameObject* Engine::CScene::GetObject(const WORD& LayerID, const wstring& wstrObjKey)
+{
+	MAPLAYER::iterator	iter = m_mapLayer.find(LayerID);
+	if(iter == m_mapLayer.end())
+		return NULL;
+
+	return iter->second->GetObject(wstrObjKey);
+}
+

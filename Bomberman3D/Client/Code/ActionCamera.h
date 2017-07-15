@@ -1,5 +1,5 @@
 /*!
- * \class CStaticCamera
+ * \class CActionCamera
  *
  * \ingroup GroupName
  *
@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef __StaticCamera_h__
-#define __StaticCamera_h__
+#ifndef __ActionCamera_h__
+#define __ActionCamera_h__
 
 #include "Camera.h"
 
@@ -29,14 +29,14 @@ namespace Engine
 	class CTransform;
 }
 
-class CStaticCamera
+class CActionCamera
 	: public Engine::CCamera
 {
 private:
-	explicit CStaticCamera(LPDIRECT3DDEVICE9 pDevice);
+	explicit CActionCamera(LPDIRECT3DDEVICE9 pDevice);
 
 public:
-	virtual ~CStaticCamera(void);
+	virtual ~CActionCamera(void);
 
 public:
 	virtual void Update(void);
@@ -48,11 +48,11 @@ public:
 	void SetCameraTarget(const Engine::CTransform* pTargetInfo);
 
 public:
-	static CStaticCamera* Create(LPDIRECT3DDEVICE9 pDevice
+	static CActionCamera* Create(LPDIRECT3DDEVICE9 pDevice
 		, const Engine::CTransform* pTargetInfo);
 
 private:
-	void KeyCheck(void);
+	void DistCheck(void);
 	void TargetRenewal(void);
 
 private:
@@ -62,10 +62,10 @@ private:
 	const Engine::CTransform*		m_pTargetInfo;
 
 private:
+	float		m_fMaxDistance;
 	float		m_fTargetDistance;
 	float		m_fAngleY;
-	float		m_fAngleX;
 	float		m_fCamSpeed;
 };
 
-#endif // StaticCamera_h__
+#endif // __ActionCamera_h__

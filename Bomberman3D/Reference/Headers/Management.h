@@ -48,6 +48,9 @@ public:
 	template <typename T>
 	HRESULT SceneChange(T& Functor, LPDIRECT3DDEVICE9 pDevice);
 
+public:
+	CScene*	GetScene(void);
+
 private:
 	void Release(void);
 

@@ -7,6 +7,8 @@
 #include "Include.h"
 #include "Transform.h"
 #include "Export_Function.h"
+#include "CameraControl.h"
+#include "Scene.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
@@ -93,32 +95,34 @@ void CPlayer::MoveCheck(void)
 {
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
 
-	D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
-	D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
+	CGameObject* pObject = Engine::Get_Management()->GetScene()->GetObject(Engine::CScene::LAYER_UI, L"CameraControl");
+	NULL_CHECK(pObject);
+	CCameraControl* pControl = dynamic_cast<CCameraControl*>(pObject);
 
-	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
+	if(GetAsyncKeyState(VK_SPACE) && pControl->GetCamera() != CCameraControl::CAM_ACTION)
+	{
+		pControl->SetCamera(CCameraControl::CAM_ACTION);
+	}
+	else if(pControl->GetCamera() == CCameraControl::CAM_FIRST)
+	{
+		D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
+		D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
 
-	m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;
+		m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
+		m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;
 
-	if(GetAsyncKeyState('W'))
-		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		if(m_fAngle >= D3DXToRadian(360.f))
+			m_fAngle -= D3DXToRadian(360.f);
+		else if(m_fAngle <= D3DXToRadian(-360.f))
+			m_fAngle += D3DXToRadian(360.f);
 
-	if(GetAsyncKeyState('S'))
-		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
 
-	//if(GetAsyncKeyState(VK_LBUTTON))
-	//{
-	//	/*m_bMove = true;
-	//	m_pMouseCol->PickTerrain(&m_vDestPos
-	//		, m_pCamObserver->GetCamMatrix(MATRIX_PROJECTION)
-	//		, m_pCamObserver->GetCamMatrix(MATRIX_VIEW));*/
+		if(GetAsyncKeyState('W'))
+			m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 
-	//	m_pMouseCol->PickObject(&m_vDestPos
-	//		, m_pVertex
-	//		, m_pCamObserver->GetCamMatrix(MATRIX_PROJECTION)
-	//		, m_pCamObserver->GetCamMatrix(MATRIX_VIEW)
-	//		, &m_pInfo->m_matWorld);
-	//}
+		if(GetAsyncKeyState('S'))
+			m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	}
 }

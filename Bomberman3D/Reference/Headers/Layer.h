@@ -39,6 +39,7 @@ public:
 
 public:
 	const CComponent* GetComponent(const wstring& wstrObjKey, const wstring& wstrComponentKey);
+	CGameObject* GetObject(const wstring& wstrObjKey);
 
 public:
 	HRESULT AddObject(const wstring& wstrObjKey, CGameObject* pGameObject);

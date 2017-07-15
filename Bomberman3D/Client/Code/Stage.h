@@ -27,9 +27,6 @@
 class CStage
 	: public Engine::CScene
 {
-public:
-	enum LAYERID {LAYER_ENVIROMENT, LAYER_GAMELOGIC, LAYER_UI};
-
 private:
 	explicit CStage(LPDIRECT3DDEVICE9 pDevice);
 
@@ -52,6 +49,5 @@ private:
 	HRESULT Add_GameLogic_Layer(void);
 	HRESULT Add_UI_Layer(void);
 };
-
 
 #endif // __Stage_h__
