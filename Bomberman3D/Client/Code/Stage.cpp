@@ -10,6 +10,8 @@
 
 #include "Transform.h"
 
+#include "Cube.h" //Test용 임시
+
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
 {
@@ -95,6 +97,14 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pGameObject = CPlayer::Create(m_pDevice);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Player", pGameObject);
+
+	//Test용 임시
+	for(int i = 0; i < 30; ++i)
+	{
+		pGameObject = CCube::Create(m_pDevice);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		pLayer->AddObject(L"Cube", pGameObject);
+	}
 	
 	m_mapLayer.insert(MAPLAYER::value_type(LAYER_GAMELOGIC, pLayer));
 

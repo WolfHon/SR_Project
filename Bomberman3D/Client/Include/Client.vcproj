@@ -253,13 +253,6 @@
 					<File
 						RelativePath="..\Code\Stage.cpp"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\Code\Stage.h"
@@ -326,6 +319,18 @@
 					</File>
 					<File
 						RelativePath="..\Code\Skybox.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="98.Temp"
+					>
+					<File
+						RelativePath="..\Code\Cube.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Cube.h"
 						>
 					</File>
 				</Filter>

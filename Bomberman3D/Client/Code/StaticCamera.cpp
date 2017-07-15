@@ -29,8 +29,8 @@ void CStaticCamera::Update(void)
 
 HRESULT CStaticCamera::Initialize(void)
 {
-	m_fTargetDistance = 20.f;
-	m_fAngleX = D3DXToRadian(25.f);
+	m_fTargetDistance = 40.f;
+	m_fAngleX = D3DXToRadian(40.f);
 	m_fAngleY = D3DXToRadian(0.f);
 	m_fCamSpeed = 10.f;
 
