@@ -28,6 +28,8 @@ HRESULT CPlayer::Initialize(void)
 {
 	FAILED_CHECK(AddComponent());
 
+	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
+
 	m_fSpeed = 10.f;
 
 	return S_OK;
@@ -39,7 +41,7 @@ void CPlayer::Update(void)
 
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
-	KeyCheck();
+	MoveCheck();
 }
 
 void CPlayer::Render(void)
@@ -87,19 +89,24 @@ HRESULT CPlayer::AddComponent(void)
 	return S_OK;
 }
 
-void CPlayer::KeyCheck(void)
+void CPlayer::MoveCheck(void)
 {
-	if(GetAsyncKeyState('A'))
-		m_pInfo->m_fAngle[Engine::ANGLE_Y] -= D3DXToRadian(90.f) * Engine::Get_TimeMgr()->GetTime();
+	float		fTime = Engine::Get_TimeMgr()->GetTime();
 
-	if(GetAsyncKeyState('D'))
-		m_pInfo->m_fAngle[Engine::ANGLE_Y] += D3DXToRadian(90.f) * Engine::Get_TimeMgr()->GetTime();
+	D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
+	D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
 
-	//if(GetAsyncKeyState('W'))
-	//	m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	//if(GetAsyncKeyState('S'))
-	//	m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	m_fAngle -= vMouseMove.x * D3DXToRadian(20.f) * fTime;
+
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
+
+	if(GetAsyncKeyState('W'))
+		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+
+	if(GetAsyncKeyState('S'))
+		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 
 	//if(GetAsyncKeyState(VK_LBUTTON))
 	//{

@@ -31,6 +31,7 @@ using namespace std;
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
 #include "Engine_Functor.h"
+#include "Engine_Constant.h"
 
 #pragma warning(disable : 4251)
 

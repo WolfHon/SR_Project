@@ -50,7 +50,7 @@ public:
 private:
 	HRESULT Initialize(void);
 	HRESULT	AddComponent(void);
-	void KeyCheck(void);
+	void MoveCheck(void);
 	void Release(void);
 
 private:
@@ -61,6 +61,8 @@ private:
 private:	
 	float			m_fSpeed;
 	float			m_fAngle;
+
+	D3DXVECTOR3 m_vExMousePos;
 };
 
 #endif // Player_h__

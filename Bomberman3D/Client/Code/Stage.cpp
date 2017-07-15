@@ -7,6 +7,7 @@
 #include "Skybox.h"
 #include "Player.h"
 #include "StaticCamera.h"
+#include "FirstCamera.h"
 
 #include "Transform.h"
 
@@ -124,10 +125,15 @@ HRESULT CStage::Add_UI_Layer(void)
 	const Engine::CComponent*	pComponent = iter->second->GetComponent(L"Player", L"Transform");
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 
-	pGameObject = CStaticCamera::Create(m_pDevice
+	/*pGameObject = CStaticCamera::Create(m_pDevice
 		, dynamic_cast<const Engine::CTransform*>(pComponent));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"StaticCamera", pGameObject);
+	pLayer->AddObject(L"StaticCamera", pGameObject);*/
+
+	pGameObject = CFirstCamera::Create(m_pDevice
+		, dynamic_cast<const Engine::CTransform*>(pComponent));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"FirstCamera", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(LAYER_UI, pLayer));
 

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Engine", "02.Engine", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98.Headers", "98.Headers", "{22C1AB16-A96E-4234-B72D-A9B419985C14}"
 	ProjectSection(SolutionItems) = preProject
+		Engine\Headers\Engine_Constant.h = Engine\Headers\Engine_Constant.h
 		Engine\Headers\Engine_Enum.h = Engine\Headers\Engine_Enum.h
 		Engine\Headers\Engine_Function.h = Engine\Headers\Engine_Function.h
 		Engine\Headers\Engine_Functor.h = Engine\Headers\Engine_Functor.h
