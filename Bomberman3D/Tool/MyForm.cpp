@@ -6,8 +6,10 @@
 #include "MyForm.h"
 
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 // CMyForm
-
 IMPLEMENT_DYNCREATE(CMyForm, CFormView)
 
 CMyForm::CMyForm()

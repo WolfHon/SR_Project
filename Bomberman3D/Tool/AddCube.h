@@ -3,9 +3,19 @@
 
 // CAddCube 대화 상자입니다.
 
+#include "Engine_Include.h"
+
 class CAddCube : public CDialog
 {
 	DECLARE_DYNAMIC(CAddCube)
+
+private:
+	vector<Engine::TILEINFO*>* m_vecCube;
+
+
+
+public:
+	void Release(void);
 
 public:
 	CAddCube(CWnd* pParent = NULL);   // 표준 생성자입니다.
@@ -20,5 +30,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnEnChangeEditxpos();
-	afx_msg void OnBnClickedAddcube();
+	
 };
+
+

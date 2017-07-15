@@ -28,7 +28,6 @@ void CAddCube::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddCube, CDialog)
 	ON_EN_CHANGE(IDC_EDITXPOS, &CAddCube::OnEnChangeEditxpos)
-	ON_BN_CLICKED(IDC_ADDCUBE, &CAddCube::OnBnClickedAddcube)
 END_MESSAGE_MAP()
 
 
@@ -44,10 +43,3 @@ void CAddCube::OnEnChangeEditxpos()
 	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
-void CAddCube::OnBnClickedAddcube()
-{
-
-
-
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-}
