@@ -45,6 +45,13 @@
 #define IDC_EDITOPTION                  1007
 #define IDC_LIST1                       1008
 #define IDC_LIST2                       1009
+#define IDC_DECREASEX                   1010
+#define IDC_INCREASEX                   1012
+#define IDC_DECREASEY                   1013
+#define IDC_DECREASEZ                   1014
+#define IDC_INCREASEY                   1015
+#define IDC_ADDCUBE7                    1016
+#define IDC_INCREASEZ                   1016
 
 // Next default values for new objects
 // 

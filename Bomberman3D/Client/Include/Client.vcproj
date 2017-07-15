@@ -295,42 +295,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="99.Camera"
-					>
-					<File
-						RelativePath="..\Code\CameraControl.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\Code\CameraControl.h"
-						>
-					</File>
-					<Filter
-						Name="00.StaticCamera"
-						>
-						<File
-							RelativePath="..\Code\ActionCamera.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\Code\ActionCamera.h"
-							>
-						</File>
-					</Filter>
-					<Filter
-						Name="01.FirstCamera"
-						>
-						<File
-							RelativePath="..\Code\FirstCamera.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\Code\FirstCamera.h"
-							>
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="02.SkyBox"
 					>
 					<File
@@ -358,6 +322,34 @@
 			<Filter
 				Name="03.Design"
 				>
+				<Filter
+					Name="99.Camera"
+					>
+					<Filter
+						Name="00.StaticCamera"
+						>
+						<File
+							RelativePath="..\Code\StaticCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\StaticCamera.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="01.FirstCamera"
+						>
+						<File
+							RelativePath="..\Code\FirstCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\FirstCamera.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
