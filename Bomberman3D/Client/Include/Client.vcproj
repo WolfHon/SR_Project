@@ -326,18 +326,6 @@
 					Name="99.Camera"
 					>
 					<Filter
-						Name="00.StaticCamera"
-						>
-						<File
-							RelativePath="..\Code\StaticCamera.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\Code\StaticCamera.h"
-							>
-						</File>
-					</Filter>
-					<Filter
 						Name="01.FirstCamera"
 						>
 						<File
