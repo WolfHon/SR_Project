@@ -44,3 +44,8 @@ void Engine::CManagement::Release(void)
 	Safe_Delete(m_pScene);
 }
 
+Engine::CScene* Engine::CManagement::GetScene(void)
+{
+	return m_pScene;
+}
+

@@ -27,9 +27,6 @@
 class CLogo
 	: public Engine::CScene
 {
-public:
-	enum LAYERID {LAYER_ENVIROMENT, LAYER_GAMELOGIC, LAYER_UI};
-
 private:
 	explicit CLogo(LPDIRECT3DDEVICE9 pDevice);
 

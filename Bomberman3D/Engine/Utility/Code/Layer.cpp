@@ -95,3 +95,12 @@ const Engine::CComponent* Engine::CLayer::GetComponent(const wstring& wstrObjKey
 	return NULL;
 }
 
+Engine::CGameObject* Engine::CLayer::GetObject(const wstring& wstrObjKey)
+{
+	MAPOBJLIST::iterator	iter = m_mapObjlist.find(wstrObjKey);
+	if(iter == m_mapObjlist.end())
+		return NULL;
+
+	return *(iter->second.begin());
+}
+
