@@ -52,7 +52,7 @@ public:
 		, const Engine::CTransform* pTargetInfo);
 
 private:
-	void DistCheck(void);
+	void ViewCheck(void);
 	void TargetRenewal(void);
 
 private:
@@ -64,8 +64,11 @@ private:
 private:
 	float		m_fMaxDistance;
 	float		m_fTargetDistance;
+	float		m_fAngleX;
 	float		m_fAngleY;
 	float		m_fCamSpeed;
+
+	D3DXVECTOR3	m_vExMousePos;
 };
 
 #endif // __ActionCamera_h__
