@@ -12,8 +12,6 @@ class CAddCube : public CDialog
 private:
 	vector<Engine::TILEINFO*>* m_vecCube;
 
-
-
 public:
 	void Release(void);
 
@@ -31,6 +29,7 @@ protected:
 public:
 	afx_msg void OnEnChangeEditxpos();
 	
+	afx_msg void OnBnClickedAddcube();
 };
 
 
