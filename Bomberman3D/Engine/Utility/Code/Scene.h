@@ -32,9 +32,6 @@ class CGameObject;
 
 class ENGINE_DLL CScene
 {
-public:
-	enum LAYERID {LAYER_ENVIROMENT, LAYER_GAMELOGIC, LAYER_UI};
-
 protected:
 	explicit CScene(LPDIRECT3DDEVICE9 pDevice);
 
@@ -44,6 +41,7 @@ public:
 public:
 	const CComponent* GetComponent(const WORD& LayerID, const wstring& wstrObjKey, const wstring& wstrComponentKey);
 	CGameObject* GetObject(const WORD& LayerID, const wstring& wstrObjKey);
+	Engine::OBJLIST* GetObjectList(const WORD& LayerID, const wstring& wstrObjKey);
 
 public:
 	HRESULT InitScene(void);

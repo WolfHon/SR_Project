@@ -21,7 +21,7 @@ namespace Engine
 	class CTexture;
 	class CVIBuffer;
 	class CTransform;
-	class CTerrainCol;
+	class CCollision_OBB;
 }
 
 class CCameraObserver;
@@ -51,6 +51,7 @@ private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
+	Engine::CCollision_OBB*	m_pCollisionOBB;
 
 private:
 	float			m_fSpeed;

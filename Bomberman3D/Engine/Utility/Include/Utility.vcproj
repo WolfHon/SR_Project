@@ -208,6 +208,18 @@
 						RelativePath="..\Code\Collision.h"
 						>
 					</File>
+					<Filter
+						Name="00.Collision_OBB"
+						>
+						<File
+							RelativePath="..\Code\Collision_OBB.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Collision_OBB.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="01.Transform"

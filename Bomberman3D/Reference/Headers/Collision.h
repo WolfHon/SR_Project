@@ -37,6 +37,9 @@ public:
 	virtual ~CCollision(void);
 
 public:
+	virtual CCollision* CloneCollision(void) PURE;
+
+public:
 	CCollision* GetColObject(void);
 
 public:

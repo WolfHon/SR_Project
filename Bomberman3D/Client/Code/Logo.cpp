@@ -75,7 +75,7 @@ HRESULT CLogo::Add_GameLogic_Layer(void)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"LogoBack", pGameObject);
 
-	m_mapLayer.insert(MAPLAYER::value_type(LAYER_GAMELOGIC, pLayer));
+	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 	return S_OK;
 }
 

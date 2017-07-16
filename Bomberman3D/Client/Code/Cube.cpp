@@ -3,9 +3,10 @@
 
 #include "Texture.h"
 #include "VIBuffer.h"
+#include "Transform.h"
+#include "Collision_OBB.h"
 
 #include "Include.h"
-#include "Transform.h"
 #include "Export_Function.h"
 
 CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
@@ -15,6 +16,7 @@ CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
 , m_fSpeed(0.f)
 , m_fAngle(0.f)
 , m_pInfo(NULL)
+, m_pCollisionOBB(NULL)
 {
 
 }
@@ -88,7 +90,7 @@ HRESULT CCube::AddComponent(void)
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
 
 	//Texture
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_Player1Head");
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_UnBrokenBox");
 	m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
 	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
@@ -98,6 +100,13 @@ HRESULT CCube::AddComponent(void)
 	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
+
+	//OBBCollision_OBB
+	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);
+	m_pCollisionOBB = static_cast<Engine::CCollision_OBB*>(pComponent);
+	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
+	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
 
 	return S_OK;
 }

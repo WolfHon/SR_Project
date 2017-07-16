@@ -35,24 +35,24 @@ void Engine::CMouseMgr::Update(void)
 	{
 		if (GetAsyncKeyState(VK_LBUTTON))
 		{
-			m_dwMouseKey |= MOUSE_LBUTTON_PRESS;
+			m_dwMouseKey |= Engine::MOUSE_LBUTTON_PRESS;
 			m_bPressLBtn = true;
 		}
 		else
 		{
 			if(m_bPressLBtn == true)
-				m_dwMouseKey |= MOUSE_LBUTTON_CLICK;
+				m_dwMouseKey |= Engine::MOUSE_LBUTTON_CLICK;
 			m_bPressLBtn = false;
 		}
 		if (GetAsyncKeyState(VK_RBUTTON))
 		{
-			m_dwMouseKey |= MOUSE_RBUTTON_PRESS;
+			m_dwMouseKey |= Engine::MOUSE_RBUTTON_PRESS;
 			m_bPressRBtn = true;
 		}
 		else
 		{
 			if (m_bPressRBtn == true)
-				m_dwMouseKey |= MOUSE_RBUTTON_CLICK;
+				m_dwMouseKey |= Engine::MOUSE_RBUTTON_CLICK;
 			m_bPressRBtn = false;
 		}
 	}

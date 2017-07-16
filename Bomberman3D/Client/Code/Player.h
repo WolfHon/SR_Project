@@ -29,6 +29,7 @@ namespace Engine
 	class CTexture;
 	class CVIBuffer;
 	class CTransform;
+	class CCollision_OBB;
 }
 
 class CPlayer
@@ -51,12 +52,14 @@ private:
 	HRESULT Initialize(void);
 	HRESULT	AddComponent(void);
 	void MoveCheck(void);
+	BOOL CheckCollision(void);
 	void Release(void);
 
 private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
+	Engine::CCollision_OBB*	m_pCollisionOBB;
 
 private:	
 	float			m_fSpeed;

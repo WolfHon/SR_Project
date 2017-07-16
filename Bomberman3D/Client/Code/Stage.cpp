@@ -9,6 +9,7 @@
 #include "CameraControl.h"
 
 #include "Transform.h"
+#include "Collision_OBB.h"
 
 #include "Cube.h" //Test¿ë ÀÓ½Ã
 
@@ -33,6 +34,11 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_UnBrokenBox"
+		, L"../bin/Texture/Box/UnbreakBox/First/UnBreakBox0.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
 	FAILED_CHECK(hr);
@@ -41,6 +47,11 @@ HRESULT CStage::Initialize(void)
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
+
+	//Collision
+	hr = Engine::Get_CollisionMgr()->AddColObject(Engine::COLLISON_OBB);
+	FAILED_CHECK(hr);
+
 
 	FAILED_CHECK(Add_Enviroment_Layer());
 	FAILED_CHECK(Add_GameLogic_Layer());
@@ -83,7 +94,7 @@ HRESULT CStage::Add_Enviroment_Layer(void)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Skybox", pGameObject);
 
-	m_mapLayer.insert(MAPLAYER::value_type(LAYER_ENVIROMENT, pLayer));
+	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_ENVIROMENT, pLayer));
 
 	return S_OK;
 }
@@ -103,10 +114,10 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	{
 		pGameObject = CCube::Create(m_pDevice);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		pLayer->AddObject(L"Cube", pGameObject);
+		pLayer->AddObject(L"UnBroken_Box", pGameObject);
 	}
 	
-	m_mapLayer.insert(MAPLAYER::value_type(LAYER_GAMELOGIC, pLayer));
+	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
 	return S_OK;
 }
@@ -117,7 +128,7 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	Engine::CGameObject*	pGameObject = NULL;
 
-	MAPLAYER::iterator iter = m_mapLayer.find(LAYER_GAMELOGIC);
+	MAPLAYER::iterator iter = m_mapLayer.find(Engine::LAYER_GAMELOGIC);
 	if(iter == m_mapLayer.end())
 		return E_FAIL;
 
@@ -131,7 +142,7 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	pLayer->AddObject(L"CameraControl", pGameObject);
 	
-	m_mapLayer.insert(MAPLAYER::value_type(LAYER_UI, pLayer));
+	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_UI, pLayer));
 
 	return S_OK;
 }

@@ -1,6 +1,6 @@
 #include "CollisionMgr.h"
 
-#include "Collision.h"
+#include "Collision_OBB.h"
 
 IMPLEMENT_SINGLETON(Engine::CCollisionMgr)
 
@@ -13,16 +13,26 @@ Engine::CCollisionMgr::~CCollisionMgr(void)
 	Release();
 }
 
-HRESULT Engine::CCollisionMgr::AddColObject(COLLISIONID eCollisionID, CCollision* pCollision)
+HRESULT Engine::CCollisionMgr::AddColObject(COLLISIONID eCollisionID)
 {
 	MAPCOLLISION::iterator	iter = m_mapCollision.find(eCollisionID);
+
 	if(iter != m_mapCollision.end())
 		return E_FAIL;
 
-	pCollision->AddRefCnt();
-	
+	CCollision*		pCollision = NULL;
+
+	switch(eCollisionID)
+	{
+	case COLLISON_OBB:
+		pCollision = CCollision_OBB::Create();
+		break;
+	}
+
 	NULL_CHECK_RETURN(pCollision, E_FAIL);
+
 	m_mapCollision.insert(MAPCOLLISION::value_type(eCollisionID, pCollision));
+
 	return S_OK;
 }
 
@@ -47,5 +57,14 @@ Engine::CCollision* Engine::CCollisionMgr::GetColObject(COLLISIONID eCollisionID
 		return NULL;
 
 	return iter->second->GetColObject();
+}
+
+Engine::CCollision* Engine::CCollisionMgr::CloneCollision(COLLISIONID eCollisionID)
+{
+	MAPCOLLISION::iterator	iter = m_mapCollision.find(eCollisionID);
+	if(iter == m_mapCollision.end())
+		return NULL;
+
+	return iter->second->CloneCollision();
 }
 
