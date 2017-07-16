@@ -31,8 +31,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedAddcube();
-	
 	afx_msg void OnBnClickedButton1();
 };
 

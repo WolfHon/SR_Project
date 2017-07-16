@@ -330,18 +330,6 @@
 						>
 					</File>
 					<Filter
-						Name="01.FirstCamera"
-						>
-						<File
-							RelativePath="..\Code\FirstCamera.cpp"
-							>
-						</File>
-						<File
-							RelativePath="..\Code\FirstCamera.h"
-							>
-						</File>
-					</Filter>
-					<Filter
 						Name="00.ActionCamera"
 						>
 						<File
@@ -350,6 +338,18 @@
 						</File>
 						<File
 							RelativePath="..\Code\ActionCamera.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="01.FirstCamera"
+						>
+						<File
+							RelativePath="..\Code\FirstCamera.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\FirstCamera.h"
 							>
 						</File>
 					</Filter>
