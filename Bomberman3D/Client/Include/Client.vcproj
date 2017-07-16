@@ -318,10 +318,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="03.Design"
-				>
 				<Filter
 					Name="99.Camera"
 					>
@@ -358,6 +354,10 @@
 						</File>
 					</Filter>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="03.Design"
+				>
 			</Filter>
 		</Filter>
 		<Filter
