@@ -26,7 +26,7 @@ HRESULT CFirstCamera::Initialize(void)
 {
 	m_fAngleY = D3DXToRadian(0.f);
 	
-	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 0.5f, 1000.f);
+	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 0.1f, 1000.f);
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
@@ -71,14 +71,14 @@ void CFirstCamera::TargetRenewal(void)
 	m_vAt = m_pTargetInfo->m_vDir;
 
 	D3DXVECTOR3		vRight;
-	memcpy(&vRight, &m_pTargetInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
+	memcpy(&vRight, &m_pTargetInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));	
 	
 	D3DXMATRIX		matRotAxisY;
 	D3DXMatrixRotationAxis(&matRotAxisY, &vRight, m_fAngleY);
 	D3DXVec3TransformNormal(&m_vAt, &m_vAt, &matRotAxisY);
 
-	m_vEye = m_pTargetInfo->m_vPos;
-	m_vAt += m_pTargetInfo->m_vPos;
+	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.9f;
+	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.9f;
 
 	SetViewSpaceMatrix(&m_vEye, &m_vAt, &m_vUp);
 }

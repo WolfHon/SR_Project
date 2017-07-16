@@ -127,7 +127,7 @@ bool Engine::CCollision_OBB::CheckCollision(const CCollision_OBB* pTerget)
 
 			fDistance[2] = fabs(D3DXVec3Dot(&vTmp, &pOBB[i]->vParallel[j]));
 
-			if(fDistance[2] >= fDistance[1] + fDistance[0])
+			if(fDistance[2] > fDistance[1] + fDistance[0])
 				return false;
 		}
 	}

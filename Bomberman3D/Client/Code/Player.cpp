@@ -112,7 +112,7 @@ void CPlayer::MoveCheck(void)
 	}
 	else if(pControl->GetCamera() == CCameraControl::CAM_FIRST)
 	{
-		float fExAngle = m_pInfo->m_fAngle[Engine::ANGLE_Y];
+		float fExAngle = m_fAngle;
 		D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
 		BOOL bChange = FALSE;
 
@@ -121,10 +121,7 @@ void CPlayer::MoveCheck(void)
 
 		m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-		m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;
-
-		if(vMouseMove.x != 0.f)
-			bChange = TRUE;
+		m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;		
 
 		if(m_fAngle >= D3DXToRadian(360.f))
 			m_fAngle -= D3DXToRadian(360.f);
@@ -132,6 +129,9 @@ void CPlayer::MoveCheck(void)
 			m_fAngle += D3DXToRadian(360.f);
 
 		m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
+
+		if(fExAngle != m_fAngle)
+			bChange = TRUE;
 
 		if(GetAsyncKeyState('W'))
 		{
@@ -168,6 +168,7 @@ void CPlayer::MoveCheck(void)
 			if(CheckCollision() == TRUE)
 			{
 				m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
+				m_fAngle = fExAngle;
 				m_pInfo->m_vPos = vExPos;
 			}
 		}
