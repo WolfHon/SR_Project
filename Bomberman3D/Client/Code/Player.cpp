@@ -2,18 +2,18 @@
 #include "Player.h"
 
 #include "Texture.h"
-#include "VIBuffer.h"
 
 #include "Include.h"
 #include "Transform.h"
 #include "Export_Function.h"
 #include "Collision_OBB.h"
+#include "PlayerModel.h"
 #include "CameraControl.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
-, m_pBuffer(NULL)
+, m_pPlayerModel(NULL)
 , m_fSpeed(0.f)
 , m_fAngle(0.f)
 , m_pInfo(NULL)
@@ -50,8 +50,7 @@ void CPlayer::Render(void)
 {
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 
-	m_pTexture->Render(0, 0);
-	m_pBuffer->Render();
+	m_pPlayerModel->Render();
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
@@ -75,18 +74,25 @@ HRESULT CPlayer::AddComponent(void)
 	pComponent = m_pInfo = Engine::CTransform::Create(g_vLook);
 	NULL_CHECK_RETURN(m_pInfo, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
+	
+	////Texture
+	//pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_Player_Head");
+	//m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+	//NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+	//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
 
-	//Texture
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_Player1Head");
-	m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+	//////Buffer
+	//pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
+	//m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
+	//NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
+	//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
 
-	//Buffer
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
-	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
-	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
+
+	////Player
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Model_Player");
+	m_pPlayerModel = dynamic_cast<Engine::CPlayerModel*>(pComponent);
+	NULL_CHECK_RETURN(m_pPlayerModel, E_FAIL);
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Model", pComponent));
 
 	//OBBCollision_OBB
 	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);
