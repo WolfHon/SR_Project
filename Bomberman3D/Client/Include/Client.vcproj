@@ -357,14 +357,6 @@
 				<Filter
 					Name="03.Bomb"
 					>
-					<File
-						RelativePath="..\Code\Bomb.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\Code\Bomb.h"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
