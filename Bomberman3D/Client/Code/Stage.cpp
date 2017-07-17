@@ -35,7 +35,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_UnBrokenBox"
-		, L"../bin/Texture/Block/temp.dds", 1);
+		, L"../bin/Texture/Block/Block_Unbroken0.dds", 1);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
