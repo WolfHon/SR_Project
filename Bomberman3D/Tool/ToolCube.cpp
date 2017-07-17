@@ -6,8 +6,10 @@
 #include "Include.h"
 #include "Transform.h"
 
-#include "Engine_Function.h"
+#include "Engine_Include.h"
 #include "Export_Function.h"
+
+
 
 
 CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice )
@@ -18,7 +20,10 @@ CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice )
 , m_fAngle(0.f)
 , m_pInfo(NULL)
 , m_pTerrainCol(NULL)
+, m_eTexture(Engine::TILE_IMAGE0)
+, m_eTileOption(Engine::TILE_UNBROKEN)
 {
+
 
 }
 
@@ -30,18 +35,22 @@ CToolCube::~CToolCube( void )
 
 void CToolCube::Update( void )
 {
+	D3DXMATRIX matTrans;
 
+	m_pInfo->m_vPos = m_TileInfo.vPos;
+	
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
+	D3DXMatrixTranslation(&matTrans, m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z);
 
+	m_pInfo->m_matWorld = matTrans;
 
 	Engine::CGameObject::Update();
 	
-
-
 }
 
 void CToolCube::Render( void )
 {
+
 	//m_pBuffer->SetVtxInfo(m_pConvertVertex);
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	
@@ -57,23 +66,34 @@ void CToolCube::Render( void )
 
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		
+
 
 }
 
-CToolCube* CToolCube::Create( LPDIRECT3DDEVICE9 pDevice )
+CToolCube* CToolCube::Create( LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _tileInfo )
 {
 	CToolCube*	pGameObject = new CToolCube(pDevice);
-	if(FAILED(pGameObject->Initialize()))
+	if(FAILED(pGameObject->Initialize(_tileInfo)))
 		Safe_Delete(pGameObject);
+
 
 	return pGameObject;
 
 }
 
-HRESULT CToolCube::Initialize( void )
+HRESULT CToolCube::Initialize( Engine::TILEINFO _tileInfo )
 {
+	FAILED_CHECK(AddComponent(_tileInfo));
 
-	FAILED_CHECK(AddComponent());
+	Engine::TILEINFO* pTile = new Engine::TILEINFO;
+
+	
+	m_TileInfo.vPos = _tileInfo.vPos;
+	m_TileInfo.eTexture = _tileInfo.eTexture;
+	m_TileInfo.eTileOption = _tileInfo.eTileOption;
+
+	
 
 	//m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % VTXCNTX), 0.f, float(rand() % VTXCNTZ));
 
@@ -85,7 +105,7 @@ HRESULT CToolCube::Initialize( void )
 	return S_OK;
 }
 
-HRESULT CToolCube::AddComponent( void )
+HRESULT CToolCube::AddComponent( Engine::TILEINFO _tileInfo )
 {
 
 		Engine::CComponent*		pComponent = NULL;
@@ -95,11 +115,39 @@ HRESULT CToolCube::AddComponent( void )
 		NULL_CHECK_RETURN(m_pInfo, E_FAIL);
 		//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
 
+		switch(_tileInfo.eTexture)
+		{
 		////Texture
-		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_Cube");
-		m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-		NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-		m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+			case Engine::TILE_IMAGE0:
+				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"BreakCube");
+				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+				break;
+
+			case Engine::TILE_IMAGE1:
+				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"UnBreakCubeFirst");
+				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+				break;
+
+			case Engine::TILE_IMAGE2:
+				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"UnBreakCubeSecond");
+				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+				break;
+
+			case Engine::TILE_IMAGE3:
+				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"ElseCube");
+				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
+				break;
+
+		}
+	
 
 		//Buffer
 		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
@@ -118,7 +166,9 @@ HRESULT CToolCube::AddComponent( void )
 
 void CToolCube::Release( void )
 {
-	Safe_Delete_Array(m_pVertex);
-	Safe_Delete_Array(m_pConvertVertex);
+//	Safe_Delete_Array(m_pVertex);
+//	Safe_Delete_Array(m_pConvertVertex);
+
+	
 
 }

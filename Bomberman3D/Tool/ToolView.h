@@ -28,6 +28,8 @@ public:
 private:
 	CToolCube*	m_pCube;
 	CToolCamera* m_pCamera;
+
+	vector<CToolCube*>	m_vecCube;
 protected: // serialization에서만 만들어집니다.
 	CToolView();
 	DECLARE_DYNCREATE(CToolView)
@@ -45,6 +47,11 @@ public:
 	LPDIRECT3DDEVICE9 GetDevice(void)
 	{
 		return m_pDevice;
+	}
+public:
+	void SetVec(vector<CToolCube*> _vec)
+	{
+		m_vecCube = _vec;
 	}
 
 // 재정의입니다.

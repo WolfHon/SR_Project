@@ -6,6 +6,7 @@
 
 #include "Include.h"
 
+class CAddCube;
 class CToolView;
 class CMainFrame : public CFrameWndEx
 {
@@ -14,6 +15,7 @@ private:
 	CSplitterWnd	m_MainSplitter;	
 private:
 	CToolView*	m_pMainView;
+	CAddCube*	m_pAddCube;
 	
 	
 protected: // serialization에서만 만들어집니다.
@@ -27,6 +29,10 @@ public:
 		return m_pMainView;
 	}
 
+	CAddCube*	GetAddCube(void)
+	{
+		return m_pAddCube;
+	}
 // 작업입니다.
 public:
 

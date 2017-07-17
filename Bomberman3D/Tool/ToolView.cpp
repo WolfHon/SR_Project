@@ -10,7 +10,8 @@
 #include "RcTex.h"
 #include "ResourceMgr.h"
 #include "Export_Resource.h"
-
+#include "AddCube.h"
+#include "MainFrm.h"
 
 #include "ToolCube.h"
 #include "Layer.h"
@@ -79,11 +80,34 @@ void CToolView::OnInitialUpdate()
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 
 	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"Texture_Cube"
+		, Engine::TEXTURE_CUBE, L"BreakCube"
 		, L"../Client/bin/Texture/Box/BreakBox/BreakBox%d.dds", 1);
 
-	m_pCube = CToolCube::Create(m_pDevice);
-	m_pCube->SetMainView(this);
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"UnBreakCubeFirst"
+		, L"../Client/bin/Texture/Box/UnbreakBox/First/UnBreakBox%d.dds", 1);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"UnBreakCubeSecond"
+		, L"../Client/bin/Texture/Box/UnbreakBox/Second/UnBreakBox%d.dds", 1);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"ElseCube"
+		, L"../Client/bin/Texture/Box/Else/Else1/Else%d.dds", 1);
+
+	
+	//CAddCube* pAddCube= ((CMainFrame*)AfxGetMainWnd())->GetAddCube();
+
+	//vector<CToolCube*>::iterator iter = m_vecCube.begin();
+	//vector<CToolCube*>::iterator iter_end= m_vecCube.end();
+
+	//for( ;iter != iter_end ; ++iter)
+	//{
+	//	(*iter)->SetMainView(this);
+	//}
+
+	
+	
 	m_pCamera = CToolCamera::Create(m_pDevice);
 
 	Engine::Get_Management()->InitManagement(m_pDevice);
@@ -107,8 +131,14 @@ void CToolView::OnDraw(CDC* pDC)
 		, D3DCOLOR_ARGB(255, 0, 0, 255), 1.f, 0);
 	m_pDevice->BeginScene();
 
-	//m_pCube->Update();
-	m_pCube->Render();
+	vector<CToolCube*>::iterator iter = m_vecCube.begin();
+	vector<CToolCube*>::iterator iter_end= m_vecCube.end();
+	for( ;iter != iter_end ; ++iter)
+	{
+		(*iter)->Update();
+		(*iter)->Render();
+	}
+
 	
 	m_pCamera->Update();
 

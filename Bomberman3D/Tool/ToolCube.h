@@ -27,18 +27,39 @@ public:
 	virtual void Render(void);
 
 public:
-	static CToolCube* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CToolCube* Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _tileInfo );
 
 public:
 	void SetMainView(CToolView* pView)
 	{
 		m_pMainView = pView;
 	}
+	void SetInfoX(float _X)
+	{
+		m_TileInfo.vPos.x = _X;
+	}
+	void SetInfoY(float _Y)
+	{
+		m_TileInfo.vPos.y = _Y;
+	}
+	void SetInfoZ(float _Z)
+	{
+		m_TileInfo.vPos.z = _Z;
+	}
+	void SetOption(int _option)
+	{
+		m_TileInfo.eTileOption = (Engine::TILETYPE)_option;
+	}
+
+	Engine::TILEINFO GetInfo(void)
+	{
+		return m_TileInfo;
+	}
 
 
 public:
-	HRESULT Initialize(void);
-	HRESULT	AddComponent(void);
+	HRESULT Initialize(Engine::TILEINFO _tileInfo);
+	HRESULT	AddComponent(Engine::TILEINFO _tileInfo);
 	void Release(void);
 
 private:
@@ -53,12 +74,18 @@ private:
 private:
 	Engine::VTXCUBE*		m_pVertex;
 	Engine::VTXCUBE*		m_pConvertVertex;
+	Engine::TILEINFO		m_TileInfo;
 	DWORD					m_dwVtxCnt;
+	
 
 private:
 	float			m_fSpeed;
 	float			m_fAngle;
 	CToolView*		m_pMainView;
+	Engine::TILETYPE				m_eTileOption;
+	Engine::TILETEXTURE				m_eTexture;
+
+
 
 };
 
