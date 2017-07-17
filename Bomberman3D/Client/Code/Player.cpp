@@ -34,6 +34,8 @@ HRESULT CPlayer::Initialize(void)
 
 	m_fSpeed = 10.f;
 
+	m_pInfo->m_vScale = D3DXVECTOR3(0.5f, 0.5f, 0.5f);
+
 	return S_OK;
 }
 
@@ -74,19 +76,6 @@ HRESULT CPlayer::AddComponent(void)
 	pComponent = m_pInfo = Engine::CTransform::Create(g_vLook);
 	NULL_CHECK_RETURN(m_pInfo, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
-	
-	////Texture
-	//pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_Player_Head");
-	//m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-	//NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-	//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-
-	//////Buffer
-	//pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
-	//m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
-	//NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
-	//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
-
 
 	////Player
 	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Model_Player");
@@ -99,7 +88,7 @@ HRESULT CPlayer::AddComponent(void)
 	m_pCollisionOBB = static_cast<Engine::CCollision_OBB*>(pComponent);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
-	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
+	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -4.5f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
 
 	return S_OK;
 }
@@ -107,6 +96,8 @@ HRESULT CPlayer::AddComponent(void)
 void CPlayer::MoveCheck(void)
 {
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
+
+	m_pInfo->m_vPos.y = 2.25f;
 
 	CGameObject* pObject = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"CameraControl");
 	NULL_CHECK(pObject);

@@ -50,7 +50,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_UnBrokenBox"
-		, L"../bin/Texture/Block/Block_Unbroken0.dds", 1);
+		, L"../bin/Texture/Block/Block_Path0.dds", 1);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -60,7 +60,7 @@ HRESULT CStage::Initialize(void)
 
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
+		, Engine::BUFFER_SLOPETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
 
 	//Model

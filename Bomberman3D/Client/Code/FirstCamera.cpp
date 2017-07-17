@@ -59,11 +59,11 @@ void CFirstCamera::ViewCheck(void)
 
 	m_fAngleY -= vMouseMove.y * D3DXToRadian(90.f) * fTime;
 
-	if(m_fAngleY >= D3DXToRadian(45.f))
-		m_fAngleY = D3DXToRadian(45.f);
+	if(m_fAngleY >= D3DXToRadian(80.f))
+		m_fAngleY = D3DXToRadian(80.f);
 
-	if(m_fAngleY <= D3DXToRadian(-45.f))
-		m_fAngleY = D3DXToRadian(-45.f);
+	if(m_fAngleY <= D3DXToRadian(-80.f))
+		m_fAngleY = D3DXToRadian(-80.f);
 }
 
 void CFirstCamera::TargetRenewal(void)
@@ -77,8 +77,8 @@ void CFirstCamera::TargetRenewal(void)
 	D3DXMatrixRotationAxis(&matRotAxisY, &vRight, m_fAngleY);
 	D3DXVec3TransformNormal(&m_vAt, &m_vAt, &matRotAxisY);
 
-	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.9f;
-	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.9f;
+	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.8f + D3DXVECTOR3(0.f, 1.25f, 0.f);
+	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.8f + D3DXVECTOR3(0.f, 1.25f, 0.f);
 
 	SetViewSpaceMatrix(&m_vEye, &m_vAt, &m_vUp);
 }

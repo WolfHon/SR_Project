@@ -30,7 +30,8 @@ HRESULT CCube::Initialize(void)
 {
 	FAILED_CHECK(AddComponent());
 
-	m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.f, float(rand() % 200));
+	m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.75f, float(rand() % 200));
+	m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
 
 	m_fSpeed = 10.f;
 
