@@ -39,9 +39,10 @@ private:
 
 public:
 	CCollision* GetColObject(COLLISIONID eCollisionID);
+	CCollision* CloneCollision(COLLISIONID eCollisionID);
 
 public:
-	HRESULT AddColObject(COLLISIONID eCollisionID, CCollision* pCollision);
+	HRESULT AddColObject(COLLISIONID eCollisionID);
 
 private:
 	void Release(void);

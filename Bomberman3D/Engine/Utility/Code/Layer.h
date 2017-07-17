@@ -40,6 +40,7 @@ public:
 public:
 	const CComponent* GetComponent(const wstring& wstrObjKey, const wstring& wstrComponentKey);
 	CGameObject* GetObject(const wstring& wstrObjKey);
+	Engine::OBJLIST* GetObjectList(const wstring& wstrObjKey);
 
 public:
 	HRESULT AddObject(const wstring& wstrObjKey, CGameObject* pGameObject);
@@ -54,8 +55,7 @@ public:
 public:
 	void Release(void);
 
-private:
-	typedef list<CGameObject*>		OBJLIST;
+private:	
 	typedef map<wstring, OBJLIST>	MAPOBJLIST;
 	MAPOBJLIST		m_mapObjlist;
 };

@@ -208,6 +208,18 @@
 						RelativePath="..\Code\Collision.h"
 						>
 					</File>
+					<Filter
+						Name="00.Collision_OBB"
+						>
+						<File
+							RelativePath="..\Code\Collision_OBB.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Collision_OBB.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="01.Transform"
@@ -297,45 +309,45 @@
 					RelativePath="..\Code\CollisionMgr.h"
 					>
 				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="04.Design"
-			>
-			<File
-				RelativePath="..\Code\Subject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Code\Subject.h"
-				>
-			</File>
-			<Filter
-				Name="00.Observer"
-				>
-				<File
-					RelativePath="..\Code\Observer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\Code\Observer.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="01.Subject"
-				>
 				<Filter
-					Name="00.InfoSubject"
+					Name="04.Design"
 					>
 					<File
-						RelativePath="..\Code\InfoSubject.cpp"
+						RelativePath="..\Code\Subject.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\Code\InfoSubject.h"
+						RelativePath="..\Code\Subject.h"
 						>
 					</File>
+					<Filter
+						Name="00.Observer"
+						>
+						<File
+							RelativePath="..\Code\Observer.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Observer.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="01.Subject"
+						>
+						<Filter
+							Name="00.InfoSubject"
+							>
+							<File
+								RelativePath="..\Code\InfoSubject.cpp"
+								>
+							</File>
+							<File
+								RelativePath="..\Code\InfoSubject.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

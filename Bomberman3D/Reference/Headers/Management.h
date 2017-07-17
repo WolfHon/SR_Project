@@ -29,6 +29,8 @@
 BEGIN(Engine)
 
 class CScene;
+class CComponent;
+class CGameObject;
 
 class ENGINE_DLL CManagement
 {
@@ -49,7 +51,9 @@ public:
 	HRESULT SceneChange(T& Functor, LPDIRECT3DDEVICE9 pDevice);
 
 public:
-	CScene*	GetScene(void);
+	const CComponent* GetComponent(const WORD& LayerID, const wstring& wstrObjKey, const wstring& wstrComponentKey);
+	CGameObject* GetObject(const WORD& LayerID, const wstring& wstrObjKey);
+	Engine::OBJLIST* GetObjectList(const WORD& LayerID, const wstring& wstrObjKey);
 
 private:
 	void Release(void);

@@ -1,6 +1,9 @@
 #include "Management.h"
 
 #include "Scene.h"
+#include "Component.h"
+#include "Layer.h"
+#include "GameObject.h"
 #include "Renderer.h"
 
 IMPLEMENT_SINGLETON(Engine::CManagement)
@@ -44,8 +47,17 @@ void Engine::CManagement::Release(void)
 	Safe_Delete(m_pScene);
 }
 
-Engine::CScene* Engine::CManagement::GetScene(void)
+const Engine::CComponent* Engine::CManagement::GetComponent(const WORD& LayerID, const wstring& wstrObjKey, const wstring& wstrComponentKey)
 {
-	return m_pScene;
+	return m_pScene->GetComponent(LayerID, wstrObjKey, wstrComponentKey);
 }
 
+Engine::CGameObject* Engine::CManagement::GetObject(const WORD& LayerID, const wstring& wstrObjKey)
+{
+	return m_pScene->GetObject(LayerID, wstrObjKey);
+}
+
+Engine::OBJLIST* Engine::CManagement::GetObjectList(const WORD& LayerID, const wstring& wstrObjKey)
+{
+	return m_pScene->GetObjectList(LayerID, wstrObjKey);
+}

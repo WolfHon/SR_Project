@@ -5,7 +5,6 @@
 #include "Transform.h"
 #include "Export_Function.h"
 #include "CameraControl.h"
-#include "Scene.h"
 
 CActionCamera::CActionCamera(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CCamera(pDevice)
@@ -87,7 +86,7 @@ void CActionCamera::ViewCheck(void)
 			m_fTargetDistance = 0.f;	
 			m_fAngleX = D3DXToRadian(0.f);
 
-			CGameObject* pObject = Engine::Get_Management()->GetScene()->GetObject(Engine::CScene::LAYER_UI, L"CameraControl");
+			CGameObject* pObject = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"CameraControl");
 			NULL_CHECK(pObject);
 			dynamic_cast<CCameraControl*>(pObject)->SetCamera(CCameraControl::CAM_FIRST);		
 		}

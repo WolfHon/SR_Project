@@ -59,3 +59,12 @@ Engine::CGameObject* Engine::CScene::GetObject(const WORD& LayerID, const wstrin
 	return iter->second->GetObject(wstrObjKey);
 }
 
+Engine::OBJLIST* Engine::CScene::GetObjectList(const WORD& LayerID, const wstring& wstrObjKey)
+{
+	MAPLAYER::iterator	iter = m_mapLayer.find(LayerID);
+	if(iter == m_mapLayer.end())
+		return NULL;
+
+	return iter->second->GetObjectList(wstrObjKey);
+}
+
