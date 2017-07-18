@@ -11,7 +11,6 @@ namespace Engine
 	class CTerrainCol;
 	class CMouseCol;
 }
-class CToolcameraObserver;
 class CToolView;
 class CToolCube
 	:public Engine::CGameObject
@@ -68,8 +67,6 @@ private:
 	Engine::CTransform*		m_pInfo;
 	Engine::CTerrainCol*	m_pTerrainCol;
 
-private:
-	CToolcameraObserver*		m_pCamObserver;
 
 private:
 	Engine::VTXCUBE*		m_pVertex;

@@ -110,8 +110,6 @@ void CToolView::OnInitialUpdate()
 	//	(*iter)->SetMainView(this);
 	//}
 
-	
-	
 	m_pCamera = CToolCamera::Create(m_pDevice);
 
 	Engine::Get_Management()->InitManagement(m_pDevice);

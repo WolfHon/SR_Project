@@ -40,10 +40,10 @@ public:
 	virtual void Render(void);
 
 public:
-	static CCube* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CCube* Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _TileInfo);
 
 private:
-	HRESULT Initialize(void);
+	HRESULT Initialize(Engine::TILEINFO _TileInfo);
 	HRESULT	AddComponent(void);
 	void Release(void);
 
@@ -52,6 +52,7 @@ private:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 	Engine::CCollision_OBB*	m_pCollisionOBB;
+	Engine::TILEINFO		m_tagTileInfo;
 
 private:
 	float			m_fSpeed;

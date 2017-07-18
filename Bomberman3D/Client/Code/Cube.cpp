@@ -26,13 +26,16 @@ CCube::~CCube(void)
 	Release();
 }
 
-HRESULT CCube::Initialize(void)
+HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 {
 	FAILED_CHECK(AddComponent());
 
-	m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.75f, float(rand() % 200));
-	m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
+	//m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.75f, float(rand() % 200));
+	//m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
 
+	m_tagTileInfo = _TileInfo;
+	m_pInfo->m_vPos = m_tagTileInfo.vPos;
+	
 	m_fSpeed = 10.f;
 
 	return S_OK;
@@ -61,17 +64,17 @@ void CCube::Render(void)
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 
-	m_pTexture->Render(0, 0);
+	m_pTexture->Render(0, m_tagTileInfo.eTexture);
 	m_pBuffer->Render();
 
 	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	/*m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);*/
 }
 
-CCube* CCube::Create(LPDIRECT3DDEVICE9 pDevice)
+CCube* CCube::Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _TileInfo)
 {
 	CCube*	pGameObject = new CCube(pDevice);
-	if(FAILED(pGameObject->Initialize()))
+	if(FAILED(pGameObject->Initialize(_TileInfo)))
 		Safe_Delete(pGameObject);
 
 	return pGameObject;
@@ -91,7 +94,7 @@ HRESULT CCube::AddComponent(void)
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
 
 	//Texture
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Texture_UnBrokenBox");
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Block");
 	m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
 	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
