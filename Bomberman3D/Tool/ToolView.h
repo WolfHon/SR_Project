@@ -79,6 +79,9 @@ private:
 	Engine::CVIBuffer*			m_pBuffer;
 	Engine::CTexture*			m_pTextre;
 
+	D3DXVECTOR3 m_pt;
+	bool		m_click;
+
 
 private:
 	typedef map<WORD, CLayer*>		MAPLAYER;
@@ -97,6 +100,7 @@ public:
 	
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScrollView::OnFilePrintPreview)
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -42,6 +43,7 @@ END_MESSAGE_MAP()
 CToolView::CToolView()
 :m_pGraphicDev(Engine::Get_GraphicDev())
 ,m_pDevice(NULL)
+,m_click(FALSE)
 {
 
 
@@ -215,17 +217,29 @@ CToolDoc* CToolView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 void CToolView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	CScrollView::OnMouseMove(nFlags, point);
-	m_pCamera->SetPtPos(point);
+	m_pt = 	m_pCamera->Getmouse(point);
+	if(m_click)
+	{
+	m_pCamera->Rotate(m_pt);
+	}
+
+	
 }
 
 void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	CScrollView::OnRButtonDown(nFlags, point);
 	ScreenToClient(&point);
-	m_pCamera->SetPtPos(point);
+	m_click = true;
+	
+}
+
+void CToolView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CScrollView::OnRButtonUp(nFlags, point);
+	m_click = false;
 
 }

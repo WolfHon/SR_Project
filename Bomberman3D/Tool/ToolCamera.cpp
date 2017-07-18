@@ -35,14 +35,14 @@ void CToolCamera::Update( void )
 {
 	KeyCheck();
 	TargetRenewal();
-	
-	
-		
+
 
 }
 
 HRESULT CToolCamera::Initialize( void )
 {
+
+
 
 
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(45.f), float(WINCX) / WINCY
@@ -58,7 +58,7 @@ HRESULT CToolCamera::Initialize( void )
 
 void CToolCamera::SetCameraTarget( const Engine::CTransform* pTargetInfo  )
 {
-		m_pTargetInfo = pTargetInfo;
+	m_pTargetInfo = pTargetInfo;
 }
 
 CToolCamera* CToolCamera::Create( LPDIRECT3DDEVICE9 pDevice)
@@ -103,10 +103,10 @@ void CToolCamera::KeyCheck( void )
 	}
 	if(GetAsyncKeyState('S') & 1 )
 	{	D3DXVECTOR3 vcZ(matView._13,matView._23 , matView._33);
-		D3DXVec3Normalize(&vcZ,&vcZ);
+	D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye -= vcZ * 0.5f;
-		m_vAt  -= vcZ * 0.5f;
+	m_vEye -= vcZ * 0.5f;
+	m_vAt  -= vcZ * 0.5f;
 	}
 	if(GetAsyncKeyState('A')& 1 )
 	{
@@ -148,19 +148,24 @@ void CToolCamera::KeyCheck( void )
 
 	}
 
-	if(GetAsyncKeyState(VK_RBUTTON))
-	{
-		D3DXVECTOR3 vpt = D3DXVECTOR3(m_pPT.x, m_pPT.y , 0.f);
-		Rotate(vpt);
-	}
 
-	
+	//if(GetAsyncKeyState(VK_RBUTTON) & 1)
+	//{	
+	//	GetCursorPos(&m_pt);
+	//	ScreenToClient(g_hWnd, &m_pt);
+	//	D3DXVECTOR3 vcDelta = Getmouse(m_pt);
+	//	Rotate(vcDelta);
+
+	//}
+
+
+
 }
 
 void CToolCamera::TargetRenewal( void )
 {
 
-	
+
 	//m_vAt = m_vEye * 1.1;
 
 	//m_vEye = m_pTargetInfo->m_vDir * -1 * m_fTargetDistance;
@@ -236,9 +241,12 @@ void CToolCamera::Rotate( const D3DXVECTOR3 vcDelta )
 	m_vAt= vcZ + m_vEye;
 	m_vUp	= vcY;
 	D3DXMatrixLookAtLH(&matView, &m_vEye, &m_vAt, &m_vUp);
+
+
+
 }
 
-D3DXVECTOR3 CToolCamera::Getmouse()
+D3DXVECTOR3 CToolCamera::Getmouse( POINT pt )
 {
 
 	//if(pt.x < 0 || pt.x > 800 || pt.y < 0 || pt.y > 600)
@@ -247,8 +255,8 @@ D3DXVECTOR3 CToolCamera::Getmouse()
 	m_vcOld.x = m_vcCur.x;
 	m_vcOld.y = m_vcCur.y;
 
-	m_vcCur.x = FLOAT(m_pPT.x);
-	m_vcCur.y = FLOAT(m_pPT.y);
+	m_vcCur.x = FLOAT(pt.x);
+	m_vcCur.y = FLOAT(pt.y);
 
 	m_vcEps = m_vcCur - m_vcOld;
 	m_vcOld.z = m_vcCur.z;
