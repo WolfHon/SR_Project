@@ -20,7 +20,7 @@ void CAddCube::Release( void )
 
 	for( ;iter != iter_end ; ++iter)
 	{
-		Engine::Safe_Delete(*iter);
+		Safe_Delete(*iter);
 	}
 
 	m_vecCube.clear();
@@ -30,7 +30,7 @@ void CAddCube::Release( void )
 
 	for( ;iterINFO != iterINFO_end ; ++iterINFO)
 	{
-		Engine::Safe_Delete(*iterINFO);
+		Safe_Delete(*iterINFO);
 	}
 
 	m_vecTileInfo.clear();
@@ -57,7 +57,7 @@ CAddCube::CAddCube(CWnd* pParent /*=NULL*/)
 
 CAddCube::~CAddCube()
 {
-	//Release();
+	Release();
 }
 
 void CAddCube::DoDataExchange(CDataExchange* pDX)
@@ -99,6 +99,7 @@ BEGIN_MESSAGE_MAP(CAddCube, CDialog)
 	ON_LBN_SELCHANGE(IDC_LIST2, &CAddCube::OnLbnSelchangeList2)
 	ON_BN_CLICKED(IDC_SAVECUBE, &CAddCube::OnBnClickedSavecube)
 	ON_BN_CLICKED(IDC_LOADCUBE, &CAddCube::OnBnClickedLoadcube)
+	ON_BN_CLICKED(IDC_RADIO3, &CAddCube::OnBnClickedRadio3)
 END_MESSAGE_MAP()
 
 
@@ -121,6 +122,9 @@ void CAddCube::OnBnClickedAddcube()
 
 	CToolView* pAddCube = ((CMainFrame*)AfxGetMainWnd())->GetMainView();
 
+	m_TileInfo.vPos.x = fx;
+	m_TileInfo.vPos.y = fY;
+	m_TileInfo.vPos.z = fZ;
 	m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);	
 
 	m_vecCube.push_back(m_pCube);
@@ -167,6 +171,26 @@ void CAddCube::OnLbnSelchangeList2()
 	case 3:
 		m_TileInfo.eTexture = Engine::TILE_IMAGE3;
 		break;
+		
+	case 4:
+		m_TileInfo.eTexture = Engine::TILE_IMAGE4;
+		break;
+
+	case 5:
+		m_TileInfo.eTexture = Engine::TILE_IMAGE5;
+		break;
+
+	case 6:
+		m_TileInfo.eTexture = Engine::TILE_IMAGE6;
+		break;
+
+	case 7:
+		m_TileInfo.eTexture = Engine::TILE_IMAGE7;
+		break;
+
+	case 8:
+		m_TileInfo.eTexture = Engine::TILE_IMAGE8;
+		break;
 
 	}	
 
@@ -181,6 +205,12 @@ void CAddCube::OnLbnSelchangeList1()
 	UpdateData(TRUE);
 
 	iSelectIndex = m_ListBox.GetCurSel();
+
+
+
+	if(iSelectIndex < 0)
+		return;
+	
 
 	fx = m_vecCube[iSelectIndex]->GetInfo().vPos.x;
 	fY = m_vecCube[iSelectIndex]->GetInfo().vPos.y;
@@ -270,6 +300,15 @@ void CAddCube::OnBnClickedRadio2()
 	UpdateData(FALSE);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+void CAddCube::OnBnClickedRadio3()
+{
+	UpdateData(TRUE);
+	m_iEnum = 2;
+	UpdateData(FALSE);
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
 
 void CAddCube::OnBnClickedButton5()
 {
@@ -278,6 +317,7 @@ void CAddCube::OnBnClickedButton5()
 	UpdateData(FALSE);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+
 
 
 void CAddCube::OnBnClickedBackcube()
@@ -309,18 +349,33 @@ void CAddCube::OnBnClickedBackcube()
 }
 
 
+
 BOOL CAddCube::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
+	m_TileInfo.vPos = D3DXVECTOR3(0.f , 0.f , 0.f);
+	m_TileInfo.eTileOption = Engine::TILE_UNBROKEN;
+	m_TileInfo.eTexture = Engine::TILE_IMAGE0;
+
 	TCHAR szText[256] = L"";
-	wsprintf(szText, L"BreakCube");
+	wsprintf(szText, L"Block0");
 	m_ListBox1.AddString(szText);
-	wsprintf(szText, L"UnBreakCube1");
+	wsprintf(szText, L"Block1");
 	m_ListBox1.AddString(szText);
-	wsprintf(szText, L"UnBreakCube2");
+	wsprintf(szText, L"Block2");
 	m_ListBox1.AddString(szText);
-	wsprintf(szText, L"ElseCube");
+	wsprintf(szText, L"Block3");
+	m_ListBox1.AddString(szText);
+	wsprintf(szText, L"Block4");
+	m_ListBox1.AddString(szText);
+	wsprintf(szText, L"Block5");
+	m_ListBox1.AddString(szText);
+	wsprintf(szText, L"Block6");
+	m_ListBox1.AddString(szText);
+	wsprintf(szText, L"Block7");
+	m_ListBox1.AddString(szText);
+	wsprintf(szText, L"Block8");
 	m_ListBox1.AddString(szText);
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
@@ -406,6 +461,8 @@ void CAddCube::OnBnClickedLoadcube()
 		L"*.dat",
 		this);
 
+	Dlg.m_ofn.lpstrInitialDir = L"..\\Data";
+
 	if(Dlg.DoModal() == IDCANCEL)
 		return;
 
@@ -448,9 +505,7 @@ void CAddCube::OnBnClickedLoadcube()
 	int i = 0;
 
 	for( ;iter != iter_end ; ++iter )
-	{
-
-		
+	{		
 		m_pCube = CToolCube::Create(pAddCube->GetDevice() , *(*iter));	
 		++i;
 
@@ -464,10 +519,8 @@ void CAddCube::OnBnClickedLoadcube()
 		m_ListBox.AddString(szText);
 	}
 
-
-
 	UpdateData(FALSE);
-
 
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
+

@@ -87,6 +87,7 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedSavecube();
 	afx_msg void OnBnClickedLoadcube();
+	afx_msg void OnBnClickedRadio3();
 };
 
 

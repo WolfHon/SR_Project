@@ -146,24 +146,6 @@ void CToolCamera::KeyCheck( void )
 
 	}
 
-
-
-
-
-
-
-	if(GetAsyncKeyState(VK_RBUTTON))
-	{
-		POINT pt;
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-		D3DXVECTOR3 vcDelta = Getmouse(pt);
-		Rotate(vcDelta);
-
-
-	}
-
-
 	
 }
 
@@ -246,9 +228,6 @@ void CToolCamera::Rotate( const D3DXVECTOR3 vcDelta )
 	m_vAt= vcZ + m_vEye;
 	m_vUp	= vcY;
 	D3DXMatrixLookAtLH(&matView, &m_vEye, &m_vAt, &m_vUp);
-	
-
-
 }
 
 D3DXVECTOR3 CToolCamera::Getmouse( POINT pt )

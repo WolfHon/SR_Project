@@ -33,6 +33,8 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScrollView::OnFilePrintPreview)
+	ON_WM_MOUSEMOVE()
+	ON_WM_RBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -81,19 +83,19 @@ void CToolView::OnInitialUpdate()
 
 	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"BreakCube"
-		, L"../Client/bin/Texture/Box/BreakBox/BreakBox%d.dds", 1);
+		, L"../Client/bin/Texture/Block/Block%d.dds", 8);
 
-	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"UnBreakCubeFirst"
-		, L"../Client/bin/Texture/Box/UnbreakBox/First/UnBreakBox%d.dds", 1);
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"UnBreakCubeFirst"
+	//	, L"../Client/bin/Texture/Block/Block_Broken%d.dds", 0);
 
-	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"UnBreakCubeSecond"
-		, L"../Client/bin/Texture/Box/UnbreakBox/Second/UnBreakBox%d.dds", 1);
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"UnBreakCubeSecond"
+	//	, L"../Client/bin/Texture/Box/UnbreakBox/Second/UnBreakBox%d.dds", 1);
 
-	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"ElseCube"
-		, L"../Client/bin/Texture/Box/Else/Else1/Else%d.dds", 1);
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"ElseCube"
+	//	, L"../Client/bin/Texture/Box/Else/Else1/Else%d.dds", 1);
 
 	
 	//CAddCube* pAddCube= ((CMainFrame*)AfxGetMainWnd())->GetAddCube();
@@ -176,11 +178,7 @@ void CToolView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
 
-void CToolView::OnRButtonUp(UINT nFlags, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
+
 
 void CToolView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
@@ -213,3 +211,20 @@ CToolDoc* CToolView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 
 
 
+
+void CToolView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnMouseMove(nFlags, point);
+}
+
+void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnRButtonDown(nFlags, point);
+	ScreenToClient(&point);
+	m_pCamera->Getmouse(point);
+
+}

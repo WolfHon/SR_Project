@@ -58,7 +58,7 @@ void CToolCube::Render( void )
 	m_pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00000088);
 	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
 
-	m_pTexture->Render(0, 0);
+	m_pTexture->Render(0, m_TileInfo.eTexture);
 	m_pBuffer->Render();
 
 	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -67,8 +67,6 @@ void CToolCube::Render( void )
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 		
-
-
 }
 
 CToolCube* CToolCube::Create( LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _tileInfo )
@@ -88,7 +86,6 @@ HRESULT CToolCube::Initialize( Engine::TILEINFO _tileInfo )
 
 	Engine::TILEINFO* pTile = new Engine::TILEINFO;
 
-	
 	m_TileInfo.vPos = _tileInfo.vPos;
 	m_TileInfo.eTexture = _tileInfo.eTexture;
 	m_TileInfo.eTileOption = _tileInfo.eTileOption;
@@ -115,39 +112,12 @@ HRESULT CToolCube::AddComponent( Engine::TILEINFO _tileInfo )
 		NULL_CHECK_RETURN(m_pInfo, E_FAIL);
 		//m_mapComponent.insert(MAPCOMPONENT::value_type(L"Transform", pComponent));
 
-		switch(_tileInfo.eTexture)
-		{
+
 		////Texture
-			case Engine::TILE_IMAGE0:
 				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"BreakCube");
 				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
 				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-				break;
-
-			case Engine::TILE_IMAGE1:
-				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"UnBreakCubeFirst");
-				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-				break;
-
-			case Engine::TILE_IMAGE2:
-				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"UnBreakCubeSecond");
-				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-				break;
-
-			case Engine::TILE_IMAGE3:
-				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"ElseCube");
-				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-				break;
-
-		}
-	
+				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));	
 
 		//Buffer
 		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");

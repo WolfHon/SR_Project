@@ -28,14 +28,21 @@ private:
 public:
 	void SetCameraTarget(const Engine::CTransform* pTargetInfo);
 
+	void SetPtPos(POINT _pt)
+	{
+	
+	}
+
 public:
 	static CToolCamera* Create(LPDIRECT3DDEVICE9 pDevice );
 
 private:
 	void KeyCheck(void);
 	void TargetRenewal(void);
-	void Rotate(const D3DXVECTOR3 vcDelta);
+
+public:
 	D3DXVECTOR3 Getmouse(POINT pt);
+	void Rotate(const D3DXVECTOR3 vcDelta);
 
 private:
 	void Release(void);
@@ -58,6 +65,7 @@ private:
 	D3DXVECTOR3  m_vLook;
 	D3DXVECTOR3  m_vPos;
 	D3DXVECTOR3  m_vDir;
+	POINT		 m_pPT;
 
 
 	D3DXVECTOR3	m_vcCur;
