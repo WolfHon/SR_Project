@@ -25,7 +25,7 @@ HRESULT CSkybox::Initialize(void)
 {
 	FAILED_CHECK(AddComponent());
 
-	m_pInfo->m_vScale = D3DXVECTOR3(500.f, 500.f, 500.f);
+	m_pInfo->m_vScale = D3DXVECTOR3(100.f, 100.f, 100.f);
 
 	return S_OK;
 }
@@ -37,7 +37,7 @@ void CSkybox::Update(void)
 	D3DXMATRIX matView;
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixInverse(&matView, NULL, &matView);
-	m_pInfo->m_vPos = D3DXVECTOR3(matView._41, matView._42 + 100.f, matView._43);
+	m_pInfo->m_vPos = D3DXVECTOR3(matView._41, matView._42 + 10.f, matView._43);
 }
 
 void CSkybox::Render(void)

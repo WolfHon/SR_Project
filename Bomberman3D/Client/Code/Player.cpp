@@ -201,12 +201,12 @@ void CPlayer::MoveCheck(void)
 		{
 			m_pInfo->Update();
 
-		/*	if(CheckCollision() == TRUE)
+			if(CheckCollision() == TRUE)
 			{
 				m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
 				m_fAngle = fExAngle;
 				m_pInfo->m_vPos = vExPos;
-			}*/
+			}
 		}
 	}
 }

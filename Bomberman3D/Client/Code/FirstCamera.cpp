@@ -26,7 +26,7 @@ HRESULT CFirstCamera::Initialize(void)
 {
 	m_fAngleY = D3DXToRadian(0.f);
 	
-	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 0.1f, 1000.f);
+	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 0.1f, 200.f);
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 

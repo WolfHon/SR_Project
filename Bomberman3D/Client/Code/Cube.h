@@ -22,10 +22,6 @@ namespace Engine
 	class CVIBuffer;
 	class CTransform;
 	class CCollision_OBB;
-
-#ifdef _DEBUG
-	class CCubeColor;
-#endif
 }
 
 class CCube
@@ -55,13 +51,6 @@ private:
 	Engine::CTransform*		m_pInfo;
 	Engine::CCollision_OBB*	m_pCollisionOBB;
 	Engine::TILEINFO		m_tagTileInfo;
-
-#ifdef _DEBUG
-	Engine::CCubeColor*		m_pCubeColor;
-
-	Engine::VTXCOL*	pVertex;
-#endif
-
 
 private:
 	float			m_fSpeed;

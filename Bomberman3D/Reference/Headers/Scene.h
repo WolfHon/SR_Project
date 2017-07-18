@@ -49,6 +49,7 @@ public:
 	virtual void Render(void);
 
 private:
+	void MakePlane(void);
 	void Release(void);
 
 protected:
@@ -57,6 +58,10 @@ protected:
 protected:
 	typedef map<WORD, CLayer*>		MAPLAYER;
 	MAPLAYER		m_mapLayer;
+
+private:
+	D3DXVECTOR3	m_vtx[8];	
+	D3DXPLANE	m_plane[6];
 };
 
 END

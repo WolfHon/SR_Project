@@ -50,7 +50,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Block"
-		, L"../bin/Texture/Block/Block%d.dds", 1);
+		, L"../bin/Texture/Block/Block%d.dds", 9);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -112,7 +112,7 @@ void CStage::Release(void)
 
 HRESULT CStage::Add_Enviroment_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 
@@ -127,7 +127,7 @@ HRESULT CStage::Add_Enviroment_Layer(void)
 
 HRESULT CStage::Add_GameLogic_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 	
@@ -135,16 +135,6 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Player", pGameObject);
 
-	//Test¿ë ÀÓ½Ã
-	//for(int z = 0; z< 30; ++z)
-	//{
-	//	for(int x = 0; x<30; ++x)
-	//	{
-	//		pGameObject = CCube::Create(m_pDevice, D3DXVECTOR3(x*4.f, -2.f, z*4.f));
-	//		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//		pLayer->AddObject(L"UnBroken_Box", pGameObject);
-	//	}
-	//}
 	LoadData(pLayer,pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
@@ -154,7 +144,7 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 HRESULT CStage::Add_UI_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 
@@ -200,9 +190,8 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
-
+		Engine::Safe_Delete(pTileInfo);
 	}
 	CloseHandle(hFile);
-
 }
 
