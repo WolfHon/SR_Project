@@ -57,7 +57,7 @@ CAddCube::CAddCube(CWnd* pParent /*=NULL*/)
 
 CAddCube::~CAddCube()
 {
-	Release();
+	//Release();
 }
 
 void CAddCube::DoDataExchange(CDataExchange* pDX)

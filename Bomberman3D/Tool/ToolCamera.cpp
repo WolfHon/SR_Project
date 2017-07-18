@@ -35,6 +35,8 @@ void CToolCamera::Update( void )
 {
 	KeyCheck();
 	TargetRenewal();
+	
+	
 		
 
 }
@@ -146,6 +148,12 @@ void CToolCamera::KeyCheck( void )
 
 	}
 
+	if(GetAsyncKeyState(VK_RBUTTON))
+	{
+		D3DXVECTOR3 vpt = D3DXVECTOR3(m_pPT.x, m_pPT.y , 0.f);
+		Rotate(vpt);
+	}
+
 	
 }
 
@@ -230,7 +238,7 @@ void CToolCamera::Rotate( const D3DXVECTOR3 vcDelta )
 	D3DXMatrixLookAtLH(&matView, &m_vEye, &m_vAt, &m_vUp);
 }
 
-D3DXVECTOR3 CToolCamera::Getmouse( POINT pt )
+D3DXVECTOR3 CToolCamera::Getmouse()
 {
 
 	//if(pt.x < 0 || pt.x > 800 || pt.y < 0 || pt.y > 600)
@@ -239,8 +247,8 @@ D3DXVECTOR3 CToolCamera::Getmouse( POINT pt )
 	m_vcOld.x = m_vcCur.x;
 	m_vcOld.y = m_vcCur.y;
 
-	m_vcCur.x = FLOAT(pt.x);
-	m_vcCur.y = FLOAT(pt.y);
+	m_vcCur.x = FLOAT(m_pPT.x);
+	m_vcCur.y = FLOAT(m_pPT.y);
 
 	m_vcEps = m_vcCur - m_vcOld;
 	m_vcOld.z = m_vcCur.z;

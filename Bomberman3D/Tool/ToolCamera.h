@@ -30,7 +30,7 @@ public:
 
 	void SetPtPos(POINT _pt)
 	{
-	
+			m_pPT = _pt;
 	}
 
 public:
@@ -41,7 +41,7 @@ private:
 	void TargetRenewal(void);
 
 public:
-	D3DXVECTOR3 Getmouse(POINT pt);
+	D3DXVECTOR3 Getmouse();
 	void Rotate(const D3DXVECTOR3 vcDelta);
 
 private:
