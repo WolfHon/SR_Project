@@ -29,13 +29,28 @@ HRESULT CStage::Initialize(void)
 
 	//Texture
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"Texture_Player1Head"
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Head"
 		, L"../bin/Texture/Player1/Player1Head.dds", 1);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Body"
+		, L"../bin/Texture/Player1/Player1Body.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Foot"
+		, L"../bin/Texture/Player1/Player1Foot.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Arm"
+		, L"../bin/Texture/Player1/Player1Arm.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_UnBrokenBox"
-		, L"../bin/Texture/Block/Block_Unbroken0.dds", 1);
+		, L"../bin/Texture/Block/Block_Path0.dds", 1);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -45,7 +60,12 @@ HRESULT CStage::Initialize(void)
 
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
+		, Engine::BUFFER_SLOPETEX, L"Buffer_CubeTex");
+	FAILED_CHECK(hr);
+
+	//Model
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::MODEL_PLAYER, L"Model_Player");
 	FAILED_CHECK(hr);
 
 	//Collision

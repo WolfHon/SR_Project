@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SlopeTex.h"
 #include "CubeTex.h"
+#include "PlayerModel.h"
 
 IMPLEMENT_SINGLETON(Engine::CResouceMgr)
 
@@ -46,6 +47,10 @@ HRESULT Engine::CResouceMgr::AddBuffer(LPDIRECT3DDEVICE9 pDevice
 
 	case BUFFER_CUBETEX:
 		pResource = CCubeTex::Create(pDevice);
+		break;
+
+	case MODEL_PLAYER:
+		pResource = CPlayerModel::Create(pDevice);
 		break;
 	}
 
