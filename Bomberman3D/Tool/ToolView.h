@@ -28,6 +28,8 @@ public:
 private:
 	CToolCube*	m_pCube;
 	CToolCamera* m_pCamera;
+
+	vector<CToolCube*>	m_vecCube;
 protected: // serialization에서만 만들어집니다.
 	CToolView();
 	DECLARE_DYNCREATE(CToolView)
@@ -45,6 +47,11 @@ public:
 	LPDIRECT3DDEVICE9 GetDevice(void)
 	{
 		return m_pDevice;
+	}
+public:
+	void SetVec(vector<CToolCube*> _vec)
+	{
+		m_vecCube = _vec;
 	}
 
 // 재정의입니다.
@@ -72,6 +79,9 @@ private:
 	Engine::CVIBuffer*			m_pBuffer;
 	Engine::CTexture*			m_pTextre;
 
+	D3DXVECTOR3 m_pt;
+	bool		m_click;
+
 
 private:
 	typedef map<WORD, CLayer*>		MAPLAYER;
@@ -82,13 +92,15 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual void OnInitialUpdate();
 
 	
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // ToolView.cpp의 디버그 버전

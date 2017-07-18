@@ -42,10 +42,10 @@ public:
 	virtual void Render(void);
 
 public:
-	static CCube* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos);
+	static CCube* Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _TileInfo);
 
 private:
-	HRESULT Initialize(D3DXVECTOR3 vPos);
+	HRESULT Initialize(Engine::TILEINFO _TileInfo);
 	HRESULT	AddComponent(void);
 	void Release(void);
 
@@ -54,6 +54,7 @@ private:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 	Engine::CCollision_OBB*	m_pCollisionOBB;
+	Engine::TILEINFO		m_tagTileInfo;
 
 #ifdef _DEBUG
 	Engine::CCubeColor*		m_pCubeColor;

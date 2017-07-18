@@ -49,8 +49,8 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"Texture_UnBrokenBox"
-		, L"../bin/Texture/Block/Block_Path0.dds", 1);
+		, Engine::TEXTURE_CUBE, L"Block"
+		, L"../bin/Texture/Block/Block%d.dds", 1);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -136,15 +136,16 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pLayer->AddObject(L"Player", pGameObject);
 
 	//Test¿ë ÀÓ½Ã
-	for(int z = 0; z< 30; ++z)
-	{
-		for(int x = 0; x<30; ++x)
-		{
-			pGameObject = CCube::Create(m_pDevice, D3DXVECTOR3(x*4.f, -2.f, z*4.f));
-			NULL_CHECK_RETURN(pGameObject, E_FAIL);
-			pLayer->AddObject(L"UnBroken_Box", pGameObject);
-		}
-	}
+	//for(int z = 0; z< 30; ++z)
+	//{
+	//	for(int x = 0; x<30; ++x)
+	//	{
+	//		pGameObject = CCube::Create(m_pDevice, D3DXVECTOR3(x*4.f, -2.f, z*4.f));
+	//		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//		pLayer->AddObject(L"UnBroken_Box", pGameObject);
+	//	}
+	//}
+	LoadData(pLayer,pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -174,5 +175,34 @@ HRESULT CStage::Add_UI_Layer(void)
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_UI, pLayer));
 
 	return S_OK;
+}
+
+void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
+{
+	DWORD dwByte = 0;
+
+	HANDLE hFile = CreateFile(L"../../Data/STAGE1.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	while(1)
+	{
+		Engine::TILEINFO* pTileInfo = new Engine::TILEINFO;
+
+		ReadFile(hFile , pTileInfo, sizeof(Engine::TILEINFO), &dwByte, NULL);
+
+		if(dwByte == 0)
+		{
+			Engine::Safe_Delete(pTileInfo);
+			break;
+		}
+		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
+		pLayer->AddObject(L"Terrain", pGameObject);
+		
+		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
+
+
+	}
+	CloseHandle(hFile);
+
 }
 

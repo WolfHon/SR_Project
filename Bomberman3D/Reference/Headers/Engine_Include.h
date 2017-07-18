@@ -37,8 +37,8 @@ using namespace std;
 
 #include <crtdbg.h>
 
-#ifdef _DEBUG
-#define new new(_CLIENT_BLOCK, __FILE__, __LINE__)
-#endif
+//#ifdef _DEBUG
+//#define new new(_CLIENT_BLOCK, __FILE__, __LINE__)
+//#endif
 
 #endif // __Engine_Include_h__

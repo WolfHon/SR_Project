@@ -31,7 +31,7 @@ public:
 public:
 	static CToolCamera* Create(LPDIRECT3DDEVICE9 pDevice );
 
-private:
+public:
 	void KeyCheck(void);
 	void TargetRenewal(void);
 	void Rotate(const D3DXVECTOR3 vcDelta);
@@ -63,6 +63,8 @@ private:
 	D3DXVECTOR3	m_vcCur;
 	D3DXVECTOR3 m_vcOld;
 	D3DXVECTOR3 m_vcEps;
+
+	POINT       m_pt;
 
 
 };

@@ -37,8 +37,12 @@ public:
 	virtual void Update(void);
 	virtual void Render(void);
 
+
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);
+
+private:
+	void LoadData(Engine::CLayer* pLayer, Engine::CGameObject*	pGameObject);
 
 private:
 	HRESULT Initialize(void);

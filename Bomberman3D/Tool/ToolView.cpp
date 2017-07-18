@@ -10,7 +10,8 @@
 #include "RcTex.h"
 #include "ResourceMgr.h"
 #include "Export_Resource.h"
-
+#include "AddCube.h"
+#include "MainFrm.h"
 
 #include "ToolCube.h"
 #include "Layer.h"
@@ -32,6 +33,9 @@ BEGIN_MESSAGE_MAP(CToolView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScrollView::OnFilePrintPreview)
+	ON_WM_MOUSEMOVE()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
 // CToolView 생성/소멸
@@ -39,6 +43,7 @@ END_MESSAGE_MAP()
 CToolView::CToolView()
 :m_pGraphicDev(Engine::Get_GraphicDev())
 ,m_pDevice(NULL)
+,m_click(FALSE)
 {
 
 
@@ -79,11 +84,32 @@ void CToolView::OnInitialUpdate()
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 
 	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"Texture_Cube"
-		, L"../Client/bin/Texture/Box/BreakBox/BreakBox%d.dds", 1);
+		, Engine::TEXTURE_CUBE, L"BreakCube"
+		, L"../Client/bin/Texture/Block/Block%d.dds", 8);
 
-	m_pCube = CToolCube::Create(m_pDevice);
-	m_pCube->SetMainView(this);
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"UnBreakCubeFirst"
+	//	, L"../Client/bin/Texture/Block/Block_Broken%d.dds", 0);
+
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"UnBreakCubeSecond"
+	//	, L"../Client/bin/Texture/Box/UnbreakBox/Second/UnBreakBox%d.dds", 1);
+
+	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+	//	, Engine::TEXTURE_CUBE, L"ElseCube"
+	//	, L"../Client/bin/Texture/Box/Else/Else1/Else%d.dds", 1);
+
+	
+	//CAddCube* pAddCube= ((CMainFrame*)AfxGetMainWnd())->GetAddCube();
+
+	//vector<CToolCube*>::iterator iter = m_vecCube.begin();
+	//vector<CToolCube*>::iterator iter_end= m_vecCube.end();
+
+	//for( ;iter != iter_end ; ++iter)
+	//{
+	//	(*iter)->SetMainView(this);
+	//}
+
 	m_pCamera = CToolCamera::Create(m_pDevice);
 
 	Engine::Get_Management()->InitManagement(m_pDevice);
@@ -107,8 +133,14 @@ void CToolView::OnDraw(CDC* pDC)
 		, D3DCOLOR_ARGB(255, 0, 0, 255), 1.f, 0);
 	m_pDevice->BeginScene();
 
-	//m_pCube->Update();
-	m_pCube->Render();
+	vector<CToolCube*>::iterator iter = m_vecCube.begin();
+	vector<CToolCube*>::iterator iter_end= m_vecCube.end();
+	for( ;iter != iter_end ; ++iter)
+	{
+		(*iter)->Update();
+		(*iter)->Render();
+	}
+
 	
 	m_pCamera->Update();
 
@@ -146,11 +178,7 @@ void CToolView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
 
-void CToolView::OnRButtonUp(UINT nFlags, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
+
 
 void CToolView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
@@ -183,3 +211,33 @@ CToolDoc* CToolView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 
 
 
+
+void CToolView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CScrollView::OnMouseMove(nFlags, point);
+	m_pt = 	m_pCamera->Getmouse(point);
+	if(m_click)
+	{
+	m_pCamera->Rotate(m_pt);
+	}
+
+	
+}
+
+void CToolView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CScrollView::OnRButtonDown(nFlags, point);
+	ScreenToClient(&point);
+	m_click = true;
+	
+}
+
+void CToolView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CScrollView::OnRButtonUp(nFlags, point);
+	m_click = false;
+
+}
