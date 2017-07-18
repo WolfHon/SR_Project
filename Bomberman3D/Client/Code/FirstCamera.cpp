@@ -77,8 +77,8 @@ void CFirstCamera::TargetRenewal(void)
 	D3DXMatrixRotationAxis(&matRotAxisY, &vRight, m_fAngleY);
 	D3DXVec3TransformNormal(&m_vAt, &m_vAt, &matRotAxisY);
 
-	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.8f + D3DXVECTOR3(0.f, 1.25f, 0.f);
-	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.8f + D3DXVECTOR3(0.f, 1.25f, 0.f);
+	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
+	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
 
 	SetViewSpaceMatrix(&m_vEye, &m_vAt, &m_vUp);
 }

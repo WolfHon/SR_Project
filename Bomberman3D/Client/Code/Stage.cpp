@@ -60,8 +60,14 @@ HRESULT CStage::Initialize(void)
 
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_SLOPETEX, L"Buffer_CubeTex");
+		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
+
+#ifdef _DEBUG
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_CUBECOLOR, L"Buffer_CubeColor");
+	FAILED_CHECK(hr);
+#endif
 
 	//Model
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -130,11 +136,14 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pLayer->AddObject(L"Player", pGameObject);
 
 	//Test¿ë ÀÓ½Ã
-	for(int i = 0; i < 30; ++i)
+	for(int z = 0; z< 30; ++z)
 	{
-		pGameObject = CCube::Create(m_pDevice);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		pLayer->AddObject(L"UnBroken_Box", pGameObject);
+		for(int x = 0; x<30; ++x)
+		{
+			pGameObject = CCube::Create(m_pDevice, D3DXVECTOR3(x*4.f, -2.f, z*4.f));
+			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+			pLayer->AddObject(L"UnBroken_Box", pGameObject);
+		}
 	}
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));

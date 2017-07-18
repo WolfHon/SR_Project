@@ -31,7 +31,7 @@ HRESULT CActionCamera::Initialize(void)
 	m_fMaxDistance = 60.f;
 	m_fTargetDistance = 0.f;
 	m_fAngleX = D3DXToRadian(0.f);
-	m_fAngleY = D3DXToRadian(45.f);
+	m_fAngleY = D3DXToRadian(0.f);
 	m_fCamSpeed = 80.f;
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();

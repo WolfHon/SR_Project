@@ -12,7 +12,7 @@ Engine::CGameObject::~CGameObject(void)
 	Release();
 }
 
-const Engine::CComponent* Engine::CGameObject::GetComponent(const wstring& wstrComponentKey)
+Engine::CComponent* Engine::CGameObject::GetComponent(const wstring& wstrComponentKey)
 {
 	MAPCOMPONENT::iterator	iter = m_mapComponent.find(wstrComponentKey);
 	if(iter == m_mapComponent.end())

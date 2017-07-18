@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Cube.h"
+#include "Bomb.h"
 
 #include "Texture.h"
 #include "VIBuffer.h"
@@ -9,35 +9,32 @@
 #include "Include.h"
 #include "Export_Function.h"
 
-CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
+CBomb::CBomb(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
 , m_pBuffer(NULL)
-, m_fSpeed(0.f)
-, m_fAngle(0.f)
 , m_pInfo(NULL)
 , m_pCollisionOBB(NULL)
+, m_fPower(1.f)
+, m_fTime(0.f)
 {
-
 }
 
-CCube::~CCube(void)
+CBomb::~CBomb(void)
 {
 	Release();
 }
 
-HRESULT CCube::Initialize(void)
+HRESULT CBomb::Initialize(float fPower)
 {
 	FAILED_CHECK(AddComponent());
 
 	m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.f, float(rand() % 200));
 
-	m_fSpeed = 10.f;
-
 	return S_OK;
 }
 
-void CCube::Update(void)
+void CBomb::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
@@ -45,7 +42,7 @@ void CCube::Update(void)
 
 }
 
-void CCube::Render(void)
+void CBomb::Render(void)
 {	
 	//m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	
@@ -67,20 +64,20 @@ void CCube::Render(void)
 	/*m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);*/
 }
 
-CCube* CCube::Create(LPDIRECT3DDEVICE9 pDevice)
+CBomb* CBomb::Create(LPDIRECT3DDEVICE9 pDevice, float fPower)
 {
-	CCube*	pGameObject = new CCube(pDevice);
-	if(FAILED(pGameObject->Initialize()))
+	CBomb*	pGameObject = new CBomb(pDevice);
+	if(FAILED(pGameObject->Initialize(fPower)))
 		Safe_Delete(pGameObject);
 
 	return pGameObject;
 }
 
-void CCube::Release(void)
+void CBomb::Release(void)
 {	
 }
 
-HRESULT CCube::AddComponent(void)
+HRESULT CBomb::AddComponent(void)
 {
 	Engine::CComponent*		pComponent = NULL;
 

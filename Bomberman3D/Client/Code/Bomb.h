@@ -18,8 +18,9 @@
  * Contact: user@company.com
  *
  */
-#ifndef Cube_h__
-#define Cube_h__
+
+#ifndef __Bomb_h__
+#define __Bomb_h__
 
 #include "GameObject.h"
 
@@ -31,26 +32,24 @@ namespace Engine
 	class CCollision_OBB;
 }
 
-class CCameraObserver;
-
-class CCube
+class CBomb
 	: public Engine::CGameObject
 {
 public:
-	explicit CCube(LPDIRECT3DDEVICE9 pDevice);
+	explicit CBomb(LPDIRECT3DDEVICE9 pDevice);
 
 public:
-	virtual ~CCube(void);
+	virtual ~CBomb(void);
 
 public:
 	virtual void Update(void);
 	virtual void Render(void);
 
 public:
-	static CCube* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, float fPower);
 
 private:
-	HRESULT Initialize(void);
+	HRESULT Initialize(float fPower);
 	HRESULT	AddComponent(void);
 	void Release(void);
 
@@ -61,9 +60,9 @@ private:
 	Engine::CCollision_OBB*	m_pCollisionOBB;
 
 private:
-	float			m_fSpeed;
-	float			m_fAngle;
+	float			m_fTime;
+	float			m_fPower;
 };
 
 
-#endif // Cube_h__
+#endif // __Bomb_h__

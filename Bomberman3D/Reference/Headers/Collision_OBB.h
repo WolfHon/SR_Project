@@ -25,9 +25,6 @@
 
 BEGIN(Engine)
 
-class CCubeColor;
-class CMesh;
-
 class ENGINE_DLL CCollision_OBB
 	: public CCollision
 {
@@ -43,7 +40,7 @@ private:
 	}OBB;
 
 private:
-	CCollision_OBB(void);
+	CCollision_OBB();
 	explicit CCollision_OBB(const CCollision_OBB& rhs);
 
 public:
@@ -58,12 +55,13 @@ public:
 public:
 	void SetColInfo(const D3DXMATRIX* pWorld, const D3DXVECTOR3* pMin = NULL, const D3DXVECTOR3* pMax = NULL);
 
-public:
-	virtual void Update(void);
+public:	
 	virtual DWORD Release(void);
 
 public:
-	bool CheckCollision(const CCollision_OBB* pTerget);
+	void GetColBox(D3DXVECTOR3* pMin, D3DXVECTOR3* pMax);
+	void CollisionUpdate(void);
+	bool CheckCollision(CCollision_OBB* pTerget);
 
 private:	
 	void ComputePoint(void);

@@ -37,7 +37,7 @@ public:
 	virtual ~CGameObject(void);
 
 public:
-	const CComponent* GetComponent(const wstring& wstrComponentKey);
+	CComponent* GetComponent(const wstring& wstrComponentKey);
 
 public:
 	virtual void Update(void);

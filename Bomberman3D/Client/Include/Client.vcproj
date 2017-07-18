@@ -360,21 +360,12 @@
 					<File
 						RelativePath="..\Code\Bomb.cpp"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="true"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-							/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="..\Code\Bomb.h"
 						>
 						<FileConfiguration
 							Name="Debug|Win32"
-							ExcludedFromBuild="true"
 							>
 							<Tool
 								Name="VCCustomBuildTool"
@@ -382,10 +373,6 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="03.Design"
-				>
 			</Filter>
 		</Filter>
 		<Filter

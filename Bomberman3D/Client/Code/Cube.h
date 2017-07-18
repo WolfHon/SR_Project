@@ -22,9 +22,11 @@ namespace Engine
 	class CVIBuffer;
 	class CTransform;
 	class CCollision_OBB;
-}
 
-class CCameraObserver;
+#ifdef _DEBUG
+	class CCubeColor;
+#endif
+}
 
 class CCube
 	: public Engine::CGameObject
@@ -40,10 +42,10 @@ public:
 	virtual void Render(void);
 
 public:
-	static CCube* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CCube* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos);
 
 private:
-	HRESULT Initialize(void);
+	HRESULT Initialize(D3DXVECTOR3 vPos);
 	HRESULT	AddComponent(void);
 	void Release(void);
 
@@ -52,6 +54,13 @@ private:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 	Engine::CCollision_OBB*	m_pCollisionOBB;
+
+#ifdef _DEBUG
+	Engine::CCubeColor*		m_pCubeColor;
+
+	Engine::VTXCOL*	pVertex;
+#endif
+
 
 private:
 	float			m_fSpeed;

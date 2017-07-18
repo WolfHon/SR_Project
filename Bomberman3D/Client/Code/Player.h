@@ -30,6 +30,10 @@ namespace Engine
 	class CTransform;
 	class CCollision_OBB;
 	class CPlayerModel;
+
+#ifdef _DEBUG
+	class CCubeColor;
+#endif
 }
 
 class CPlayer
@@ -59,7 +63,12 @@ private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CTransform*		m_pInfo;
 	Engine::CCollision_OBB*	m_pCollisionOBB;
-	Engine::CPlayerModel*		m_pPlayerModel;
+	Engine::CPlayerModel*	m_pPlayerModel;
+
+#ifdef _DEBUG
+	Engine::CCubeColor*		m_pCubeColor;
+	Engine::VTXCOL*	pVertex;
+#endif
 
 private:	
 	float			m_fSpeed;
