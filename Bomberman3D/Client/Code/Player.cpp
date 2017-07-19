@@ -61,13 +61,13 @@ HRESULT CPlayer::Initialize(void)
 	return S_OK;
 }
 
-void CPlayer::Update(void)
+Engine::OBJECT_RESULT CPlayer::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
 	MoveCheck();
 
-	Engine::CGameObject::Update();	
+	return Engine::CGameObject::Update();	
 }
 
 void CPlayer::Render(void)

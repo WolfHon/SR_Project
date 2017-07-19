@@ -30,14 +30,14 @@ HRESULT CSkybox::Initialize(void)
 	return S_OK;
 }
 
-void CSkybox::Update(void)
+Engine::OBJECT_RESULT CSkybox::Update(void)
 {
-	Engine::CGameObject::Update();
-
 	D3DXMATRIX matView;
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixInverse(&matView, NULL, &matView);
 	m_pInfo->m_vPos = D3DXVECTOR3(matView._41, matView._42 + 10.f, matView._43);
+
+	return Engine::CGameObject::Update();
 }
 
 void CSkybox::Render(void)

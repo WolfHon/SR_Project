@@ -33,7 +33,7 @@ CToolCube::~CToolCube( void )
 		Release();
 }
 
-void CToolCube::Update( void )
+Engine::OBJECT_RESULT CToolCube::Update( void )
 {
 	D3DXMATRIX matTrans;
 	D3DXMATRIX matScale;
@@ -50,8 +50,7 @@ void CToolCube::Update( void )
 	
 	m_pInfo->m_matWorld =  matScale * matRotY * matTrans;
 
-	Engine::CGameObject::Update();
-	
+	return Engine::CGameObject::Update();	
 }
 
 void CToolCube::Render( void )

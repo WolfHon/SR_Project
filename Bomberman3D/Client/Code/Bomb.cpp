@@ -33,25 +33,26 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower)
 	m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
 	
 	m_iPower = iPower;
+	m_wEffect = 255;
 
 	return S_OK;
 }
 
-void CBomb::Update(void)
+Engine::OBJECT_RESULT CBomb::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
-	Explosion();
+	if(Explosion() == Engine::OR_DELETE)
+		return Engine::OR_DELETE;
 
-	Engine::CGameObject::Update();
-
+	return Engine::CGameObject::Update();
 }
 
 void CBomb::Render(void)
 {	
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 
-	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_RGBA( 0, 0, 0, 120));
+	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_RGBA( 0, 0, 0, m_wEffect));
 	m_pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 	m_pDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
 
@@ -63,7 +64,8 @@ void CBomb::Render(void)
 	m_pTexture->Render(1, 1);
 	m_pBuffer->Render();
 
-	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_RGBA( 0, 0, 0, 255));
+	m_pDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
+	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_RGBA( 255, 255, 255, 255));
 }
 
 CBomb* CBomb::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower)
@@ -110,7 +112,14 @@ HRESULT CBomb::AddComponent(void)
 	return S_OK;
 }
 
-void CBomb::Explosion(void)
+Engine::OBJECT_RESULT CBomb::Explosion(void)
 {
 	m_fTime += Engine::Get_TimeMgr()->GetTime();
+
+	if(m_wEffect <= 100)
+		return Engine::OR_DELETE;
+	else
+		m_wEffect = 255 - WORD(m_fTime * 25);
+
+	return Engine::OR_OK;
 }

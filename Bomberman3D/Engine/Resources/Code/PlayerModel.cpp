@@ -241,9 +241,9 @@ HRESULT Engine::CPlayerModel::Initialize(void)
 	return S_OK;
 }
 
-void Engine::CPlayerModel::Update(void)
+Engine::OBJECT_RESULT Engine::CPlayerModel::Update(void)
 {
-
+	return Engine::OR_OK;
 }
 
 void Engine::CPlayerModel::Render(void)

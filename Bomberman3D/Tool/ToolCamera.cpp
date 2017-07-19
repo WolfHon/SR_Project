@@ -31,12 +31,12 @@ CToolCamera::~CToolCamera( void )
 
 }
 
-void CToolCamera::Update( void )
+Engine::OBJECT_RESULT CToolCamera::Update( void )
 {
 	KeyCheck();
 	TargetRenewal();
 
-
+	return Engine::OR_OK;
 }
 
 HRESULT CToolCamera::Initialize( void )

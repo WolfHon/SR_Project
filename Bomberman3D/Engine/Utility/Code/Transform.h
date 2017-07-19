@@ -34,7 +34,7 @@ private:
 	virtual ~CTransform(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 
 public:
 	static CTransform* Create(const D3DXVECTOR3& vLook);

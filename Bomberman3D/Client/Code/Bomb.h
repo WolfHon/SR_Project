@@ -42,7 +42,7 @@ public:
 	virtual ~CBomb(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
 public:
@@ -51,7 +51,7 @@ public:
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
 	HRESULT	AddComponent(void);
-	void Explosion(void);
+	Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
 private:
@@ -62,6 +62,7 @@ private:
 
 private:
 	float			m_fTime;
+	WORD			m_wEffect;
 	int				m_iPower;
 };
 

@@ -21,13 +21,18 @@ Engine::CComponent* Engine::CGameObject::GetComponent(const wstring& wstrCompone
 	return iter->second;
 }
 
-void Engine::CGameObject::Update(void)
+Engine::OBJECT_RESULT Engine::CGameObject::Update(void)
 {
 	MAPCOMPONENT::iterator	iter = m_mapComponent.begin();
 	MAPCOMPONENT::iterator	iter_end = m_mapComponent.end();
 
 	for( ; iter != iter_end; ++iter)
-		iter->second->Update();
+	{
+		if(iter->second->Update() == OR_DELETE)
+			return Engine::OR_DELETE;
+	}
+
+	return Engine::OR_OK;
 }
 
 void Engine::CGameObject::Render(void)

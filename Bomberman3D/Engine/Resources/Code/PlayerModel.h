@@ -46,7 +46,7 @@ public:
 	static CPlayerModel* Create(LPDIRECT3DDEVICE9 pDevice);
 
 	HRESULT Initialize(void);
-	void Update(void);
+	Engine::OBJECT_RESULT Update(void);
 	void Render(void);
 
 	HRESULT	AddComponent(void);

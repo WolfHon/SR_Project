@@ -40,7 +40,7 @@ public:
 	CComponent* GetComponent(const wstring& wstrComponentKey);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
 private:

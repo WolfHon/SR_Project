@@ -13,7 +13,7 @@ Engine::CTransform::~CTransform(void)
 {
 }
 
-void Engine::CTransform::Update(void)
+Engine::OBJECT_RESULT Engine::CTransform::Update(void)
 {
 	D3DXMATRIX matScale, matRotX, matRotY, matRotZ, matTrans;
 
@@ -24,6 +24,8 @@ void Engine::CTransform::Update(void)
 	D3DXMatrixTranslation(&matTrans, m_vPos.x, m_vPos.y, m_vPos.z);
 
 	m_matWorld = matScale * matRotX * matRotY * matRotZ * matTrans;
+
+	return Engine::OR_OK;
 }
 
 Engine::CTransform* Engine::CTransform::Create(const D3DXVECTOR3& vLook)

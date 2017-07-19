@@ -60,7 +60,7 @@ void Engine::CMouseMgr::Update(void)
 
 D3DXVECTOR3 Engine::CMouseMgr::GetMousePos()
 {
-	return D3DXVECTOR3((float)m_ptMouse.x, (float)m_ptMouse.y, 0.f);;
+	return D3DXVECTOR3((float)m_ptMouse.x, (float)m_ptMouse.y, 0.f);
 }
 
 DWORD Engine::CMouseMgr::GetMouseKey()
