@@ -35,7 +35,8 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 
 	m_tagTileInfo = _TileInfo;
 	m_pInfo->m_vPos = m_tagTileInfo.vPos;
-	
+	m_pInfo->m_vScale = m_tagTileInfo.vScale;
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_tagTileInfo.fAngle;
 	m_fSpeed = 10.f;
 
 	return S_OK;
@@ -99,11 +100,12 @@ HRESULT CCube::AddComponent(void)
 	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
 
-	//Buffer
+		//Buffer
 	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
 	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
+	
 
 	//OBBCollision_OBB
 	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);

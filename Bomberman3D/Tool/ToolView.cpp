@@ -22,6 +22,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+#include "ToolSlopeCube.h"
 
 
 // CToolView
@@ -83,6 +84,9 @@ void CToolView::OnInitialUpdate()
 	Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 
+	Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
+
 	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"BreakCube"
 		, L"../Client/bin/Texture/Block/Block%d.dds", 8);
@@ -140,6 +144,15 @@ void CToolView::OnDraw(CDC* pDC)
 		(*iter)->Update();
 		(*iter)->Render();
 	}
+
+	vector<CToolSlopeCube*>::iterator iter1 = m_vecSlopeCube.begin();
+	vector<CToolSlopeCube*>::iterator iter_end1= m_vecSlopeCube.end();
+	for( ;iter1 != iter_end1 ; ++iter1)
+	{
+		(*iter1)->Update();
+		(*iter1)->Render();
+	}
+
 
 	
 	m_pCamera->Update();

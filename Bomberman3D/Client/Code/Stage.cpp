@@ -50,7 +50,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Block"
-		, L"../bin/Texture/Block/Block%d.dds", 1);
+		, L"../bin/Texture/Block/Block%d.dds", 9);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -60,8 +60,9 @@ HRESULT CStage::Initialize(void)
 
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_SLOPETEX, L"Buffer_CubeTex");
+		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
+
 
 	//Model
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -136,7 +137,7 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		//pLayer->AddObject(L"UnBroken_Box", pGameObject);
 	}
-	LoadData(pLayer,pGameObject);
+	//LoadData(pLayer,pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -186,11 +187,13 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
+		if(pTileInfo->eTileShape == Engine::TILE_CUBE)
 		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
 		pLayer->AddObject(L"Terrain", pGameObject);
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
+		Engine::Safe_Delete(pTileInfo);
 
 	}
 	CloseHandle(hFile);
