@@ -36,7 +36,7 @@ HRESULT CActionCamera::Initialize(void)
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 1000.f);	
+	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 200.f);	
 
 	return S_OK;
 }

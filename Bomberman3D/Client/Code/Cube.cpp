@@ -30,13 +30,10 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 {
 	FAILED_CHECK(AddComponent());
 
-	//m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % 200), 0.75f, float(rand() % 200));
-	//m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
-
 	m_tagTileInfo = _TileInfo;
-	m_pInfo->m_vPos = m_tagTileInfo.vPos;
-	m_pInfo->m_vScale = m_tagTileInfo.vScale;
-	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_tagTileInfo.fAngle;
+	m_pInfo->m_vScale = D3DXVECTOR3(2.f, 2.f, 2.f);
+	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * 2.f, m_tagTileInfo.vPos.y * 4.f - 2.f, m_tagTileInfo.vPos.z * 2.f);
+	
 	m_fSpeed = 10.f;
 
 	return S_OK;
@@ -59,16 +56,16 @@ void CCube::Render(void)
 	m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
 
-	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	/*m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00000088);
-	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 
 	m_pTexture->Render(0, m_tagTileInfo.eTexture);
 	m_pBuffer->Render();
 
-	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	/*m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);*/
 }
 
@@ -100,12 +97,11 @@ HRESULT CCube::AddComponent(void)
 	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
 
-		//Buffer
+	//Buffer
 	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
 	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
-	
 
 	//OBBCollision_OBB
 	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);

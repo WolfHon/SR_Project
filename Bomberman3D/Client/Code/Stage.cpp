@@ -63,6 +63,11 @@ HRESULT CStage::Initialize(void)
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
 
+#ifdef _DEBUG
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_CUBECOLOR, L"Buffer_CubeColor");
+	FAILED_CHECK(hr);
+#endif
 
 	//Model
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -107,7 +112,7 @@ void CStage::Release(void)
 
 HRESULT CStage::Add_Enviroment_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 
@@ -122,7 +127,7 @@ HRESULT CStage::Add_Enviroment_Layer(void)
 
 HRESULT CStage::Add_GameLogic_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 	
@@ -130,14 +135,7 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Player", pGameObject);
 
-	//Test¿ë ÀÓ½Ã
-	for(int i = 0; i < 30; ++i)
-	{
-		//pGameObject = CCube::Create(m_pDevice, );
-		//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		//pLayer->AddObject(L"UnBroken_Box", pGameObject);
-	}
-	//LoadData(pLayer,pGameObject);
+	LoadData(pLayer,pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -146,7 +144,7 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 HRESULT CStage::Add_UI_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
 
@@ -187,16 +185,13 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
-		if(pTileInfo->eTileShape == Engine::TILE_CUBE)
 		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
 		pLayer->AddObject(L"Terrain", pGameObject);
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
 		Engine::Safe_Delete(pTileInfo);
-
 	}
 	CloseHandle(hFile);
-
 }
 

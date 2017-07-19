@@ -1,8 +1,10 @@
 #include "Layer.h"
 
 #include "GameObject.h"
+#include "Transform.h"
 
-Engine::CLayer::CLayer(void)
+Engine::CLayer::CLayer(LPDIRECT3DDEVICE9 pDevice)
+:m_pDevice(pDevice)
 {
 }
 
@@ -39,7 +41,7 @@ void Engine::CLayer::Update(void)
 	}
 }
 
-void Engine::CLayer::Render(void)
+void Engine::CLayer::Render(D3DXPLANE* m_plane, BOOL bCulling)
 {
 	MAPOBJLIST::iterator	iter = m_mapObjlist.begin();
 	MAPOBJLIST::iterator	iter_end = m_mapObjlist.end();
@@ -50,13 +52,16 @@ void Engine::CLayer::Render(void)
 		OBJLIST::iterator		iterlist_end = iter->second.end();
 
 		for( ;iterlist != iterlist_end ; ++iterlist)
-			(*iterlist)->Render();
+		{
+			if(bCulling == FALSE || IsInSphere(m_plane, *iterlist) == TRUE)
+				(*iterlist)->Render();
+		}
 	}
 }
 
-Engine::CLayer* Engine::CLayer::Create(void)
+Engine::CLayer* Engine::CLayer::Create(LPDIRECT3DDEVICE9 pDevice)
 {
-	return new CLayer;
+	return new CLayer(pDevice);
 }
 
 void Engine::CLayer::Release(void)
@@ -113,3 +118,22 @@ Engine::OBJLIST* Engine::CLayer::GetObjectList(const wstring& wstrObjKey)
 	return &(iter->second);
 }
 
+BOOL Engine::CLayer::IsInSphere(D3DXPLANE* m_plane, CGameObject* Obj)
+{
+	Engine::CComponent*	 pComponent = Obj->GetComponent(L"Transform");
+	if(pComponent == NULL)
+		return TRUE;
+
+	D3DXVECTOR3 vtargetPos = dynamic_cast<Engine::CTransform*>(pComponent)->m_vPos;
+
+	float		fDist;
+
+	for(int i=0; i<6; ++i)
+	{
+		fDist = D3DXPlaneDotCoord(&m_plane[i], &vtargetPos);
+		if( fDist > (8.f+PLANE_EPSILON) ) 
+			return FALSE;
+	}
+
+	return TRUE;
+}

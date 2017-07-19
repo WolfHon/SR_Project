@@ -24,6 +24,8 @@
 
 #include "Engine_Include.h"
 
+#define PLANE_EPSILON	5.0f
+
 BEGIN(Engine)
 
 class CGameObject;
@@ -32,7 +34,7 @@ class CComponent;
 class ENGINE_DLL CLayer
 {
 private:
-	CLayer(void);
+	explicit CLayer(LPDIRECT3DDEVICE9 pDevice);
 
 public:
 	~CLayer(void);
@@ -47,17 +49,22 @@ public:
 
 public:
 	void Update(void);
-	void Render(void);
+	void Render(D3DXPLANE* m_plane, BOOL bCulling);
 
 public:
-	static CLayer* Create(void);
+	static CLayer* Create(LPDIRECT3DDEVICE9 pDevice);
 
 public:
 	void Release(void);
 
+private:
+	BOOL IsInSphere(D3DXPLANE* m_plane, CGameObject* Obj);
+
 private:	
 	typedef map<wstring, OBJLIST>	MAPOBJLIST;
 	MAPOBJLIST		m_mapObjlist;
+
+	LPDIRECT3DDEVICE9 m_pDevice;
 };
 
 END

@@ -24,8 +24,6 @@ namespace Engine
 	class CCollision_OBB;
 }
 
-class CCameraObserver;
-
 class CCube
 	: public Engine::CGameObject
 {

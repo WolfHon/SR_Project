@@ -68,7 +68,7 @@ HRESULT CLogo::Add_Enviroment_Layer(void)
 
 HRESULT CLogo::Add_GameLogic_Layer(void)
 {
-	Engine::CLayer*			pLayer = Engine::CLayer::Create();
+	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 	Engine::CGameObject*	pGameObject = NULL;
 
 	pGameObject = CLogoBack::Create(m_pDevice);

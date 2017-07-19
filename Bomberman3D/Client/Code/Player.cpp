@@ -10,6 +10,10 @@
 #include "PlayerModel.h"
 #include "CameraControl.h"
 
+#ifdef _DEBUG
+#include "CubeColor.h"
+#endif
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
@@ -36,6 +40,24 @@ HRESULT CPlayer::Initialize(void)
 
 	m_pInfo->m_vScale = D3DXVECTOR3(0.5f, 0.5f, 0.5f);
 
+#ifdef _DEBUG
+	pVertex = new Engine::VTXCOL[8];	
+	m_pCubeColor->GetVtxInfo(pVertex);
+
+	D3DXVECTOR3 vMin, vMax;
+	m_pCollisionOBB->GetColBox(&vMin, &vMax);
+
+	pVertex[0].vPos = D3DXVECTOR3(vMin.x, vMax.y, vMin.z);
+	pVertex[1].vPos = D3DXVECTOR3(vMax.x, vMax.y, vMin.z);
+	pVertex[2].vPos = D3DXVECTOR3(vMax.x, vMin.y, vMin.z);
+	pVertex[3].vPos = D3DXVECTOR3(vMin.x, vMin.y, vMin.z);
+
+	pVertex[4].vPos = D3DXVECTOR3(vMin.x, vMax.y, vMax.z);
+	pVertex[5].vPos = D3DXVECTOR3(vMax.x, vMax.y, vMax.z);
+	pVertex[6].vPos = D3DXVECTOR3(vMax.x, vMin.y, vMax.z);
+	pVertex[7].vPos = D3DXVECTOR3(vMin.x, vMin.y, vMax.z);	
+#endif
+
 	return S_OK;
 }
 
@@ -51,8 +73,15 @@ void CPlayer::Update(void)
 void CPlayer::Render(void)
 {
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
-
 	m_pPlayerModel->Render();
+
+#ifdef _DEBUG
+	m_pCubeColor->SetVtxInfo(pVertex);
+	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
+	m_pCubeColor->Render();
+	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+#endif
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
@@ -66,6 +95,9 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
 
 void CPlayer::Release(void)
 {	
+#ifdef _DEBUG
+	Safe_Delete_Array(pVertex);
+#endif
 }
 
 HRESULT CPlayer::AddComponent(void)
@@ -89,6 +121,13 @@ HRESULT CPlayer::AddComponent(void)
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -4.5f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
+
+#ifdef _DEBUG
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeColor");
+	m_pCubeColor = dynamic_cast<Engine::CCubeColor*>(pComponent);
+	NULL_CHECK_RETURN(m_pCubeColor, E_FAIL);
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_Box", pComponent));
+#endif
 
 	return S_OK;
 }
@@ -162,12 +201,12 @@ void CPlayer::MoveCheck(void)
 		{
 			m_pInfo->Update();
 
-		/*	if(CheckCollision() == TRUE)
+			if(CheckCollision() == TRUE)
 			{
 				m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
 				m_fAngle = fExAngle;
 				m_pInfo->m_vPos = vExPos;
-			}*/
+			}
 		}
 	}
 }
@@ -176,24 +215,27 @@ BOOL CPlayer::CheckCollision(void)
 {
 	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"UnBroken_Box");
 
+	if(listObj == NULL)
+		return FALSE;
+
 	Engine::OBJLIST::iterator iterBegin = listObj->begin();
 	Engine::OBJLIST::iterator iterEnd = listObj->end();
 
 	for(;iterBegin != iterEnd; ++iterBegin)
 	{
-		const Engine::CComponent*		pComponent = NULL;
+		Engine::CComponent*		pComponent = NULL;
 
 		pComponent = (*iterBegin)->GetComponent(L"Transform");
 		NULL_CHECK_RETURN(pComponent, FALSE);
-		D3DXVECTOR3 vtargetPos = dynamic_cast<const Engine::CTransform*>(pComponent)->m_vPos;
+		D3DXVECTOR3 vtargetPos = dynamic_cast<Engine::CTransform*>(pComponent)->m_vPos;
 
-		if(fabs(D3DXVec3Length(&(m_pInfo->m_vPos - vtargetPos))) >= 4.f)
+		if(fabs(D3DXVec3Length(&(m_pInfo->m_vPos - vtargetPos))) >= 10.f)
 			continue;
 
 		pComponent = (*iterBegin)->GetComponent(L"Collision_OBB");
 		NULL_CHECK_RETURN(pComponent, FALSE);	
 
-		if(m_pCollisionOBB->CheckCollision(dynamic_cast<const Engine::CCollision_OBB*>(pComponent)))
+		if(m_pCollisionOBB->CheckCollision(dynamic_cast<Engine::CCollision_OBB*>(pComponent)))
 			return TRUE;
 	}
 

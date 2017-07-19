@@ -20,7 +20,6 @@ Engine::CCollision_OBB::CCollision_OBB(const CCollision_OBB& rhs)
 
 Engine::CCollision_OBB::~CCollision_OBB(void)
 {
-
 }
 
 Engine::CCollision* Engine::CCollision_OBB::CloneCollision(void)
@@ -38,28 +37,16 @@ void Engine::CCollision_OBB::SetColInfo(const D3DXMATRIX* pWorld
 	m_vMax = *pMax;
 }
 
-void Engine::CCollision_OBB::Update(void)
-{
-	ZeroMemory(&m_tOBB, sizeof(OBB));
-
-	ComputePoint();
-
-	for (int i = 0; i < 8; ++i)
-		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], m_pmatWorld);
-
-	D3DXVec3TransformCoord(&m_tOBB.vCenter, &m_tOBB.vCenter, m_pmatWorld);
-
-	ComputeAxis();
-}
-
 DWORD Engine::CCollision_OBB::Release(void)
 {
 	if(m_dwRefCnt == 0)
-	{			
+	{
 		return 0;
 	}
 	else
+	{
 		--m_dwRefCnt;
+	}
 
 	return m_dwRefCnt;
 }
@@ -106,8 +93,11 @@ void Engine::CCollision_OBB::ComputeAxis(void)
 }
 
 
-bool Engine::CCollision_OBB::CheckCollision(const CCollision_OBB* pTerget)
+bool Engine::CCollision_OBB::CheckCollision(CCollision_OBB* pTerget)
 {
+	CollisionUpdate();
+	pTerget->CollisionUpdate();
+
 	const OBB*	pOBB[2] = {&m_tOBB, pTerget->GetObbInfo()};	
 	
 	float		fDistance[3];
@@ -127,9 +117,30 @@ bool Engine::CCollision_OBB::CheckCollision(const CCollision_OBB* pTerget)
 
 			fDistance[2] = fabs(D3DXVec3Dot(&vTmp, &pOBB[i]->vParallel[j]));
 
-			if(fDistance[2] > fDistance[1] + fDistance[0])
+			if(fDistance[2] >= fDistance[1] + fDistance[0])
 				return false;
 		}
 	}
+
 	return true;
+}
+
+void Engine::CCollision_OBB::GetColBox(D3DXVECTOR3* pMin, D3DXVECTOR3* pMax)
+{
+	*pMin = m_vMin;
+	*pMax = m_vMax;
+}
+
+void Engine::CCollision_OBB::CollisionUpdate(void)
+{
+	ZeroMemory(&m_tOBB, sizeof(OBB));
+
+	ComputePoint();
+
+	for (int i = 0; i < 8; ++i)
+		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], m_pmatWorld);
+
+	D3DXVec3TransformCoord(&m_tOBB.vCenter, &m_tOBB.vCenter, m_pmatWorld);
+
+	ComputeAxis();
 }
