@@ -36,7 +36,7 @@ public:
 	virtual ~CComponent(void) = 0;
 
 public:
-	virtual void Update(void) {};
+	virtual Engine::OBJECT_RESULT Update(void) { return Engine::OR_OK;};
 	virtual DWORD Release(void) PURE;
 
 public:

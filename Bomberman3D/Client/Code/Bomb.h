@@ -42,15 +42,16 @@ public:
 	virtual ~CBomb(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
 public:
-	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, float fPower);
+	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower);
 
 private:
-	HRESULT Initialize(float fPower);
+	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
 	HRESULT	AddComponent(void);
+	Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
 private:
@@ -61,7 +62,8 @@ private:
 
 private:
 	float			m_fTime;
-	float			m_fPower;
+	WORD			m_wEffect;
+	int				m_iPower;
 };
 
 

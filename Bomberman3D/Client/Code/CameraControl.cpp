@@ -40,9 +40,9 @@ void CCameraControl::Release(void)
 	Engine::Safe_Delete(m_pCamera[CAM_FIRST]);
 }
 
-void CCameraControl::Update(void)
+Engine::OBJECT_RESULT CCameraControl::Update(void)
 {
-	m_pCamera[m_eNowCam]->Update();
+	return m_pCamera[m_eNowCam]->Update();
 }
 
 void CCameraControl::Render(void)

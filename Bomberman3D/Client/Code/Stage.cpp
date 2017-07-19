@@ -12,6 +12,7 @@
 #include "Collision_OBB.h"
 
 #include "Cube.h" //Test용 임시
+#include "Bomb.h" //Test용 임시
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -51,6 +52,11 @@ HRESULT CStage::Initialize(void)
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Block"
 		, L"../bin/Texture/Block/Block%d.dds", 9);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Bomb"
+		, L"../bin/Texture/bomb/bomb%d.dds", 2);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -140,6 +146,14 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pLayer->AddObject(L"Player", pGameObject);
 
 	LoadData(pLayer,pGameObject);
+
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(5.f, 0.75f, 5.f), 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Bomb", pGameObject);
+
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(7.f, 0.75f, 7.f), 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Bomb", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 

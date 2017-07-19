@@ -39,12 +39,11 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 	return S_OK;
 }
 
-void CCube::Update(void)
+Engine::OBJECT_RESULT CCube::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
-	Engine::CGameObject::Update();
-
+	return Engine::CGameObject::Update();
 }
 
 void CCube::Render(void)

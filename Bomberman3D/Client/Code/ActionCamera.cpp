@@ -20,10 +20,12 @@ CActionCamera::~CActionCamera(void)
 {
 }
 
-void CActionCamera::Update(void)
+Engine::OBJECT_RESULT CActionCamera::Update(void)
 {
 	ViewCheck();
 	TargetRenewal();
+
+	return Engine::OR_OK;
 }
 
 HRESULT CActionCamera::Initialize(void)

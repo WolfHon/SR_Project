@@ -103,7 +103,6 @@ Engine::CPlayerModel* Engine::CPlayerModel::Create(LPDIRECT3DDEVICE9 pDevice)
 
 DWORD Engine::CPlayerModel::Release(void)
 {
-
 	if( m_dwRefCnt == 0 )
 	{		
 		//buffer
@@ -242,9 +241,9 @@ HRESULT Engine::CPlayerModel::Initialize(void)
 	return S_OK;
 }
 
-void Engine::CPlayerModel::Update(void)
+Engine::OBJECT_RESULT Engine::CPlayerModel::Update(void)
 {
-
+	return Engine::OR_OK;
 }
 
 void Engine::CPlayerModel::Render(void)

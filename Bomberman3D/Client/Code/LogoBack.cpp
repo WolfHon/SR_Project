@@ -23,9 +23,9 @@ HRESULT CLogoBack::Initialize(void)
 	return S_OK;
 }
 
-void CLogoBack::Update(void)
+Engine::OBJECT_RESULT CLogoBack::Update(void)
 {
-	Engine::CGameObject::Update();
+	return Engine::CGameObject::Update();
 }
 
 void CLogoBack::Render(void)

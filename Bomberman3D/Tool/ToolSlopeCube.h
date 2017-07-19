@@ -23,7 +23,7 @@ public:
 	virtual ~CToolSlopeCube(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
 public:

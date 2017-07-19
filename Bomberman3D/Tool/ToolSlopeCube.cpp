@@ -33,7 +33,7 @@ CToolSlopeCube::~CToolSlopeCube( void )
 		Release();
 }
 
-void CToolSlopeCube::Update( void )
+Engine::OBJECT_RESULT CToolSlopeCube::Update( void )
 {
 	D3DXMATRIX matTrans;
 	D3DXMATRIX matScale;
@@ -49,8 +49,7 @@ void CToolSlopeCube::Update( void )
 
 	m_pInfo->m_matWorld =matScale * matRotY * matTrans;
 
-	Engine::CGameObject::Update();
-	
+	return Engine::CGameObject::Update();	
 }
 
 void CToolSlopeCube::Render( void )

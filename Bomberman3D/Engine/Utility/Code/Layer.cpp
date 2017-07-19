@@ -31,13 +31,32 @@ void Engine::CLayer::Update(void)
 	MAPOBJLIST::iterator	iter = m_mapObjlist.begin();
 	MAPOBJLIST::iterator	iter_end = m_mapObjlist.end();
 	
-	for( ;iter != iter_end; ++iter)
+	for( ;iter != iter_end; )
 	{
 		OBJLIST::iterator		iterlist = iter->second.begin();
 		OBJLIST::iterator		iterlist_end = iter->second.end();
 
-		for( ;iterlist != iterlist_end ; ++iterlist)
-			(*iterlist)->Update();
+		for( ;iterlist != iterlist_end ;)
+		{
+			if((*iterlist)->Update() == OR_DELETE)
+			{
+				Safe_Delete(*iterlist);
+				iterlist = iter->second.erase(iterlist);				
+			}
+			else
+			{
+				++iterlist;
+			}
+		}
+
+		if(iter->second.empty() == TRUE)
+		{
+			iter = m_mapObjlist.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
 	}
 }
 

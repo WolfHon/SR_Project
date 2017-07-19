@@ -46,7 +46,7 @@ public:
 	virtual ~CPlayer(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
 public:
@@ -68,6 +68,8 @@ private:
 #ifdef _DEBUG
 	Engine::CCubeColor*		m_pCubeColor;
 	Engine::VTXCOL*	pVertex;
+
+	bool		m_MouseBlock;
 #endif
 
 private:	

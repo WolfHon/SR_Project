@@ -16,10 +16,12 @@ CFirstCamera::~CFirstCamera(void)
 {
 }
 
-void CFirstCamera::Update(void)
+Engine::OBJECT_RESULT CFirstCamera::Update(void)
 {
 	ViewCheck();
 	TargetRenewal();
+
+	return Engine::OR_OK;
 }
 
 HRESULT CFirstCamera::Initialize(void)
@@ -64,6 +66,7 @@ void CFirstCamera::ViewCheck(void)
 
 	if(m_fAngleY <= D3DXToRadian(-80.f))
 		m_fAngleY = D3DXToRadian(-80.f);
+
 }
 
 void CFirstCamera::TargetRenewal(void)

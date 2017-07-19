@@ -20,7 +20,7 @@ public:
 	virtual ~CToolCamera(void);
 
 public:
-	virtual void Update(void);
+	virtual Engine::OBJECT_RESULT Update(void);
 
 private:
 	HRESULT Initialize(void);
