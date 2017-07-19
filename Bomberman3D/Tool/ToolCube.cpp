@@ -12,7 +12,7 @@
 
 
 
-CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice )
+CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice,Engine::TILEINFO _tileInfo)
 :Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
 , m_pBuffer(NULL)
@@ -22,8 +22,8 @@ CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice )
 , m_pTerrainCol(NULL)
 , m_eTexture(Engine::TILE_IMAGE0)
 , m_eTileOption(Engine::TILE_UNBROKEN)
+, m_TileInfo(_tileInfo)
 {
-
 
 }
 
@@ -36,13 +36,19 @@ CToolCube::~CToolCube( void )
 void CToolCube::Update( void )
 {
 	D3DXMATRIX matTrans;
+	D3DXMATRIX matScale;
+	D3DXMATRIX matRotY;
+	
 
 	m_pInfo->m_vPos = m_TileInfo.vPos;
-	
-	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
-	D3DXMatrixTranslation(&matTrans, m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z);
+	m_pInfo->m_vScale = m_TileInfo.vScale;
 
-	m_pInfo->m_matWorld = matTrans;
+	D3DXMatrixRotationY(&matRotY,m_TileInfo.fAngle);
+	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
+	D3DXMatrixScaling(&matScale, m_pInfo->m_vScale.x , m_pInfo->m_vScale.y, m_pInfo->m_vScale.z);
+	D3DXMatrixTranslation(&matTrans, m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z);
+	
+	m_pInfo->m_matWorld =  matScale * matRotY * matTrans;
 
 	Engine::CGameObject::Update();
 	
@@ -71,7 +77,7 @@ void CToolCube::Render( void )
 
 CToolCube* CToolCube::Create( LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _tileInfo )
 {
-	CToolCube*	pGameObject = new CToolCube(pDevice);
+	CToolCube*	pGameObject = new CToolCube(pDevice, _tileInfo);
 	if(FAILED(pGameObject->Initialize(_tileInfo)))
 		Safe_Delete(pGameObject);
 
@@ -82,15 +88,15 @@ CToolCube* CToolCube::Create( LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _tileI
 
 HRESULT CToolCube::Initialize( Engine::TILEINFO _tileInfo )
 {
-	FAILED_CHECK(AddComponent(_tileInfo));
+	FAILED_CHECK(AddComponent());
 
-	Engine::TILEINFO* pTile = new Engine::TILEINFO;
+	//m_TileInfo.vPos = _tileInfo.vPos;
+	//m_TileInfo.vScale = _tileInfo.vScale;
+	//m_TileInfo.fAngle = _tileInfo.fAngle;
+	//m_TileInfo.eTexture = _tileInfo.eTexture;
+	//m_TileInfo.eTileOption = _tileInfo.eTileOption;
+	//m_TileInfo.eTileShape = Engine::TILE_CUBE;
 
-	m_TileInfo.vPos = _tileInfo.vPos;
-	m_TileInfo.eTexture = _tileInfo.eTexture;
-	m_TileInfo.eTileOption = _tileInfo.eTileOption;
-
-	
 
 	//m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % VTXCNTX), 0.f, float(rand() % VTXCNTZ));
 
@@ -102,7 +108,7 @@ HRESULT CToolCube::Initialize( Engine::TILEINFO _tileInfo )
 	return S_OK;
 }
 
-HRESULT CToolCube::AddComponent( Engine::TILEINFO _tileInfo )
+HRESULT CToolCube::AddComponent()
 {
 
 		Engine::CComponent*		pComponent = NULL;
@@ -114,10 +120,10 @@ HRESULT CToolCube::AddComponent( Engine::TILEINFO _tileInfo )
 
 
 		////Texture
-				pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"BreakCube");
-				m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
-				NULL_CHECK_RETURN(m_pTexture, E_FAIL);
-				m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));	
+		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"BreakCube");
+		m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
+		NULL_CHECK_RETURN(m_pTexture, E_FAIL);
+		m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));	
 
 		//Buffer
 		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
@@ -139,6 +145,5 @@ void CToolCube::Release( void )
 //	Safe_Delete_Array(m_pVertex);
 //	Safe_Delete_Array(m_pConvertVertex);
 
-	
 
 }

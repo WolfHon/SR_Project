@@ -15,6 +15,7 @@ namespace Engine
 	class CLayer;
 }
 
+class CToolSlopeCube;
 class CLayer;
 class CToolCamera;
 class CToolCube;
@@ -30,6 +31,7 @@ private:
 	CToolCamera* m_pCamera;
 
 	vector<CToolCube*>	m_vecCube;
+	vector<CToolSlopeCube*> m_vecSlopeCube;
 protected: // serialization에서만 만들어집니다.
 	CToolView();
 	DECLARE_DYNCREATE(CToolView)
@@ -52,6 +54,11 @@ public:
 	void SetVec(vector<CToolCube*> _vec)
 	{
 		m_vecCube = _vec;
+	}
+
+	void SetVecSlope(vector<CToolSlopeCube*> _vec)
+	{
+		m_vecSlopeCube = _vec;
 	}
 
 // 재정의입니다.

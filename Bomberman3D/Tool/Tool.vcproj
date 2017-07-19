@@ -198,6 +198,14 @@
 				RelativePath=".\ToolCube.h"
 				>
 			</File>
+			<File
+				RelativePath=".\ToolSlopeCube.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ToolSlopeCube.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="01.MainFrm"

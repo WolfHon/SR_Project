@@ -13,6 +13,7 @@ namespace Engine
 	class CLayer;
 
 }
+class CToolSlopeCube;
 class CToolCube;        
 class CAddCube : public CDialog
 {
@@ -20,16 +21,19 @@ class CAddCube : public CDialog
 
 private:
 	vector<CToolCube*> m_vecCube;
-	vector<Engine::TILEINFO*> m_vecTileInfo;
+	vector<CToolSlopeCube*> m_vecSlopeCube;
+	vector<Engine::TILEINFO> m_vecTileInfo;
 	CToolCube*				m_pCube;
+	CToolSlopeCube*			m_pSlopeCube;
 
 	bool m_bRadioButtonStartCheck;
 
-	float              fx;
-	float			   fY;
-	float              fZ;
-	int					iSelectIndex;
-	int					m_iEnum;
+	D3DXVECTOR3			m_vPos;
+	D3DXVECTOR3			m_vScale;
+	float				m_fAngle;
+	int				   m_CubeListBoxIndex;
+	int				   m_SlopeListBoxIndex;
+	int				   m_iEnum;
 
 	Engine::TILEINFO			m_TileInfo;
 
@@ -71,7 +75,8 @@ public:
 	afx_msg void OnLbnSelchangeList1();
 	CListBox m_ListBox;
 	CButton m_Radio[3];
-	CEdit m_XPos;
+	CButton m_Radio1[2];
+
 	afx_msg void OnBnClickedButton5();
 	afx_msg void OnBnClickedDecreasex();
 	afx_msg void OnBnClickedIncreasex();
@@ -88,6 +93,16 @@ public:
 	afx_msg void OnBnClickedSavecube();
 	afx_msg void OnBnClickedLoadcube();
 	afx_msg void OnBnClickedRadio3();
+	afx_msg void OnBnClickedRadio4();
+	afx_msg void OnBnClickedRadio5();
+	CListBox m_SlopList;
+	afx_msg void OnLbnSelchangeList3();
+	CButton m_ScaleCheck;
+	afx_msg void OnBnClickedCheck1();
+
+	afx_msg void OnBnClickedDecreasez2();
+	afx_msg void OnBnClickedDecreaseangle();
+	afx_msg void OnBnClickedIncreaseangle();
 };
 
 

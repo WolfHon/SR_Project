@@ -52,8 +52,12 @@ namespace Engine
 	typedef struct tagTileInfo
 	{
 		D3DXVECTOR3				vPos;
+		D3DXVECTOR3				vScale;
+		float					fAngle;
 		TILETYPE				eTileOption;
 		TILETEXTURE				eTexture;
+		TILESHAPE				eTileShape;
+
 	}TILEINFO;
 }
 

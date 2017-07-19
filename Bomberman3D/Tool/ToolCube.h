@@ -9,14 +9,13 @@ namespace Engine
 	class CVIBuffer;
 	class CTransform;
 	class CTerrainCol;
-	class CMouseCol;
 }
 class CToolView;
 class CToolCube
 	:public Engine::CGameObject
 {
 public:
-	explicit CToolCube(LPDIRECT3DDEVICE9 pDevice);
+	explicit CToolCube(LPDIRECT3DDEVICE9 pDevice , Engine::TILEINFO _tileInfo);
 
 public:
 	virtual ~CToolCube(void);
@@ -49,6 +48,14 @@ public:
 	{
 		m_TileInfo.eTileOption = (Engine::TILETYPE)_option;
 	}
+	void SetScale(D3DXVECTOR3 _vscale)
+	{
+		m_TileInfo.vScale = _vscale;
+	}
+	void SetAngle(float _fAngle)
+	{
+		m_TileInfo.fAngle =_fAngle;
+	}
 
 	Engine::TILEINFO GetInfo(void)
 	{
@@ -58,7 +65,7 @@ public:
 
 public:
 	HRESULT Initialize(Engine::TILEINFO _tileInfo);
-	HRESULT	AddComponent(Engine::TILEINFO _tileInfo);
+	HRESULT	AddComponent();
 	void Release(void);
 
 private:
@@ -68,11 +75,12 @@ private:
 	Engine::CTerrainCol*	m_pTerrainCol;
 
 
+
 private:
 	Engine::VTXCUBE*		m_pVertex;
 	Engine::VTXCUBE*		m_pConvertVertex;
 	Engine::TILEINFO		m_TileInfo;
-	DWORD					m_dwVtxCnt;
+
 	
 
 private:

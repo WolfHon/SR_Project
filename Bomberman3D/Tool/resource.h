@@ -43,6 +43,7 @@
 #define IDC_EDITYPOS                    1005
 #define IDC_EDITZPOS                    1006
 #define IDC_EDITOPTION                  1007
+#define IDC_EDITZPOS2                   1007
 #define IDC_LIST1                       1008
 #define IDC_LIST2                       1009
 #define IDC_DECREASEX                   1010
@@ -56,6 +57,15 @@
 #define IDC_RADIO2                      1017
 #define IDC_RADIO3                      1018
 #define IDC_BUTTON5                     1019
+#define IDC_RADIO4                      1020
+#define IDC_RADIO5                      1021
+#define IDC_LIST3                       1022
+#define IDC_CHECK1                      1023
+#define IDC_DECREASEAngle               1024
+#define IDC_INCREASEZ2                  1025
+#define IDC_INCREASEAngle               1025
+#define IDC_EDITZPOS3                   1026
+#define IDC_EDITZPOS4                   1027
 
 // Next default values for new objects
 // 
@@ -63,7 +73,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1020
+#define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           315
 #endif
 #endif
