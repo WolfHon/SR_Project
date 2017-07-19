@@ -135,7 +135,8 @@ void CAddCube::OnBnClickedAddcube()
 
 	if(m_Radio1[0].GetCheck())
 	{
-		m_TileInfo.eTileShape = Engine::TILE_CUBE;
+		
+	m_TileInfo.eTileShape = Engine::TILE_CUBE;
 	m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
 
 	m_vecCube.push_back(m_pCube);

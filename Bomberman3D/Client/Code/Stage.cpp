@@ -63,6 +63,10 @@ HRESULT CStage::Initialize(void)
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
 
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeCubeTex");
+	FAILED_CHECK(hr);
+
 #ifdef _DEBUG
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBECOLOR, L"Buffer_CubeColor");
