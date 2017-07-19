@@ -46,11 +46,12 @@ public:
 	virtual void Render(void);
 
 public:
-	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, float fPower);
+	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower);
 
 private:
-	HRESULT Initialize(float fPower);
+	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
 	HRESULT	AddComponent(void);
+	void Explosion(void);
 	void Release(void);
 
 private:
@@ -61,7 +62,7 @@ private:
 
 private:
 	float			m_fTime;
-	float			m_fPower;
+	int				m_iPower;
 };
 
 
