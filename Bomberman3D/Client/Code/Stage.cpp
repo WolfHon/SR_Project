@@ -188,12 +188,12 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		if(pTileInfo->eTileOption == Engine::TILE_UNBROKEN)
 		{
 			pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-			pLayer->AddObject(L"UnBroken", pGameObject);
+			pLayer->AddObject(L"UnBroken_Box", pGameObject);
 		}
 		else
 		{
 			pGameObject = CBrokenCube::Create(m_pDevice , (*pTileInfo));
-			pLayer->AddObject(L"Broken", pGameObject);
+			pLayer->AddObject(L"Broken_Box", pGameObject);
 		}
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
