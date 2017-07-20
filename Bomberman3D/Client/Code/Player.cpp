@@ -72,7 +72,7 @@ Engine::OBJECT_RESULT CPlayer::Update(void)
 
 void CPlayer::Render(void)
 {
-	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
+ 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	m_pPlayerModel->Render();
 
 #ifdef _DEBUG

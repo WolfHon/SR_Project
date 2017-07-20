@@ -52,6 +52,10 @@ public:
 	{
 		m_TileInfo.vScale = _vscale;
 	}
+	void SetTexture(Engine::TILETEXTURE _vTexture)
+	{
+		m_TileInfo.eTexture = _vTexture;
+	}
 	void SetAngle(float _fAngle)
 	{
 		m_TileInfo.fAngle =_fAngle;

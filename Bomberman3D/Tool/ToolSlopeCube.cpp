@@ -21,8 +21,6 @@ CToolSlopeCube::CToolSlopeCube( LPDIRECT3DDEVICE9 pDevice , Engine::TILEINFO _ti
 , m_eTileOption(Engine::TILE_UNBROKEN)
 , m_TileInfo(_tileInfo)
 {
-
-
 	
 
 }
@@ -43,7 +41,6 @@ Engine::OBJECT_RESULT CToolSlopeCube::Update( void )
 	m_pInfo->m_vScale = m_TileInfo.vScale;
 
 	D3DXMatrixRotationY(&matRotY,m_TileInfo.fAngle);
-	
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 	D3DXMatrixScaling(&matScale, m_pInfo->m_vScale.x , m_pInfo->m_vScale.y, m_pInfo->m_vScale.z);
 	D3DXMatrixTranslation(&matTrans, m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z);
