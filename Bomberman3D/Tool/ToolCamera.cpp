@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ToolCamera.h"
-
 #include "Include.h"
 #include "Transform.h"
 #include "Export_Function.h"
@@ -98,23 +97,23 @@ void CToolCamera::KeyCheck( void )
 		D3DXVECTOR3 vcZ(matView._13,matView._23, matView._33);
 		D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye += vcZ * 0.5f;
-		m_vAt  += vcZ * 0.5f;
+		m_vEye += vcZ * 1.0f;
+		m_vAt  += vcZ * 1.0f;
 	}
 	if(GetAsyncKeyState('S') & 1 )
 	{	D3DXVECTOR3 vcZ(matView._13,matView._23 , matView._33);
 	D3DXVec3Normalize(&vcZ,&vcZ);
 
-	m_vEye -= vcZ * 0.5f;
-	m_vAt  -= vcZ * 0.5f;
+	m_vEye -= vcZ * 1.0f;
+	m_vAt  -= vcZ * 1.0f;
 	}
 	if(GetAsyncKeyState('A')& 1 )
 	{
 		D3DXVECTOR3 vcZ(matView._11,0, matView._31);
 		D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye -= vcZ * 0.5f;
-		m_vAt  -= vcZ * 0.5f;
+		m_vEye -= vcZ * 1.0f;
+		m_vAt  -= vcZ * 1.0f;
 
 	}
 
@@ -123,8 +122,8 @@ void CToolCamera::KeyCheck( void )
 		D3DXVECTOR3 vcZ(matView._11,0, matView._31);
 		D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye += vcZ * 0.5f;
-		m_vAt  += vcZ * 0.5f;
+		m_vEye += vcZ * 1.0f;
+		m_vAt  += vcZ * 1.0f;
 
 	}
 
@@ -133,8 +132,8 @@ void CToolCamera::KeyCheck( void )
 		D3DXVECTOR3 vcZ(matView._12,matView._22, matView._32);
 		D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye -= vcZ * 0.5f;
-		m_vAt  -= vcZ * 0.5f;
+		m_vEye -= vcZ * 1.0f;
+		m_vAt  -= vcZ * 1.0f;
 
 	}
 
@@ -143,8 +142,8 @@ void CToolCamera::KeyCheck( void )
 		D3DXVECTOR3 vcZ(matView._12,matView._22, matView._32);
 		D3DXVec3Normalize(&vcZ,&vcZ);
 
-		m_vEye += vcZ * 0.5f;
-		m_vAt  += vcZ * 0.5f;
+		m_vEye += vcZ * 1.0f;
+		m_vAt  += vcZ * 1.0f;
 
 	}
 
