@@ -43,7 +43,7 @@ public:
 
 private:
 	DWORD	m_dwKey;
-	bool	m_bPress[6];
+	bool	m_bPress[7];
 };
 
 END

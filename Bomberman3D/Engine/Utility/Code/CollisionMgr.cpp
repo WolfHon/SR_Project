@@ -13,7 +13,7 @@ Engine::CCollisionMgr::~CCollisionMgr(void)
 	Release();
 }
 
-HRESULT Engine::CCollisionMgr::AddColObject(COLLISIONID eCollisionID)
+HRESULT Engine::CCollisionMgr::AddColObject(COLLISIONID eCollisionID, LPDIRECT3DDEVICE9 pDevice)
 {
 	MAPCOLLISION::iterator	iter = m_mapCollision.find(eCollisionID);
 
@@ -25,7 +25,7 @@ HRESULT Engine::CCollisionMgr::AddColObject(COLLISIONID eCollisionID)
 	switch(eCollisionID)
 	{
 	case COLLISON_OBB:
-		pCollision = CCollision_OBB::Create();
+		pCollision = CCollision_OBB::Create(pDevice);
 		break;
 	}
 

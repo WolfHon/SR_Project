@@ -310,6 +310,14 @@
 					Name="98.Temp"
 					>
 					<File
+						RelativePath="..\Code\BrokenCube.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\BrokenCube.h"
+						>
+					</File>
+					<File
 						RelativePath="..\Code\Cube.cpp"
 						>
 					</File>
@@ -386,6 +394,22 @@
 			<Filter
 				Name="03.Design"
 				>
+			</Filter>
+			<Filter
+				Name="03.Component"
+				>
+				<Filter
+					Name="00.Collision_OBB"
+					>
+					<File
+						RelativePath="..\Code\Collision_OBB.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Collision_OBB.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

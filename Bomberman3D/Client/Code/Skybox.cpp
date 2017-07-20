@@ -32,7 +32,7 @@ HRESULT CSkybox::Initialize(void)
 
 Engine::OBJECT_RESULT CSkybox::Update(void)
 {
-	m_pInfo->m_fAngle[Engine::ANGLE_Y] -= D3DXToRadian(0.001);
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] -= D3DXToRadian(0.001f);
 	D3DXMATRIX matView;
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
 	D3DXMatrixInverse(&matView, NULL, &matView);

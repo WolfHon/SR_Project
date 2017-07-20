@@ -5,7 +5,7 @@ IMPLEMENT_SINGLETON(Engine::CKeyMgr)
 Engine::CKeyMgr::CKeyMgr()
 : m_dwKey(0)
 {
-	ZeroMemory(m_bPress, sizeof(bool) * 6);
+	ZeroMemory(m_bPress, sizeof(bool) * 7);
 }
 
 Engine::CKeyMgr::~CKeyMgr()
@@ -81,5 +81,16 @@ void Engine::CKeyMgr::Update(void)
 		if (m_bPress[5] == true)
 			m_dwKey |= KEY_ENTER_CLICK;
 		m_bPress[5] = false;
+	}
+	if (GetAsyncKeyState(VK_F1))
+	{
+		m_dwKey |= KEY_F1_PRESS;
+		m_bPress[6] = true;
+	}
+	else
+	{
+		if (m_bPress[6] == true)
+			m_dwKey |= KEY_F1_CLICK;
+		m_bPress[6] = false;
 	}
 }
