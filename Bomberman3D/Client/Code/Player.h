@@ -28,13 +28,10 @@ namespace Engine
 {
 	class CTexture;
 	class CTransform;
-	class CCollision_OBB;
 	class CPlayerModel;
-
-#ifdef _DEBUG
-	class CCubeColor;
-#endif
 }
+
+class CCollision_OBB;
 
 class CPlayer
 	: public Engine::CGameObject
@@ -55,6 +52,7 @@ public:
 private:
 	HRESULT Initialize(void);
 	HRESULT	AddComponent(void);
+	void AttackCheck(void);
 	void MoveCheck(void);
 	BOOL CheckCollision(void);
 	void Release(void);
@@ -62,15 +60,9 @@ private:
 private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CTransform*		m_pInfo;
-	Engine::CCollision_OBB*	m_pCollisionOBB;
 	Engine::CPlayerModel*	m_pPlayerModel;
 
-#ifdef _DEBUG
-	Engine::CCubeColor*		m_pCubeColor;
-	Engine::VTXCOL*	pVertex;
-
-	bool		m_MouseBlock;
-#endif
+	CCollision_OBB*	m_pCollisionOBB;
 
 private:	
 	float			m_fSpeed;

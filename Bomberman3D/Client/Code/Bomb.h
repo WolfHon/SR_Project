@@ -29,8 +29,9 @@ namespace Engine
 	class CTexture;
 	class CVIBuffer;
 	class CTransform;
-	class CCollision_OBB;
 }
+
+class CCollision_OBB;
 
 class CBomb
 	: public Engine::CGameObject
@@ -58,7 +59,8 @@ private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
-	Engine::CCollision_OBB*	m_pCollisionOBB;
+
+	CCollision_OBB*	m_pCollisionOBB;
 
 private:
 	float			m_fTime;

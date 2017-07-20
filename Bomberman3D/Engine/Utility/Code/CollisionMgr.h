@@ -42,7 +42,7 @@ public:
 	CCollision* CloneCollision(COLLISIONID eCollisionID);
 
 public:
-	HRESULT AddColObject(COLLISIONID eCollisionID);
+	HRESULT AddColObject(COLLISIONID eCollisionID, LPDIRECT3DDEVICE9 pDevice);
 
 private:
 	void Release(void);

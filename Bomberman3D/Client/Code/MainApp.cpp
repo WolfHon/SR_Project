@@ -31,6 +31,10 @@ HRESULT CMainApp::InitApp(void)
 		, Engine::BUFFER_RCTEX, L"Buffer_RcTex");
 	FAILED_CHECK(hr);
 
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_STATIC
+		, Engine::BUFFER_CUBECOLOR, L"Buffer_CubeColor");
+	FAILED_CHECK(hr);
+
 	hr = Engine::Get_Management()->InitManagement(m_pDevice);
 	FAILED_CHECK(hr);
 
@@ -50,6 +54,7 @@ void CMainApp::Update(void)
 {
 	Engine::Get_TimeMgr()->SetTime();
 	Engine::Get_MouseMgr()->Update();
+	Engine::Get_KeyMgr()->Update();
 	Engine::Get_Management()->Update();
 }
 
@@ -84,6 +89,6 @@ void CMainApp::Release(void)
 	Engine::Get_ResourceMgr()->DestroyInstance();
 	Engine::Get_TimeMgr()->DestroyInstance();
 	Engine::Get_InfoSubject()->DestroyInstance();
-	Engine::Get_CollisionMgr()->DestroyInstance();
 	Engine::Get_MouseMgr()->DestroyInstance();
+	Engine::Get_KeyMgr()->DestroyInstance();
 }

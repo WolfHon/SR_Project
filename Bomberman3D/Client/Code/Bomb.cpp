@@ -104,12 +104,11 @@ HRESULT CBomb::AddComponent(void)
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
 
-	//OBBCollision_OBB
-	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);
-	m_pCollisionOBB = static_cast<Engine::CCollision_OBB*>(pComponent);
+	//OBBCollision_OBB	
+	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 
 	return S_OK;
 }
@@ -122,23 +121,23 @@ Engine::OBJECT_RESULT CBomb::Explosion(void)
 	{
 		Engine::CGameObject*	pGameObject = NULL;
 
-		pGameObject = CExplosion::Create(m_pDevice, m_pInfo->m_vPos, 0, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice,  D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), 0, CExplosion::DIR_LEFT);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 4.f, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 4.f, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 4.f), m_iPower - 1, CExplosion::DIR_BACK);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z + 4.f), m_iPower - 1, CExplosion::DIR_BACK);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 4.f), m_iPower - 1, CExplosion::DIR_FORWARD);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z - 4.f), m_iPower - 1, CExplosion::DIR_FORWARD);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 

@@ -12,3 +12,8 @@ CMouseMgr* Get_MouseMgr(void)
 {
 	return CMouseMgr::GetInstance();
 }
+
+CKeyMgr* Get_KeyMgr(void)
+{
+	return CKeyMgr::GetInstance();
+}

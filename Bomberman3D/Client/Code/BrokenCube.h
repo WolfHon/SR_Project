@@ -8,8 +8,8 @@ namespace Engine
 	class CTexture;
 	class CVIBuffer;
 	class CTransform;
-	class CCollision_OBB;
 }
+class CCollision_OBB;
 
 class CBrokenCube
 	: public Engine::CGameObject
@@ -36,8 +36,9 @@ private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
-	Engine::CCollision_OBB*	m_pCollisionOBB;
 	Engine::TILEINFO		m_tagTileInfo;
+
+	CCollision_OBB*	m_pCollisionOBB;
 
 private:
 	float			m_fSpeed;

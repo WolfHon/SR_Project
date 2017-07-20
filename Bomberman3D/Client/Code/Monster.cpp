@@ -63,9 +63,7 @@ CMonster* CMonster::Create( LPDIRECT3DDEVICE9 pDevice )
 		Safe_Delete(pGameObject);
 
 	return pGameObject;
-
 }
-
 
 
 HRESULT CMonster::AddComponent( void )
@@ -103,7 +101,6 @@ HRESULT CMonster::AddComponent( void )
 #endif
 
 	return S_OK;	
-
 }
 
 void CMonster::MoveCheck( void )

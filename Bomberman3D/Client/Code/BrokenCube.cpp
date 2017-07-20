@@ -120,11 +120,10 @@ HRESULT CBrokenCube::AddComponent(void)
 	}
 
 	//OBBCollision_OBB
-	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);
-	m_pCollisionOBB = static_cast<Engine::CCollision_OBB*>(pComponent);
+	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 
 	return S_OK;
 }

@@ -33,7 +33,9 @@ HRESULT CLogo::Initialize(void)
 
 void CLogo::Update(void)
 {
-	if(GetAsyncKeyState(VK_RETURN))
+	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
+
+	if(!(~KeyState & Engine::KEY_ENTER_CLICK))
 	{
 		HRESULT hr = Engine::Get_Management()->SceneChange(CSceneSelector(SCENE_STAGE), m_pDevice);
 		FAILED_CHECK_RETURN(hr, );
