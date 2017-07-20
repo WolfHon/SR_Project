@@ -9,6 +9,8 @@
 #include "Include.h"
 #include "Export_Function.h"
 
+#include "Explosion.h"
+
 CBomb::CBomb(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
@@ -117,7 +119,31 @@ Engine::OBJECT_RESULT CBomb::Explosion(void)
 	m_fTime += Engine::Get_TimeMgr()->GetTime();
 
 	if(m_wEffect <= 100)
+	{
+		Engine::CGameObject*	pGameObject = NULL;
+
+		pGameObject = CExplosion::Create(m_pDevice, m_pInfo->m_vPos, 0, CExplosion::DIR_LEFT);
+		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 4.f), m_iPower - 1, CExplosion::DIR_BACK);
+		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 4.f), m_iPower - 1, CExplosion::DIR_FORWARD);
+		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+
 		return Engine::OR_DELETE;
+	}
 	else
 		m_wEffect = 255 - WORD(m_fTime * 25);
 

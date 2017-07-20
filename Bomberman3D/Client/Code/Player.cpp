@@ -215,29 +215,5 @@ BOOL CPlayer::CheckCollision(void)
 {
 	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"UnBroken_Box");
 
-	if(listObj == NULL)
-		return FALSE;
-
-	Engine::OBJLIST::iterator iterBegin = listObj->begin();
-	Engine::OBJLIST::iterator iterEnd = listObj->end();
-
-	for(;iterBegin != iterEnd; ++iterBegin)
-	{
-		Engine::CComponent*		pComponent = NULL;
-
-		pComponent = (*iterBegin)->GetComponent(L"Transform");
-		NULL_CHECK_RETURN(pComponent, FALSE);
-		D3DXVECTOR3 vtargetPos = dynamic_cast<Engine::CTransform*>(pComponent)->m_vPos;
-
-		if(fabs(D3DXVec3Length(&(m_pInfo->m_vPos - vtargetPos))) >= 10.f)
-			continue;
-
-		pComponent = (*iterBegin)->GetComponent(L"Collision_OBB");
-		NULL_CHECK_RETURN(pComponent, FALSE);	
-
-		if(m_pCollisionOBB->CheckCollision(dynamic_cast<Engine::CCollision_OBB*>(pComponent)))
-			return TRUE;
-	}
-
-	return FALSE;
+	return m_pCollisionOBB->CheckCollision(m_pInfo->m_vPos, listObj);
 }

@@ -1,5 +1,8 @@
 #include "Collision_OBB.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+
 Engine::CCollision_OBB::CCollision_OBB(void)
 : m_vMin(0.f, 0.f, 0.f)
 , m_vMax(0.f, 0.f, 0.f)
@@ -93,7 +96,36 @@ void Engine::CCollision_OBB::ComputeAxis(void)
 }
 
 
-bool Engine::CCollision_OBB::CheckCollision(CCollision_OBB* pTerget)
+bool Engine::CCollision_OBB::CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj)
+{
+	if(listObj == NULL)
+		return FALSE;
+
+	Engine::OBJLIST::iterator iterBegin = listObj->begin();
+	Engine::OBJLIST::iterator iterEnd = listObj->end();
+
+	for(;iterBegin != iterEnd; ++iterBegin)
+	{
+		Engine::CComponent*		pComponent = NULL;
+
+		pComponent = (*iterBegin)->GetComponent(L"Transform");
+		NULL_CHECK_RETURN(pComponent, FALSE);
+		D3DXVECTOR3 vtargetPos = dynamic_cast<Engine::CTransform*>(pComponent)->m_vPos;
+
+		if(fabs(D3DXVec3Length(&(vPos - vtargetPos))) >= 10.f)
+			continue;
+
+		pComponent = (*iterBegin)->GetComponent(L"Collision_OBB");
+		NULL_CHECK_RETURN(pComponent, FALSE);	
+
+		if(ProcessingCollision(dynamic_cast<Engine::CCollision_OBB*>(pComponent)))
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
+bool Engine::CCollision_OBB::ProcessingCollision(CCollision_OBB* pTerget)
 {
 	CollisionUpdate();
 	pTerget->CollisionUpdate();

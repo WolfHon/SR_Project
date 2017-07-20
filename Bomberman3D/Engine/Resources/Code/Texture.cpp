@@ -95,3 +95,8 @@ DWORD Engine::CTexture::Release(void)
 	return m_dwRefCnt;
 }
 
+const DWORD Engine::CTexture::GetMaxSize(void)
+{
+	return m_dwContainerSize;
+}
+

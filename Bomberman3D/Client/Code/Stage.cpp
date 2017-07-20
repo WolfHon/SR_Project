@@ -12,9 +12,7 @@
 #include "Collision_OBB.h"
 
 #include "Cube.h" //Test용 임시
-#include "BrokenCube.h"
 #include "Bomb.h" //Test용 임시
-#include "..\Include\Monster.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -62,6 +60,11 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Explosion"
+		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 48);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
 	FAILED_CHECK(hr);
@@ -69,10 +72,6 @@ HRESULT CStage::Initialize(void)
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
-	FAILED_CHECK(hr);
-
-	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
 	FAILED_CHECK(hr);
 
 #ifdef _DEBUG
@@ -149,17 +148,13 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	LoadData(pLayer,pGameObject);
 
-	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(5.f, 0.75f, 5.f), 1);
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(16.f, 2.f, 0.f), 3);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Bomb", pGameObject);
 
-	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(7.f, 0.75f, 7.f), 1);
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(0.f, 2.f, 16.f), 3);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Bomb", pGameObject);
-
-	pGameObject = CMonster::Create(m_pDevice);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Monster", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -209,16 +204,8 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
-		if(pTileInfo->eTileOption == Engine::TILE_UNBROKEN)
-		{
-			pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-			pLayer->AddObject(L"Terrain", pGameObject);
-		}
-		else
-		{
-			pGameObject = CBrokenCube::Create(m_pDevice , (*pTileInfo));
-			pLayer->AddObject(L"Terrain", pGameObject);
-		}
+		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
+		pLayer->AddObject(L"UnBroken_Box", pGameObject);
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
