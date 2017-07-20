@@ -3,14 +3,12 @@
 
 #include "Texture.h"
 
+#include "VIBuffer.h"
 #include "Include.h"
 #include "Transform.h"
 #include "Export_Function.h"
 #include "Collision_OBB.h"
 
-#ifdef _DEBUG
-#include "CubeColor.h"
-#endif
 
 CMonster::CMonster( LPDIRECT3DDEVICE9 pDevice )
 :Engine::CGameObject(pDevice)
@@ -32,7 +30,7 @@ HRESULT CMonster::Initialize( void )
 {
 	FAILED_CHECK(AddComponent());
 
-	m_pInfo->m_vPos = D3DXVECTOR3(2.f , 2.f , 2.f);
+	m_pInfo->m_vPos = D3DXVECTOR3(5.f , 2.f , 5.f);
 
 	return S_OK;
 }
@@ -53,6 +51,7 @@ void CMonster::Render( void )
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	m_pTexture->Render(0,4);
 	m_pBuffer->Render();
+	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 0, 0, 255));
 
 }
 
@@ -87,18 +86,10 @@ HRESULT CMonster::AddComponent( void )
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
 
-	pComponent = Engine::Get_CollisionMgr()->CloneCollision(Engine::COLLISON_OBB);
-	m_pCollisionOBB = static_cast<Engine::CCollision_OBB*>(pComponent);
+	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
+	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
-	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -4.5f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
-
-#ifdef _DEBUG
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeColor");
-	m_pCubeColor = dynamic_cast<Engine::CCubeColor*>(pComponent);
-	NULL_CHECK_RETURN(m_pCubeColor, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_Box", pComponent));
-#endif
 
 	return S_OK;	
 }
@@ -128,7 +119,6 @@ void CMonster::AI( void )
 		if(CheckCollision() == TRUE)
 		{
 			   ChangeDir(m_pInfo->m_vDir);
-			//   move();
 		}
 		else
 		m_pInfo->m_vPos += m_pInfo->m_vDir * 0.01f;

@@ -102,7 +102,7 @@ void CPlayer::MoveCheck(void)
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
 	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
 
-	m_pInfo->m_vPos.y = 0.f;//2.25f;
+	m_pInfo->m_vPos.y = 2.25f;
 
 	CGameObject* pObject = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"CameraControl");
 	NULL_CHECK(pObject);
