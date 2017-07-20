@@ -13,6 +13,7 @@
 
 #include "Cube.h" //Test용 임시
 #include "Bomb.h" //Test용 임시
+#include "BrokenCube.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -204,9 +205,17 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
-		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-		pLayer->AddObject(L"UnBroken_Box", pGameObject);
-		
+		if(pTileInfo->eTileOption == Engine::TILE_UNBROKEN)
+		{
+			pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
+			pLayer->AddObject(L"UnBroken", pGameObject);
+		}
+		else
+		{
+			pGameObject = CBrokenCube::Create(m_pDevice , (*pTileInfo));
+			pLayer->AddObject(L"Broken", pGameObject);
+		}
+
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
 		Engine::Safe_Delete(pTileInfo);
