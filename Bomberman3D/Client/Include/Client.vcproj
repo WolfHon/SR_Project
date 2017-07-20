@@ -407,6 +407,22 @@
 				Name="03.Design"
 				>
 			</Filter>
+			<Filter
+				Name="03.Component"
+				>
+				<Filter
+					Name="00.Collision_OBB"
+					>
+					<File
+						RelativePath="..\Code\Collision_OBB.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Collision_OBB.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="헤더 파일"

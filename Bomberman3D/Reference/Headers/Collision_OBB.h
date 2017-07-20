@@ -25,6 +25,8 @@
 
 BEGIN(Engine)
 
+class CCubeColor;
+
 class ENGINE_DLL CCollision_OBB
 	: public CCollision
 {
@@ -40,7 +42,7 @@ private:
 	}OBB;
 
 private:
-	CCollision_OBB();
+	CCollision_OBB(LPDIRECT3DDEVICE9 pDevice);
 	explicit CCollision_OBB(const CCollision_OBB& rhs);
 
 public:
@@ -56,29 +58,46 @@ public:
 	void SetColInfo(const D3DXMATRIX* pWorld, const D3DXVECTOR3* pMin = NULL, const D3DXVECTOR3* pMax = NULL);
 
 public:	
+	void Render(const DWORD& dwColor);
 	virtual DWORD Release(void);
 
 public:
-	void GetColBox(D3DXVECTOR3* pMin, D3DXVECTOR3* pMax);
 	void CollisionUpdate(void);
-	bool CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj);	
+	void AABBUpdate(void);
+	bool CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj);
+
+public:
+	const D3DXVECTOR3* GetMin(void) const {return &m_vColliderMin;}
+	const D3DXVECTOR3* GetMax(void) const {return &m_vColliderMax;}
+	const D3DXMATRIX* GetMatrix(void) const {return &m_matColliderMatrix;}
 
 private:	
-	bool ProcessingCollision(CCollision_OBB* pTerget);
+	HRESULT	InitCollision(void);
+	bool CheckAABB(CCollision_OBB* pTarget);	
+	bool ProcessingCollision(CCollision_OBB* pTarget);
 	void ComputePoint(void);
 	void ComputeAxis(void);
 
 public:
-	static CCollision_OBB* Create(void);
+	static CCollision_OBB* Create(LPDIRECT3DDEVICE9 pDevice);
 
 private:
 	const D3DXMATRIX*	m_pmatWorld;
+	D3DXMATRIX			m_matColliderMatrix;
 
 private:
+	LPDIRECT3DDEVICE9		m_pDevice;
+
 	D3DXVECTOR3			m_vPoint[8];
 	D3DXVECTOR3			m_vMin;
 	D3DXVECTOR3			m_vMax;
 	OBB					m_tOBB;
+
+	D3DXVECTOR3			m_vColliderMin;
+	D3DXVECTOR3			m_vColliderMax;
+
+	Engine::CCubeColor*		m_pCubeColor;
+	Engine::VTXCOL*	pVertex;
 };
 
 END
