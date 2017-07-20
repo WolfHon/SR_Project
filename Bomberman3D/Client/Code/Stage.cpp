@@ -12,7 +12,9 @@
 #include "Collision_OBB.h"
 
 #include "Cube.h" //Test용 임시
+#include "BrokenCube.h"
 #include "Bomb.h" //Test용 임시
+#include "..\Include\Monster.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -70,7 +72,7 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeCubeTex");
+		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
 	FAILED_CHECK(hr);
 
 #ifdef _DEBUG
@@ -154,6 +156,10 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(7.f, 0.75f, 7.f), 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Bomb", pGameObject);
+
+	pGameObject = CMonster::Create(m_pDevice);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Monster", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -203,8 +209,16 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
-		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-		pLayer->AddObject(L"Terrain", pGameObject);
+		if(pTileInfo->eTileOption == Engine::TILE_UNBROKEN)
+		{
+			pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
+			pLayer->AddObject(L"Terrain", pGameObject);
+		}
+		else
+		{
+			pGameObject = CBrokenCube::Create(m_pDevice , (*pTileInfo));
+			pLayer->AddObject(L"Terrain", pGameObject);
+		}
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 

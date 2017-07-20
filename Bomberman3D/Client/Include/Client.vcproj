@@ -310,6 +310,14 @@
 					Name="98.Temp"
 					>
 					<File
+						RelativePath="..\Code\BrokenCube.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\BrokenCube.h"
+						>
+					</File>
+					<File
 						RelativePath="..\Code\Cube.cpp"
 						>
 					</File>
@@ -363,6 +371,18 @@
 					</File>
 					<File
 						RelativePath="..\Code\Bomb.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="04.Monster"
+					>
+					<File
+						RelativePath=".\Monster.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Monster.h"
 						>
 					</File>
 				</Filter>

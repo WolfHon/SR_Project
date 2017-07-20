@@ -25,16 +25,7 @@ void CAddCube::Release( void )
 	}
 
 	m_vecCube.clear();
-
-	//vector<Engine::TILEINFO>::iterator iterINFO = m_vecTileInfo.begin();
-	//vector<Engine::TILEINFO>::iterator iterINFO_end = m_vecTileInfo.end();
-
-	//for( ;iterINFO != iterINFO_end ; ++iterINFO)
-	//{
-	//	Safe_Delete(iterINFO);
-	//}
-
-	//m_vecTileInfo.clear();
+	m_vecTileInfo.clear();
 }
 
 
@@ -59,7 +50,7 @@ CAddCube::CAddCube(CWnd* pParent /*=NULL*/)
 
 CAddCube::~CAddCube()
 {
-	//Release();
+	Release();
 }
 
 void CAddCube::DoDataExchange(CDataExchange* pDX)
@@ -135,22 +126,24 @@ void CAddCube::OnBnClickedAddcube()
 
 	if(m_Radio1[0].GetCheck())
 	{
-		
-	m_TileInfo.eTileShape = Engine::TILE_CUBE;
-	m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
+	
+				m_TileInfo.eTileShape = Engine::TILE_CUBE;
+				m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
 
-	m_vecCube.push_back(m_pCube);
+				m_vecCube.push_back(m_pCube);
 
-	Engine::TILEINFO tagTile;
-	tagTile = m_pCube->GetInfo();
-	m_vecTileInfo.push_back(tagTile);
+				Engine::TILEINFO tagTile;
+				tagTile = m_pCube->GetInfo();
+				m_vecTileInfo.push_back(tagTile);
 
-	CToolView* pToolView= ((CMainFrame*)AfxGetMainWnd())->GetMainView();
-	pToolView->SetVec(m_vecCube);
+				CToolView* pToolView= ((CMainFrame*)AfxGetMainWnd())->GetMainView();
+				pToolView->SetVec(m_vecCube);
 
-	TCHAR szText[256] = L"";
-	wsprintf(szText, L"큐브 %d", m_vecCube.size() -1);
-	m_ListBox.AddString(szText);
+				TCHAR szText[256] = L"";
+				wsprintf(szText, L"큐브 %d", m_vecCube.size() -1);
+				m_ListBox.AddString(szText);
+
+
 	}
 	else
 	{
@@ -586,9 +579,14 @@ void CAddCube::OnBnClickedButton5()
 {
 	UpdateData(TRUE);
 	if(m_Radio1[0].GetCheck())
+	{
 	m_vecCube[m_CubeListBoxIndex]->SetOption(m_iEnum);
+	m_vecCube[m_CubeListBoxIndex]->SetScale(m_v)
+	}
 	else
+	{
 	m_vecSlopeCube[m_SlopeListBoxIndex]->SetOption(m_iEnum);
+	}
 	UpdateData(FALSE);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

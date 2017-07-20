@@ -141,8 +141,8 @@ HRESULT CToolCube::AddComponent()
 
 void CToolCube::Release( void )
 {
-//	Safe_Delete_Array(m_pVertex);
-//	Safe_Delete_Array(m_pConvertVertex);
+	//Safe_Delete_Array(m_pVertex);
+	//Safe_Delete_Array(m_pConvertVertex);
 
 
 }

@@ -21,8 +21,6 @@ CToolSlopeCube::CToolSlopeCube( LPDIRECT3DDEVICE9 pDevice , Engine::TILEINFO _ti
 , m_eTileOption(Engine::TILE_UNBROKEN)
 , m_TileInfo(_tileInfo)
 {
-
-
 	
 
 }
