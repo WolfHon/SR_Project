@@ -14,6 +14,7 @@
 #include "Cube.h" //Test용 임시
 #include "Bomb.h" //Test용 임시
 #include "BrokenCube.h"
+#include "Monster.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -70,11 +71,18 @@ HRESULT CStage::Initialize(void)
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
 	FAILED_CHECK(hr);
 
+
+
 	//Buffer
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 	FAILED_CHECK(hr);
 
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
+	FAILED_CHECK(hr);
+
+	
 #ifdef _DEBUG
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBECOLOR, L"Buffer_CubeColor");
@@ -146,6 +154,11 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	pGameObject = CPlayer::Create(m_pDevice);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Player", pGameObject);
+
+
+	pGameObject = CMonster::Create(m_pDevice);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Monster", pGameObject);
 
 	LoadData(pLayer,pGameObject);
 

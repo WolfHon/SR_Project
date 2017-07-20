@@ -293,6 +293,18 @@
 						RelativePath="..\Code\Player.h"
 						>
 					</File>
+					<Filter
+						Name="05.Monster"
+						>
+						<File
+							RelativePath="..\Code\Monster.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Monster.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="02.SkyBox"

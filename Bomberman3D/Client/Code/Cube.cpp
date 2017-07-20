@@ -34,7 +34,7 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 
 
 	m_pInfo->m_vScale = m_tagTileInfo.vScale;
-	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * 2.f, m_tagTileInfo.vPos.y * 4.f - 2.f, m_tagTileInfo.vPos.z * 2.f);
+	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x , m_tagTileInfo.vPos.y , m_tagTileInfo.vPos.z);
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
 	m_fSpeed = 10.f;
 
