@@ -581,11 +581,14 @@ void CAddCube::OnBnClickedButton5()
 	if(m_Radio1[0].GetCheck())
 	{
 	m_vecCube[m_CubeListBoxIndex]->SetOption(m_iEnum);
-	m_vecCube[m_CubeListBoxIndex]->SetScale(m_v)
+	m_vecCube[m_CubeListBoxIndex]->SetScale(m_vScale);
+	m_vecCube[m_CubeListBoxIndex]->SetTexture(m_TileInfo.eTexture);
 	}
 	else
 	{
 	m_vecSlopeCube[m_SlopeListBoxIndex]->SetOption(m_iEnum);
+	m_vecSlopeCube[m_SlopeListBoxIndex]->SetScale(m_vScale);
+	m_vecSlopeCube[m_SlopeListBoxIndex]->SetTexture(m_TileInfo.eTexture);
 	}
 	UpdateData(FALSE);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.

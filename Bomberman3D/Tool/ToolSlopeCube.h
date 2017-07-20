@@ -50,6 +50,10 @@ public:
 	{
 		m_TileInfo.eTileOption = (Engine::TILETYPE)_option;
 	}
+	void SetTexture(Engine::TILETEXTURE _vTexture)
+	{
+		m_TileInfo.eTexture = _vTexture;
+	}
 	void SetScale(D3DXVECTOR3 _vscale)
 	{
 		m_TileInfo.vScale = _vscale;

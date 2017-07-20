@@ -14,6 +14,7 @@ CFirstCamera::CFirstCamera(LPDIRECT3DDEVICE9 pDevice)
 
 CFirstCamera::~CFirstCamera(void)
 {
+	
 }
 
 Engine::OBJECT_RESULT CFirstCamera::Update(void)
