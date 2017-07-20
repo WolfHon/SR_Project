@@ -14,6 +14,8 @@ class CExplosion
 	: public Engine::CGameObject
 {
 public:
+	enum EXPLOSION_DIR { DIR_LEFT, DIR_RIGHT, DIR_FORWARD, DIR_BACK };
+public:
 	explicit CExplosion(LPDIRECT3DDEVICE9 pDevice);
 
 public:
@@ -24,11 +26,12 @@ public:
 	virtual void Render(void);
 
 public:
-	static CExplosion* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower);
+	static CExplosion* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir);
 
 private:
-	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
+	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir);
 	HRESULT	AddComponent(void);
+	Engine::OBJECT_RESULT FrameCheck(void);
 	void Release(void);
 
 private:
@@ -39,6 +42,8 @@ private:
 private:
 	float			m_fFrame;
 	float			m_fFrameSpeed;
+	DWORD		m_dwMaxFrame;
+	EXPLOSION_DIR	m_eDir;
 
 	int				m_iPower;
 };

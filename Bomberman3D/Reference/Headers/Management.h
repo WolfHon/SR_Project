@@ -55,6 +55,9 @@ public:
 	CGameObject* GetObject(const WORD& LayerID, const wstring& wstrObjKey);
 	Engine::OBJLIST* GetObjectList(const WORD& LayerID, const wstring& wstrObjKey);
 
+public:
+	HRESULT AddObject(const WORD& LayerID, const wstring& wstrObjKey, CGameObject* pGameObject);
+
 private:
 	void Release(void);
 

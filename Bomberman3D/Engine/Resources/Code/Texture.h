@@ -42,6 +42,7 @@ public:
 public:
 	HRESULT LoadTexture(TEXTURETYPE eTextureType, const wstring& wstrFilePath, const WORD& wCnt);
 	void Render(const DWORD& dwStage, const DWORD& iIndex);
+	const DWORD GetMaxSize(void);
 
 public:
 	static CTexture* Create(LPDIRECT3DDEVICE9 pGraphicDev

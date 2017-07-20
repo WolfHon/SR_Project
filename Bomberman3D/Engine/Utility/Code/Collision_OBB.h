@@ -61,9 +61,10 @@ public:
 public:
 	void GetColBox(D3DXVECTOR3* pMin, D3DXVECTOR3* pMax);
 	void CollisionUpdate(void);
-	bool CheckCollision(CCollision_OBB* pTerget);
+	bool CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj);	
 
 private:	
+	bool ProcessingCollision(CCollision_OBB* pTerget);
 	void ComputePoint(void);
 	void ComputeAxis(void);
 

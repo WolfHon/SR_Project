@@ -101,3 +101,12 @@ void Engine::CScene::MakePlane(void)
 	D3DXPlaneFromPoints(&m_plane[4], m_vtx  , m_vtx+3, m_vtx+7);	// 좌 평면(left)	
 	D3DXPlaneFromPoints(&m_plane[5], m_vtx+1, m_vtx+5, m_vtx+6);	// 우 평면(right)	
 }
+
+HRESULT Engine::CScene::AddObject(const WORD& LayerID, const wstring& wstrObjKey, CGameObject* pGameObject)
+{
+	MAPLAYER::iterator	iter = m_mapLayer.find(LayerID);
+	if(iter == m_mapLayer.end())
+		return NULL;
+
+	return iter->second->AddObject(wstrObjKey, pGameObject);
+}

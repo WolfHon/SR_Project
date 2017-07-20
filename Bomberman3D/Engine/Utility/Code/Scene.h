@@ -44,6 +44,9 @@ public:
 	Engine::OBJLIST* GetObjectList(const WORD& LayerID, const wstring& wstrObjKey);
 
 public:
+	HRESULT AddObject(const WORD& LayerID, const wstring& wstrObjKey, CGameObject* pGameObject);
+
+public:
 	HRESULT InitScene(void);
 	virtual void Update(void);
 	virtual void Render(void);

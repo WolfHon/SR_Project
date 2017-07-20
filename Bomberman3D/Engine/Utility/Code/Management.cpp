@@ -61,3 +61,8 @@ Engine::OBJLIST* Engine::CManagement::GetObjectList(const WORD& LayerID, const w
 {
 	return m_pScene->GetObjectList(LayerID, wstrObjKey);
 }
+
+HRESULT Engine::CManagement::AddObject(const WORD& LayerID, const wstring& wstrObjKey, CGameObject* pGameObject)
+{
+	return m_pScene->AddObject(LayerID, wstrObjKey, pGameObject);
+}

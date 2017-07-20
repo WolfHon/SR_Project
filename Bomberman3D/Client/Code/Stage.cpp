@@ -13,7 +13,6 @@
 
 #include "Cube.h" //Test용 임시
 #include "Bomb.h" //Test용 임시
-#include "Explosion.h" //Test용 임시
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -149,13 +148,13 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	LoadData(pLayer,pGameObject);
 
-	pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(4.f, 2.f, 4.f), 1);
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(16.f, 2.f, 0.f), 3);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Explosion", pGameObject);
+	pLayer->AddObject(L"Bomb", pGameObject);
 
-	pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(4.f, 2.f, 8.f), 1);
+	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(0.f, 2.f, 16.f), 3);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Explosion", pGameObject);
+	pLayer->AddObject(L"Bomb", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
@@ -206,7 +205,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			break;
 		}
 		pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-		pLayer->AddObject(L"Terrain", pGameObject);
+		pLayer->AddObject(L"UnBroken_Box", pGameObject);
 		
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
