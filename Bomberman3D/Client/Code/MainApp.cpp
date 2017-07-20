@@ -50,6 +50,7 @@ void CMainApp::Update(void)
 {
 	Engine::Get_TimeMgr()->SetTime();
 	Engine::Get_MouseMgr()->Update();
+	Engine::Get_KeyMgr()->Update();
 	Engine::Get_Management()->Update();
 }
 
@@ -86,4 +87,5 @@ void CMainApp::Release(void)
 	Engine::Get_InfoSubject()->DestroyInstance();
 	Engine::Get_CollisionMgr()->DestroyInstance();
 	Engine::Get_MouseMgr()->DestroyInstance();
+	Engine::Get_KeyMgr()->DestroyInstance();
 }

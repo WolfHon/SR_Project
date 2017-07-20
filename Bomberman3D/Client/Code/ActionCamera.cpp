@@ -61,6 +61,7 @@ CActionCamera* CActionCamera::Create(LPDIRECT3DDEVICE9 pDevice , const Engine::C
 void CActionCamera::ViewCheck(void)
 {
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
+	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
 
 	D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
 	D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
@@ -74,7 +75,7 @@ void CActionCamera::ViewCheck(void)
 	else if(m_fAngleX <= D3DXToRadian(-360.f))
 		m_fAngleX += D3DXToRadian(360.f);
 
-	if(GetAsyncKeyState(VK_SPACE))
+	if(!(~KeyState & Engine::KEY_SPACE_PRESS))
 	{
 		if(m_fTargetDistance >= m_fMaxDistance)
 			m_fTargetDistance = m_fMaxDistance;

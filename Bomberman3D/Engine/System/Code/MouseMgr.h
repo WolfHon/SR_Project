@@ -33,7 +33,7 @@ public:
 
 public:
 	CMouseMgr(void);
-	~CMouseMgr(void);
+	virtual ~CMouseMgr(void);
 
 public:
 	HRESULT	       Initialize(HWND hwnd, WORD WINCX, WORD WINCY);

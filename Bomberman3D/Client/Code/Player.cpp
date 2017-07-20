@@ -135,6 +135,7 @@ HRESULT CPlayer::AddComponent(void)
 void CPlayer::MoveCheck(void)
 {
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
+	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
 
 	m_pInfo->m_vPos.y = 2.25f;
 
@@ -142,7 +143,7 @@ void CPlayer::MoveCheck(void)
 	NULL_CHECK(pObject);
 	CCameraControl* pControl = dynamic_cast<CCameraControl*>(pObject);
 
-	if(GetAsyncKeyState(VK_SPACE) && pControl->GetCamera() != CCameraControl::CAM_ACTION)
+	if(!(~KeyState & Engine::KEY_SPACE_PRESS) && pControl->GetCamera() != CCameraControl::CAM_ACTION)
 	{
 		pControl->SetCamera(CCameraControl::CAM_ACTION);
 	}
@@ -169,13 +170,13 @@ void CPlayer::MoveCheck(void)
 		if(fExAngle != m_fAngle)
 			bChange = TRUE;
 
-		if(GetAsyncKeyState('W'))
+		if(!(~KeyState & Engine::KEY_W_PRESS))
 		{
 			bChange = TRUE;
 			m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 		}
 
-		if(GetAsyncKeyState('S'))
+		if(!(~KeyState & Engine::KEY_S_PRESS))
 		{
 			bChange = TRUE;
 			m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
@@ -185,13 +186,13 @@ void CPlayer::MoveCheck(void)
 		memcpy(&vRight, &m_pInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
 		D3DXVec3Normalize(&vRight, &vRight);
 
-		if(GetAsyncKeyState('A'))
+		if(!(~KeyState & Engine::KEY_A_PRESS))
 		{
 			bChange = TRUE;
 			m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 		}
 
-		if(GetAsyncKeyState('D'))
+		if(!(~KeyState & Engine::KEY_D_PRESS))
 		{
 			bChange = TRUE;
 			m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();

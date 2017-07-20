@@ -217,6 +217,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="03.KeyMgr"
+			>
+			<File
+				RelativePath="..\Code\KeyMgr.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Code\KeyMgr.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
