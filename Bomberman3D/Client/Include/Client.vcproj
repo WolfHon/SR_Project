@@ -366,6 +366,22 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="04.Effect"
+					>
+					<Filter
+						Name="00.Explosion"
+						>
+						<File
+							RelativePath="..\Code\Explosion.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Explosion.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

@@ -13,6 +13,7 @@
 
 #include "Cube.h" //Test용 임시
 #include "Bomb.h" //Test용 임시
+#include "Explosion.h" //Test용 임시
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -57,6 +58,11 @@ HRESULT CStage::Initialize(void)
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Bomb"
 		, L"../bin/Texture/bomb/bomb%d.dds", 2);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Explosion"
+		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 48);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -143,13 +149,13 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	LoadData(pLayer,pGameObject);
 
-	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(5.f, 0.75f, 5.f), 1);
+	pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(4.f, 2.f, 4.f), 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Bomb", pGameObject);
+	pLayer->AddObject(L"Explosion", pGameObject);
 
-	pGameObject = CBomb::Create(m_pDevice, D3DXVECTOR3(7.f, 0.75f, 7.f), 1);
+	pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(4.f, 2.f, 8.f), 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Bomb", pGameObject);
+	pLayer->AddObject(L"Explosion", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
