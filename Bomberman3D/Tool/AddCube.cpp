@@ -239,6 +239,10 @@ void CAddCube::OnLbnSelchangeList1()
 	m_vPos.x =m_vecCube[m_CubeListBoxIndex]->GetInfo().vPos.x;
 	m_vPos.y =m_vecCube[m_CubeListBoxIndex]->GetInfo().vPos.y;
 	m_vPos.z =m_vecCube[m_CubeListBoxIndex]->GetInfo().vPos.z;
+	m_vScale.x = m_vecCube[m_CubeListBoxIndex]->GetInfo().vScale.x;
+	m_vScale.y = m_vecCube[m_CubeListBoxIndex]->GetInfo().vScale.y;
+	m_vScale.z = m_vecCube[m_CubeListBoxIndex]->GetInfo().vScale.z;
+
 
 
 	for(int i = 0; i < 3; ++i)
@@ -271,6 +275,9 @@ void CAddCube::OnLbnSelchangeList3()
 	m_vPos.x = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vPos.x;
 	m_vPos.y = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vPos.y;
 	m_vPos.z = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vPos.z;
+	m_vScale.x = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vScale.x;
+	m_vScale.y = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vScale.y;
+	m_vScale.z = m_vecSlopeCube[m_SlopeListBoxIndex]->GetInfo().vScale.z;
 
 
 	for(int i = 0; i < 3; ++i)

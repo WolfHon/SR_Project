@@ -134,10 +134,10 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 {
 	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
-	Engine::CGameObject*	pGameObject = NULL;	
-
+	Engine::CGameObject*	pGameObject = NULL;
+	
 	pGameObject = CPlayer::Create(m_pDevice);
-	//NULL_CHECK(pGameObject);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Player", pGameObject);
 
 	pGameObject = CMonster::Create(m_pDevice);
@@ -180,7 +180,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 {
 	DWORD dwByte = 0;
 
-	HANDLE hFile = CreateFile(L"../../Data/STAGE2.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+	HANDLE hFile = CreateFile(L"../../Data/stage2.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 
 	while(1)
@@ -194,19 +194,16 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			Engine::Safe_Delete(pTileInfo);
 			break;
 		}
-
 		if(pTileInfo->eTileOption == Engine::TILE_UNBROKEN)
 		{
 			pGameObject = CCube::Create(m_pDevice, (*pTileInfo));
-			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"UnBroken_Box", pGameObject);
 		}
 		else
 		{
 			pGameObject = CBrokenCube::Create(m_pDevice , (*pTileInfo));
-			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Broken_Box", pGameObject);
-		}		
+		}
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 
