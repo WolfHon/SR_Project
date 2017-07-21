@@ -54,7 +54,7 @@ public:
 	virtual DWORD Release(void);
 
 public:
-	void	SetAngle(list<LPANIFRAME>	pAniList)
+	void	SetAngle(vector<LPANIFRAME>	pAniList)
 	{
 		m_listAni = pAniList;
 		m_bFirst = true;

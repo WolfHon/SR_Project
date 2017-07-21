@@ -49,7 +49,7 @@ private:
 	Engine::CPlayerModel*	m_pPlayerModel;
 
 private:
-	list<Engine::LPANIFRAME>		m_pAnimation;
+	vector<Engine::LPANIFRAME>		m_pAnimation;
 	CToolView*		m_pMainView;
 	Engine::ANIFRAME*	m_pAniFrame;
 	float			m_fAngle;

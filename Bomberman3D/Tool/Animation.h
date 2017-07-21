@@ -23,7 +23,7 @@ class CAnimation : public CDialog
 	DECLARE_DYNAMIC(CAnimation)
 
 private:
-	list<Engine::LPANIFRAME>			m_listAnimation;
+	vector<Engine::LPANIFRAME>			m_listAnimation;
 	CPlayerAnimation*		m_pPlayer;
 
 	D3DXVECTOR3			m_vPos;

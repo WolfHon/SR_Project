@@ -92,14 +92,18 @@ BOOL CAnimation::OnInitDialog()
 	m_Rot_Y.SetRange(0,100);
 	m_Rot_Z.SetRange(0,100);
 
-	m_Rot_X.SetRangeMin(0);
-	m_Rot_X.SetRangeMax(360);
+	m_Rot_X.SetRangeMin(-180);
+	m_Rot_X.SetRangeMax(180);
 
-	m_Rot_Y.SetRangeMin(0);
-	m_Rot_Y.SetRangeMax(360);
+	m_Rot_Y.SetRangeMin(-180);
+	m_Rot_Y.SetRangeMax(180);
 
-	m_Rot_Z.SetRangeMin(0);
-	m_Rot_Z.SetRangeMax(360);
+	m_Rot_Z.SetRangeMin(-180);
+	m_Rot_Z.SetRangeMax(180);
+
+	m_Rot_X.SetPos(0);
+	m_Rot_Y.SetPos(0);
+	m_Rot_Z.SetPos(0);
 
 	m_Rot_X.SetPageSize(5);
 	m_Rot_Y.SetPageSize(5);
@@ -150,6 +154,7 @@ BOOL CAnimation::OnInitDialog()
 
 void CAnimation::OnBnClickedResetModel()
 {
+
 	m_AnimationInfo.HeadAngle.AngleX = 0.f;
 	m_AnimationInfo.HeadAngle.AngleY = 0.f;
 	m_AnimationInfo.HeadAngle.AngleZ = 0.f;
@@ -177,6 +182,13 @@ void CAnimation::OnBnClickedResetModel()
 	m_listAnimation.push_back(&m_AnimationInfo);
 
 	UpdateData(TRUE);
+
+	m_Rot_X.SetPos(0.f);
+	fAngleX = 0.f;
+	m_Rot_Y.SetPos(0.f);
+	fAngleY = 0.f;
+	m_Rot_Z.SetPos(0.f);
+	fAngleZ = 0.f;
 
 	CToolView*		pAddPlayer = ((CMainFrame*)AfxGetMainWnd())->GetMainView();
 

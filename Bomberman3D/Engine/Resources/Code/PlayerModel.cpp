@@ -462,8 +462,8 @@ Engine::CResources* Engine::CPlayerModel::CloneResource(void)
 void Engine::CPlayerModel::Animation(void)
 {
 
-	static list<ANIFRAME*>::iterator		iter;
-	static list<ANIFRAME*>::iterator		iter2;
+	static vector<ANIFRAME*>::iterator		iter;
+	static vector<ANIFRAME*>::iterator		iter2;
 
 	if(m_bFirst)
 	{
@@ -473,8 +473,8 @@ void Engine::CPlayerModel::Animation(void)
 		m_bFirst = false;
 	}
 
-	list<ANIFRAME*>::iterator		iter_begin = m_listAni.begin();
-	list<ANIFRAME*>::iterator		iter_end = m_listAni.end();
+	vector<ANIFRAME*>::iterator		iter_begin = m_listAni.begin();
+	vector<ANIFRAME*>::iterator		iter_end = m_listAni.end();
 
 
 	if( iter == iter_end || iter2 == iter_end )
