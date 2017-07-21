@@ -49,6 +49,20 @@ public:
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice);
 
+public:
+	void SetSpeed(float _Speed)
+	{
+		m_fPlayerSpeed += _Speed;
+	}
+	void SetPower(float _Power)
+	{
+		m_fPower += _Power;
+	}
+	void SetAddBomb(int _AddBomb)
+	{
+		m_iAddBomb += _AddBomb;
+	}
+	
 private:
 	HRESULT Initialize(void);
 	HRESULT	AddComponent(void);
@@ -69,6 +83,11 @@ private:
 	float			m_fAngle;
 
 	D3DXVECTOR3 m_vExMousePos;
+
+private:
+	float       m_fPlayerSpeed;
+	int			m_iAddBomb;
+	float		m_fPower;
 };
 
 #endif // Player_h__

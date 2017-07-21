@@ -115,13 +115,17 @@ void CMonster::Release( void )
 void CMonster::AI( void )
 {
 
+	D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
 
 		if(CheckCollision() == TRUE)
-		{
-			   ChangeDir(m_pInfo->m_vDir);
+		{		
+
+			ChangeDir(vExPos);
 		}
 		else
-		m_pInfo->m_vPos += m_pInfo->m_vDir * 0.01f;
+		{
+			m_pInfo->m_vPos += m_pInfo->m_vDir * 10.f * Engine::Get_TimeMgr()->GetInstance()->GetTime();
+		}
 	
 
 
@@ -133,31 +137,27 @@ void CMonster::AI( void )
 
 }
 
-void CMonster::ChangeDir( D3DXVECTOR3 _dir )
+void CMonster::ChangeDir( D3DXVECTOR3 _pos )
 {
-	D3DXVECTOR3 vtemp = m_pInfo->m_vDir;
-	D3DXMATRIX	vMatY;
-	static float fAngle= 90.0;
-	
+	int irand = rand() % 4;
 
-
-	int irand = rand() % 2 +1;
+		m_pInfo->m_vPos = _pos - (m_pInfo->m_vDir);
 
 	switch(irand)
 	{
+	case 0:
+		m_pInfo->m_fAngle[Engine::ANGLE_Y] += D3DXToRadian(90.f);
+		break;
+
 	case 1:
-		D3DXMatrixRotationY(&vMatY,D3DXToRadian(fAngle));
-		D3DXVec3TransformNormal(&vtemp,&vtemp,&vMatY);
+		m_pInfo->m_fAngle[Engine::ANGLE_Y] -= D3DXToRadian(90.f);
 		break;
 
 	case 2:
-		D3DXMatrixRotationY(&vMatY,D3DXToRadian(-fAngle));
-		D3DXVec3TransformNormal(&vtemp,&vtemp,&vMatY);
+		m_pInfo->m_fAngle[Engine::ANGLE_Y] += D3DXToRadian(180.f);
+		break;
+
+	case 3:
 		break;
 	}
-
-
-	m_pInfo->m_vDir = _dir;
-	
-		
 }

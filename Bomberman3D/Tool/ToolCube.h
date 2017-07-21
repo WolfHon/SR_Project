@@ -91,8 +91,7 @@ private:
 	float			m_fSpeed;
 	float			m_fAngle;
 	CToolView*		m_pMainView;
-	Engine::TILETYPE				m_eTileOption;
-	Engine::TILETEXTURE				m_eTexture;
+
 
 
 

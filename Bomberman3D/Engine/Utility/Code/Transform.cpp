@@ -35,6 +35,7 @@ Engine::CTransform* Engine::CTransform::Create(const D3DXVECTOR3& vLook)
 
 DWORD Engine::CTransform::Release(void)
 {
+
 	return 0;
 }
 
