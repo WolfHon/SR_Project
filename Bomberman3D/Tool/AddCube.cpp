@@ -42,6 +42,7 @@ CAddCube::CAddCube(CWnd* pParent /*=NULL*/)
 	,m_vPos(0.f, 0.f, 0.f)
 	,m_vScale(1.f, 1.f, 1.f)
 	,m_fAngle(0.f)
+	,m_iEnum(0)
 {
 
 
