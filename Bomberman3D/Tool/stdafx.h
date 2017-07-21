@@ -74,3 +74,4 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <afxdhtml.h>

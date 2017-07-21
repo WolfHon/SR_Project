@@ -30,6 +30,7 @@ void CMyForm::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMyForm, CFormView)
 
 	ON_BN_CLICKED(IDC_BUTTON1, &CMyForm::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMyForm::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -59,5 +60,14 @@ void CMyForm::OnBnClickedButton1()
 		m_AddCube.Create(IDD_ADDCUBE);
 
 	m_AddCube.ShowWindow(SW_SHOW);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CMyForm::OnBnClickedButton2()
+{
+	if(m_Animation.GetSafeHwnd() == NULL)
+		m_Animation.Create(IDD_ANIMATION);
+
+	m_Animation.ShowWindow(SW_SHOW);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }

@@ -59,6 +59,24 @@ namespace Engine
 		TILESHAPE				eTileShape;
 
 	}TILEINFO;
+
+	typedef struct tagRotationInfo
+	{
+		float			AngleX; //Positive Y
+		float			AngleY; //Negative Y
+		float			AngleZ; //Negative X
+	}ANGLEINFO, *LPANGLEINFO;
+
+	typedef struct tagAniFrame
+	{
+		ANGLEINFO		HeadAngle;
+		ANGLEINFO		BodyAngle;
+		ANGLEINFO		LeftArmAngle;
+		ANGLEINFO		RightArmAngle;
+		ANGLEINFO		LeftFootAngle;
+		ANGLEINFO		RightFootAngle;
+	}ANIFRAME,	*LPANIFRAME;
+
 }
 
 #endif // __Engine_Struct_h__

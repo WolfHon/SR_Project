@@ -30,15 +30,19 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_MYFORM                      310
 #define IDD_MAIN                        311
+#define IDD_ANIMATION                   312
 #define IDD_ADDCUBE                     314
+#define IDR_HTML_ANIMATIONTOOL          315
 #define IDC_BUTTON1                     1000
 #define IDC_ADDCUBE                     1000
 #define IDC_BUTTON2                     1001
 #define IDC_LOADCUBE                    1001
 #define IDC_BUTTON3                     1002
 #define IDC_SAVECUBE                    1002
+#define IDC_ANI_SAVE                    1002
 #define IDC_BUTTON4                     1003
 #define IDC_BACKCUBE                    1003
+#define IDC_ANI_LOAD                    1003
 #define IDC_EDITXPOS                    1004
 #define IDC_EDITYPOS                    1005
 #define IDC_EDITZPOS                    1006
@@ -66,14 +70,29 @@
 #define IDC_INCREASEAngle               1025
 #define IDC_EDITZPOS3                   1026
 #define IDC_EDITZPOS4                   1027
+#define IDC_ROTATION_X                  1033
+#define IDC_ROTATION_Y                  1034
+#define IDC_ROTATION_Z                  1035
+#define IDC_VALUE_X                     1036
+#define IDC_VALUE_Y                     1037
+#define IDC_EDIT3                       1038
+#define IDC_VALUE_Z                     1038
+#define IDC_ANI_LIST                    1039
+#define IDC_FR_LIST                     1040
+#define IDC_FR_SAVE                     1041
+#define IDC_FR_LOAD                     1042
+#define IDC_RESET_MODEL                 1043
+#define IDC_ROT_Y_RIGHT                 1044
+#define IDC_ROT_Y_RIGHT2                1045
+#define IDC_ROT_Y_LEFT                  1045
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_RESOURCE_VALUE        316
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1025
-#define _APS_NEXT_SYMED_VALUE           315
+#define _APS_NEXT_CONTROL_VALUE         1045
+#define _APS_NEXT_SYMED_VALUE           316
 #endif
 #endif

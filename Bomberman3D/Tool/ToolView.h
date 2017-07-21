@@ -15,6 +15,7 @@ namespace Engine
 	class CLayer;
 }
 
+class CPlayerAnimation;
 class CToolSlopeCube;
 class CLayer;
 class CToolCamera;
@@ -29,6 +30,7 @@ public:
 private:
 	CToolCube*	m_pCube;
 	CToolCamera* m_pCamera;
+	CPlayerAnimation*	m_pPlayer;
 
 	vector<CToolCube*>	m_vecCube;
 	vector<CToolSlopeCube*> m_vecSlopeCube;
@@ -46,6 +48,10 @@ public:
 	{
 		return m_pCube;
 	}
+	CPlayerAnimation*	GetModel()
+	{
+		return	m_pPlayer;
+	}
 	LPDIRECT3DDEVICE9 GetDevice(void)
 	{
 		return m_pDevice;
@@ -61,6 +67,11 @@ public:
 		m_vecSlopeCube = _vec;
 	}
 
+	void SetPlayer(CPlayerAnimation*	_Player)
+	{
+		m_pPlayer = _Player;
+		m_bPlayerIn = true;
+	}
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -88,6 +99,7 @@ private:
 
 	D3DXVECTOR3 m_pt;
 	bool		m_click;
+	bool		m_bPlayerIn;
 
 
 private:

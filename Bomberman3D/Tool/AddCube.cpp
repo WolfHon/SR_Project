@@ -126,24 +126,21 @@ void CAddCube::OnBnClickedAddcube()
 
 	if(m_Radio1[0].GetCheck())
 	{
-	
-				m_TileInfo.eTileShape = Engine::TILE_CUBE;
-				m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
+		m_TileInfo.eTileShape = Engine::TILE_CUBE;
+		m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
 
-				m_vecCube.push_back(m_pCube);
+		m_vecCube.push_back(m_pCube);
 
-				Engine::TILEINFO tagTile;
-				tagTile = m_pCube->GetInfo();
-				m_vecTileInfo.push_back(tagTile);
+		Engine::TILEINFO tagTile;
+		tagTile = m_pCube->GetInfo();
+		m_vecTileInfo.push_back(tagTile);
 
-				CToolView* pToolView= ((CMainFrame*)AfxGetMainWnd())->GetMainView();
-				pToolView->SetVec(m_vecCube);
+		CToolView* pToolView= ((CMainFrame*)AfxGetMainWnd())->GetMainView();
+		pToolView->SetVec(m_vecCube);
 
-				TCHAR szText[256] = L"";
-				wsprintf(szText, L"큐브 %d", m_vecCube.size() -1);
-				m_ListBox.AddString(szText);
-
-
+		TCHAR szText[256] = L"";
+		wsprintf(szText, L"큐브 %d", m_vecCube.size() -1);
+		m_ListBox.AddString(szText);
 	}
 	else
 	{

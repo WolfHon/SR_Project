@@ -199,6 +199,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ToolPlayerModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ToolPlayerModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ToolSlopeCube.cpp"
 				>
 			</File>
@@ -216,6 +224,14 @@
 			</File>
 			<File
 				RelativePath=".\AddCube.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Animation.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Animation.h"
 				>
 			</File>
 			<File
@@ -365,6 +381,11 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\AnimationTool.htm"
+			DeploymentContent="true"
+			>
+		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

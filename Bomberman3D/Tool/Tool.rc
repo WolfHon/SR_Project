@@ -318,6 +318,36 @@ BEGIN
     LTEXT           "S.z",IDC_STATIC,76,63,12,8
 END
 
+IDD_ANIMATION DIALOGEX 0, 0, 421, 257
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,310,236,50,14
+    PUSHBUTTON      "취소",IDCANCEL,364,236,50,14
+    CONTROL         "",IDC_ROTATION_X,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,28,15,125,16
+    CONTROL         "",IDC_ROTATION_Y,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,28,33,125,16
+    CONTROL         "",IDC_ROTATION_Z,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,27,52,125,16
+    LTEXT           "X :",IDC_STATIC,15,19,10,8
+    LTEXT           "Y :",IDC_STATIC,14,36,10,8
+    LTEXT           "Z :",IDC_STATIC,14,56,10,8
+    EDITTEXT        IDC_VALUE_X,152,15,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_VALUE_Y,152,34,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_VALUE_Z,151,54,40,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_FR_LIST,85,94,59,69,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_ANI_LIST,15,95,59,69,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Animation_List",IDC_STATIC,19,86,53,8
+    LTEXT           "Frame_List",IDC_STATIC,87,86,55,8
+    PUSHBUTTON      "FR_Save",IDC_FR_SAVE,147,95,50,14
+    PUSHBUTTON      "FR_Load",IDC_FR_LOAD,147,112,50,14
+    PUSHBUTTON      "Ani_Save",IDC_ANI_SAVE,147,128,50,14
+    PUSHBUTTON      "Ani_Load",IDC_ANI_LOAD,147,143,50,14
+    PUSHBUTTON      "Reset",IDC_RESET_MODEL,201,14,50,14
+    PUSHBUTTON      ">",IDC_ROT_Y_RIGHT,253,55,31,14
+    PUSHBUTTON      "<",IDC_ROT_Y_LEFT,196,55,31,14
+    LTEXT           "Rot Y",IDC_STATIC,231,60,18,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -397,9 +427,24 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 193
     END
+
+    IDD_ANIMATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 414
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 250
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+IDR_HTML_ANIMATIONTOOL  HTML                    "AnimationTool.htm"
 
 /////////////////////////////////////////////////////////////////////////////
 //

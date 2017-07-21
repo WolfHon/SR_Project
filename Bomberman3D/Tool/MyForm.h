@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AddCube.h"
+#include "Animation.h"
 
 
 // CMyForm Æû ºäÀÔ´Ï´Ù.
@@ -11,6 +12,7 @@ class CMyForm : public CFormView
 
 private:
 	CAddCube		m_AddCube;
+	CAnimation		m_Animation;
 
 
 protected:
@@ -32,6 +34,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
 };
 
 

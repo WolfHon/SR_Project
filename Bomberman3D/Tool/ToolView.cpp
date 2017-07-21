@@ -19,6 +19,7 @@
 #include "Transform.h"
 #include "Scene.h"
 #include "ToolCamera.h"
+#include "ToolPlayerModel.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -45,6 +46,7 @@ CToolView::CToolView()
 :m_pGraphicDev(Engine::Get_GraphicDev())
 ,m_pDevice(NULL)
 ,m_click(FALSE)
+,m_bPlayerIn(false)
 {
 
 
@@ -81,15 +83,38 @@ void CToolView::OnInitialUpdate()
 
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Head"
+		, L"../Client/bin/Texture/Player1/Player1Head.dds", 1);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Body"
+		, L"../Client/bin/Texture/Player1/Player1Body.dds", 1);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Foot"
+		, L"../Client/bin/Texture/Player1/Player1Foot.dds", 1);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Texture_Player_Arm"
+		, L"../Client/bin/Texture/Player1/Player1Arm.dds", 1);
+
 	Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_CUBETEX, L"Buffer_CubeTex");
 
 	Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
 
+	Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::MODEL_PLAYER, L"Model_Player");
+
 	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"BreakCube"
 		, L"../Client/bin/Texture/Block/Block%d.dds", 8);
+
+	Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_CUBE, L"Block"
+		, L"../Client/bin/Texture/Block/Block%d.dds", 9);
 
 	//Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 	//	, Engine::TEXTURE_CUBE, L"UnBreakCubeFirst"
@@ -153,8 +178,11 @@ void CToolView::OnDraw(CDC* pDC)
 		(*iter1)->Render();
 	}
 
-
-	
+	if(m_bPlayerIn)
+	{
+		m_pPlayer->Update();
+		m_pPlayer->Render();
+	}
 	m_pCamera->Update();
 
 	Invalidate(FALSE);
