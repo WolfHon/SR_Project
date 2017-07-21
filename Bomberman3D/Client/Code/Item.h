@@ -31,6 +31,7 @@ public:
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, Engine::ITEMOPTION _ItemOption);
 	HRESULT	AddComponent(void);
+	BOOL CheckCollision(void);
 	//Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
@@ -40,7 +41,19 @@ private:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 
+	Engine::ITEMOPTION     m_tagItemOption;
+
+
+
 	CCollision_OBB*	m_pCollisionOBB;
+
+	float       m_fPlayerSpeed;
+	int			m_iAddBomb;
+	float		m_fPower;
+
+
+
+	int				m_inum;
 };
 
 #endif // Item_h__

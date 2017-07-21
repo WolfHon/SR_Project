@@ -20,8 +20,6 @@ CToolCube::CToolCube( LPDIRECT3DDEVICE9 pDevice,Engine::TILEINFO _tileInfo)
 , m_fAngle(0.f)
 , m_pInfo(NULL)
 , m_pTerrainCol(NULL)
-, m_eTexture(Engine::TILE_IMAGE0)
-, m_eTileOption(Engine::TILE_UNBROKEN)
 , m_TileInfo(_tileInfo)
 {
 
@@ -89,12 +87,12 @@ HRESULT CToolCube::Initialize( Engine::TILEINFO _tileInfo )
 {
 	FAILED_CHECK(AddComponent());
 
-	//m_TileInfo.vPos = _tileInfo.vPos;
-	//m_TileInfo.vScale = _tileInfo.vScale;
-	//m_TileInfo.fAngle = _tileInfo.fAngle;
-	//m_TileInfo.eTexture = _tileInfo.eTexture;
-	//m_TileInfo.eTileOption = _tileInfo.eTileOption;
-	//m_TileInfo.eTileShape = Engine::TILE_CUBE;
+	m_TileInfo.vPos = _tileInfo.vPos;
+	m_TileInfo.vScale = _tileInfo.vScale;
+	m_TileInfo.fAngle = _tileInfo.fAngle;
+	m_TileInfo.eTexture = _tileInfo.eTexture;
+	m_TileInfo.eTileOption = _tileInfo.eTileOption;
+	m_TileInfo.eTileShape = Engine::TILE_CUBE;
 
 
 	//m_pInfo->m_vPos = D3DXVECTOR3(float(rand() % VTXCNTX), 0.f, float(rand() % VTXCNTZ));

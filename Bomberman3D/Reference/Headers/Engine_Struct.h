@@ -59,6 +59,8 @@ namespace Engine
 		TILESHAPE				eTileShape;
 
 	}TILEINFO;
+
+
 }
 
 #endif // __Engine_Struct_h__
