@@ -180,7 +180,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 {
 	DWORD dwByte = 0;
 
-	HANDLE hFile = CreateFile(L"../../Data/STAGE1.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+	HANDLE hFile = CreateFile(L"../../Data/stage2.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 
 	while(1)
