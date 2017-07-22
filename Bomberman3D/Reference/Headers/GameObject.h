@@ -38,6 +38,7 @@ public:
 
 public:
 	CComponent* GetComponent(const wstring& wstrComponentKey);
+	void IsDead(void) { m_bIsDead = TRUE; }
 
 public:
 	virtual Engine::OBJECT_RESULT Update(void);
@@ -52,6 +53,8 @@ protected:
 protected:
 	typedef map<wstring, CComponent*>		MAPCOMPONENT;
 	MAPCOMPONENT		m_mapComponent;
+
+	bool				m_bIsDead;
 };
 
 END

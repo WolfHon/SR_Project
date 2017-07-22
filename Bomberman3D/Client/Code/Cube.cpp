@@ -9,11 +9,7 @@
 #include "Export_Function.h"
 
 CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
-: Engine::CGameObject(pDevice)
-, m_pTexture(NULL)
-, m_pBuffer(NULL)
-, m_pInfo(NULL)
-, m_pCollisionOBB(NULL)
+: CBlock(pDevice)
 {
 
 }
@@ -24,24 +20,29 @@ CCube::~CCube(void)
 }
 
 HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
-{
+{	
 	m_tagTileInfo = _TileInfo;
 
 	FAILED_CHECK(AddComponent());
 	
 	m_pInfo->m_vScale = m_tagTileInfo.vScale * WOLRD_SCALE;
-	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * WOLRD_SCALE, m_tagTileInfo.vPos.y * WOLRD_SCALE, m_tagTileInfo.vPos.z * WOLRD_SCALE);
+	m_pInfo->m_vPos = m_tagTileInfo.vPos * WOLRD_SCALE;
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
 
 	m_pInfo->Update();
 
-	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
+	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);	
+
+	CBlock::Initialize();
 	
 	return S_OK;
 }
 
 Engine::OBJECT_RESULT CCube::Update(void)
 {	
+	if(m_bIsDead)
+		return Engine::OR_DELETE;
+
 	return Engine::OR_OK;
 }
 
@@ -64,7 +65,7 @@ CCube* CCube::Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _TileInfo)
 }
 
 void CCube::Release(void)
-{	
+{		
 }
 
 HRESULT CCube::AddComponent(void)

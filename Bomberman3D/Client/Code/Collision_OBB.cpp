@@ -125,7 +125,8 @@ Engine::CGameObject* CCollision_OBB::CheckCollision(Engine::LAYERID eLayerID, ws
 {
 	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(eLayerID, wstrName);
 
-	NULL_CHECK_RETURN(listObj, NULL);
+	if(listObj == NULL)
+		return NULL;
 
 	Engine::OBJLIST::iterator iterBegin = listObj->begin();
 	Engine::OBJLIST::iterator iterEnd = listObj->end();

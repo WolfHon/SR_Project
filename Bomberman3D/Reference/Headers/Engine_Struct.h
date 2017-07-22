@@ -66,7 +66,6 @@ namespace Engine
 		int			iAddBomb;
 		float		fPower;
 	}ITEMINFO;
-
 }
 
 #endif // __Engine_Struct_h__

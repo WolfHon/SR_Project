@@ -309,6 +309,14 @@
 				<Filter
 					Name="07.Block"
 					>
+					<File
+						RelativePath="..\Code\Block.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Block.h"
+						>
+					</File>
 					<Filter
 						Name="00.Cube"
 						>
@@ -451,6 +459,18 @@
 					</File>
 					<File
 						RelativePath="..\Code\CameraControl.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.TerrainInfo"
+					>
+					<File
+						RelativePath="..\Code\TerrainInfo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\TerrainInfo.h"
 						>
 					</File>
 				</Filter>

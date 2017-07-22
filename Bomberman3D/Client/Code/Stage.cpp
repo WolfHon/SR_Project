@@ -112,7 +112,6 @@ CStage* CStage::Create(LPDIRECT3DDEVICE9 pDevice)
 
 void CStage::Release(void)
 {
-	
 }
 
 HRESULT CStage::Add_Enviroment_Layer(void)
@@ -212,9 +211,11 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		}
 		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
 		{
+			/*if(TileInfo.eTileOption == Engine::TILE_BROKEN)
+				continue;*/
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
-			pLayer->AddObject(L"Block_Cube", pGameObject);	
+			pLayer->AddObject(L"Block", pGameObject);	
 		}			
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
