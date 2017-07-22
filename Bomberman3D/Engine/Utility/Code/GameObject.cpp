@@ -3,7 +3,6 @@
 #include "Component.h"
 #include "Export_Function.h"
 
-
 Engine::CGameObject::CGameObject(LPDIRECT3DDEVICE9 pDevice)
 : m_pDevice(pDevice)
 {	

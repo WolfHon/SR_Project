@@ -9,12 +9,12 @@
 #include "CameraControl.h"
 
 #include "Transform.h"
-#include "Collision_OBB.h"
 
-#include "Cube.h" 
-#include "BrokenCube.h"
+#include "Cube.h"
 #include "Monster.h"
 #include "ItemUi.h"
+
+#include "Item.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -154,10 +154,14 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 	Engine::CLayer*			pLayer = Engine::CLayer::Create(m_pDevice);
 
 	Engine::CGameObject*	pGameObject = NULL;
-	
+
+	/*pGameObject = CItem::Create(m_pDevice, D3DXVECTOR3(6.f, 3.f, 12.f), Engine::ITEM_POWER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	pLayer->AddObject(L"Item", pGameObject);
+
 	pGameObject = CMonster::Create(m_pDevice);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Monster", pGameObject);
+	pLayer->AddObject(L"Monster", pGameObject);*/
 
 	LoadData(pLayer,pGameObject);
 	
@@ -203,7 +207,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 	HANDLE hFile = CreateFile(L"../../Data/STAGE3.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 
-	//vector<D3DXVECTOR3> t;
+	vector<D3DXVECTOR3> t;
 
 	while(1)
 	{
@@ -215,6 +219,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		{
 			break;
 		}
+
 		//for(size_t i = 0; i<t.size(); ++i)
 		//{
 		//	if(t[i] == TileInfo.vPos)
@@ -223,27 +228,18 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 
 		/*t.push_back(TileInfo.vPos);*/
 
-		if(TileInfo.eTileOption == Engine::TILE_UNBROKEN)
-		{
-			pGameObject = CCube::Create(m_pDevice, TileInfo);
-			NULL_CHECK(pGameObject);
-
-			pLayer->AddObject(L"UnBroken_Box", pGameObject);
-	
-		}
-		else if(TileInfo.eTileOption == Engine::TILE_BROKEN)
-		{
-			
-			/*pGameObject = CBrokenCube::Create(m_pDevice , TileInfo);
-			NULL_CHECK(pGameObject);
-			pLayer->AddObject(L"Broken_Box", pGameObject);*/
-		}
-		else if(TileInfo.eTileOption == Engine::TILE_START)
+		if(TileInfo.eTileOption == Engine::TILE_START)
 		{
 			pGameObject = CPlayer::Create(m_pDevice, TileInfo.vPos);
 			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Player", pGameObject);
 		}
+		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
+		{
+			pGameObject = CCube::Create(m_pDevice, TileInfo);
+			NULL_CHECK(pGameObject);
+			pLayer->AddObject(L"Block_Cube", pGameObject);	
+		}			
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 	}

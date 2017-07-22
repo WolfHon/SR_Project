@@ -55,9 +55,9 @@ public:
 	{
 		m_fPlayerSpeed += _Speed;
 	}
-	void SetPower(float _Power)
+	void SetPower(int _Power)
 	{
-		m_fPower += _Power;
+		m_iPower += m_iPower;
 	}
 	void SetAddBomb(int _AddBomb)
 	{
@@ -69,7 +69,6 @@ private:
 	HRESULT	AddComponent(void);
 	void AttackCheck(void);
 	void MoveCheck(void);
-	BOOL CheckCollision(void);
 	void Release(void);
 
 private:
@@ -91,7 +90,7 @@ private:
 private:
 	float       m_fPlayerSpeed;
 	int			m_iAddBomb;
-	float		m_fPower;
+	int			m_iPower;
 };
 
 #endif // Player_h__

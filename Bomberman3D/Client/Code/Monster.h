@@ -37,7 +37,6 @@ private:
 	HRESULT Initialize(void);
 	HRESULT	AddComponent(void);
 	void MoveCheck(void);
-	BOOL CheckCollision(void);
 	void Release(void);
 	void AI(void);
 	void ChangeDir(D3DXVECTOR3 _dir);
