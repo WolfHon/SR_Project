@@ -41,7 +41,7 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 }
 
 Engine::OBJECT_RESULT CCube::Update(void)
-{
+{	
 	return Engine::OR_OK;
 }
 

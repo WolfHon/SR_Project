@@ -55,6 +55,11 @@ public:
 	virtual CCollision* CloneCollision(void);
 
 public:
+	const D3DXVECTOR3* GetMin(void) const {return &m_vMin;}
+	const D3DXVECTOR3* GetMax(void) const {return &m_vMax;}
+	const D3DXMATRIX* GetMatrix(void) const {return m_pmatWorld;}
+
+public:
 	void SetColInfo(const D3DXMATRIX* pWorld, const D3DXVECTOR3* pMin = NULL, const D3DXVECTOR3* pMax = NULL);
 
 public:	
@@ -63,17 +68,11 @@ public:
 
 public:
 	void CollisionUpdate(void);
-	void AABBUpdate(void);
 	Engine::CGameObject* CheckCollision(Engine::LAYERID eLayerID, wstring wstrName, D3DXVECTOR3 vPos);
 
-public:
-	const D3DXVECTOR3* GetMin(void) const {return &m_vColliderMin;}
-	const D3DXVECTOR3* GetMax(void) const {return &m_vColliderMax;}
-	const D3DXMATRIX* GetMatrix(void) const {return &m_matColliderMatrix;}
-
 private:	
-	HRESULT	InitCollision(void);
-	bool CheckAABB(CCollision_OBB* pTarget);	
+	HRESULT	InitCollision(void);	
+	bool CheckDist(CCollision_OBB* pTarget);
 	bool ProcessingCollision(CCollision_OBB* pTarget);
 	void ComputePoint(void);
 	void ComputeAxis(void);
@@ -83,7 +82,6 @@ public:
 
 private:
 	const D3DXMATRIX*	m_pmatWorld;
-	D3DXMATRIX			m_matColliderMatrix;
 
 private:
 	LPDIRECT3DDEVICE9		m_pDevice;
@@ -93,13 +91,13 @@ private:
 	D3DXVECTOR3			m_vMax;
 	OBB					m_tOBB;
 
-	D3DXVECTOR3			m_vColliderMin;
-	D3DXVECTOR3			m_vColliderMax;
-
 	Engine::CCubeColor*		m_pCubeColor;
 	Engine::VTXCOL*	pVertex;
 
-	bool				m_bWireRender;
+#ifdef _DEBUG	
+	static bool				m_bWireRender;
+	bool					m_bExWire;
+#endif
 };
 
 #endif // __Collision_OBB_h__

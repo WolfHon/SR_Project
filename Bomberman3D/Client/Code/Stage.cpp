@@ -136,13 +136,13 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	Engine::CGameObject*	pGameObject = NULL;
 
-	pGameObject = CItem::Create(m_pDevice, D3DXVECTOR3(6.f, 3.f, 12.f), Engine::ITEM_POWER);
+	/*pGameObject = CItem::Create(m_pDevice, D3DXVECTOR3(6.f, 3.f, 12.f), Engine::ITEM_POWER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	pLayer->AddObject(L"Item", pGameObject);
 
 	pGameObject = CMonster::Create(m_pDevice);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Monster", pGameObject);
+	pLayer->AddObject(L"Monster", pGameObject);*/
 
 	LoadData(pLayer,pGameObject);
 	

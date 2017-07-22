@@ -75,7 +75,7 @@ void CPlayer::Render(void)
 {
  	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	m_pPlayerModel->Render();
-	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 0, 0));
+	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos)

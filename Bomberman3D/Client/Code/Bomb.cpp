@@ -37,6 +37,14 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower)
 	m_iPower = iPower;
 	m_wEffect = 255;
 
+	m_pInfo->Update();
+
+	if(m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Block_Cube", m_pInfo->m_vPos) != NULL ||
+		m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos) != NULL)
+	{
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -66,8 +74,15 @@ void CBomb::Render(void)
 	m_pTexture->Render(1, 1);
 	m_pBuffer->Render();
 
-	m_pDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_SELECTARG1 );
-	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_RGBA( 255, 255, 255, 255));
+	m_pDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+	m_pDevice->SetTextureStageState( 0, D3DTSS_COLOROP, D3DTOP_MODULATE );
+
+	m_pDevice->SetTextureStageState( 1, D3DTSS_COLORARG1, D3DTA_TEXTURE );
+	m_pDevice->SetTextureStageState( 1, D3DTSS_COLORARG2, D3DTA_CURRENT );
+	m_pDevice->SetTextureStageState( 1, D3DTSS_COLOROP, D3DTOP_DISABLE  );
+	m_pDevice->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+
+	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 0, 0));
 }
 
 CBomb* CBomb::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower)
