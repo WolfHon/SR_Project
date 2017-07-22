@@ -406,6 +406,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="07.UI"
+					>
+					<File
+						RelativePath="..\Code\ItemUi.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ItemUi.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

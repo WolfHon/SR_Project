@@ -14,6 +14,7 @@
 #include "Cube.h" 
 #include "BrokenCube.h"
 #include "Monster.h"
+#include "ItemUi.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -66,6 +67,20 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Bomb"
+		, L"../bin/Texture/item/bomb/Bomb%d.png", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Fire"
+		, L"../bin/Texture/item/fire/Fire%d.png", 1);
+	FAILED_CHECK(hr);
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Shoes"
+		, L"../bin/Texture/item/shoes/shoes%d.png", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
 	FAILED_CHECK(hr);
@@ -77,6 +92,10 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_RCTEX, L"Buffer_RCTex");
 	FAILED_CHECK(hr);
 
 	//Model
@@ -166,6 +185,11 @@ HRESULT CStage::Add_UI_Layer(void)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 	pLayer->AddObject(L"CameraControl", pGameObject);
+
+		pGameObject = CItemUi::Create(m_pDevice, D3DXVECTOR3(10.f, 0.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_UI, pLayer));
 
