@@ -4,6 +4,7 @@
 #include "Include.h"
 #include "Transform.h"
 #include "Export_Function.h"
+#include "CameraControl.h"
 
 CFirstCamera::CFirstCamera(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CCamera(pDevice)
@@ -21,6 +22,7 @@ Engine::OBJECT_RESULT CFirstCamera::Update(void)
 {
 	ViewCheck();
 	TargetRenewal();
+	KeyCheck();
 
 	return Engine::OR_OK;
 }
@@ -29,7 +31,7 @@ HRESULT CFirstCamera::Initialize(void)
 {
 	m_fAngleY = D3DXToRadian(0.f);
 	
-	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 0.1f, 500.f);
+	SetProjectionMatrix(D3DXToRadian(60.f), float(WINCX) / WINCY, 0.1f, 500.f);
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
@@ -89,4 +91,16 @@ void CFirstCamera::TargetRenewal(void)
 
 void CFirstCamera::Release(void)
 {
+}
+
+void CFirstCamera::KeyCheck(void)
+{
+	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
+
+	if(!(~KeyState & Engine::KEY_SPACE_PRESS))
+	{
+		CGameObject* pObject = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"CameraControl");
+		NULL_CHECK(pObject);
+		dynamic_cast<CCameraControl*>(pObject)->SetCamera(CCameraControl::CAM_ACTION);
+	}
 }

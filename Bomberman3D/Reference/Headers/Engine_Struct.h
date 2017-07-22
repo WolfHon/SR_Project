@@ -59,6 +59,14 @@ namespace Engine
 		TILESHAPE				eTileShape;
 
 	}TILEINFO;
+
+	typedef struct tagItemInfo
+	{
+		float		fSpeed;
+		int			iAddBomb;
+		float		fPower;
+	}ITEMINFO;
+
 }
 
 #endif // __Engine_Struct_h__

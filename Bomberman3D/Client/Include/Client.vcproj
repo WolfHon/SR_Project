@@ -329,14 +329,6 @@
 				<Filter
 					Name="99.Camera"
 					>
-					<File
-						RelativePath="..\Code\CameraControl.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\Code\CameraControl.h"
-						>
-					</File>
 					<Filter
 						Name="00.ActionCamera"
 						>
@@ -418,6 +410,18 @@
 			<Filter
 				Name="03.Design"
 				>
+				<Filter
+					Name="00.CameraObserver"
+					>
+					<File
+						RelativePath="..\Code\CameraObserver.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\CameraObserver.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Component"
@@ -431,6 +435,22 @@
 					</File>
 					<File
 						RelativePath="..\Code\Collision_OBB.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="04.Manager"
+				>
+				<Filter
+					Name="00.CameraControl"
+					>
+					<File
+						RelativePath="..\Code\CameraControl.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\CameraControl.h"
 						>
 					</File>
 				</Filter>

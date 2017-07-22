@@ -30,7 +30,7 @@ Engine::OBJECT_RESULT CActionCamera::Update(void)
 
 HRESULT CActionCamera::Initialize(void)
 {
-	m_fMaxDistance = 100.f;
+	m_fMaxDistance = 300.f;
 	m_fTargetDistance = 0.f;
 	m_fAngleX = D3DXToRadian(0.f);
 	m_fAngleY = D3DXToRadian(45.f);

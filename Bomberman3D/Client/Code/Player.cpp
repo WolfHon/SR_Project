@@ -9,6 +9,7 @@
 #include "Collision_OBB.h"
 #include "PlayerModel.h"
 #include "CameraControl.h"
+#include "CameraObserver.h"
 
 #include "Bomb.h"
 
@@ -28,17 +29,22 @@ CPlayer::~CPlayer(void)
 	Release();
 }
 
-HRESULT CPlayer::Initialize(void)
+HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 {
 	FAILED_CHECK(AddComponent());
+
+	m_pCamObserver = CCameraObserver::Create();
+	Engine::Get_InfoSubject()->Subscribe(m_pCamObserver);
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
 	m_fSpeed = 10.f;
 
-	m_pInfo->m_vScale = D3DXVECTOR3(0.5f, 0.5f, 0.5f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/6.f, WOLRD_SCALE/6.f, WOLRD_SCALE/6.f);
 
-	m_pInfo->m_vPos = D3DXVECTOR3(-12.f, 0.f, -12.f);
+	m_pInfo->m_vPos = vPos * WOLRD_SCALE;
+	m_pInfo->m_vPos.y = 0.26f; //##TEMP 지형 높이 충돌 만들고 삭제
+	m_pInfo->Update();
 
 	return S_OK;
 }
@@ -47,8 +53,13 @@ Engine::OBJECT_RESULT CPlayer::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 
-	MoveCheck();
-	AttackCheck();
+	CCameraControl::CAMERATYPE eCamType = m_pCamObserver->GetCamType();
+
+	if(eCamType == CCameraControl::CAM_FIRST)
+	{
+		MoveCheck();
+		AttackCheck();
+	}
 
 	return Engine::CGameObject::Update();	
 }
@@ -60,10 +71,10 @@ void CPlayer::Render(void)
 	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 0, 0));
 }
 
-CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
+CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos)
 {
 	CPlayer*	pGameObject = new CPlayer(pDevice);
-	if(FAILED(pGameObject->Initialize()))
+	if(FAILED(pGameObject->Initialize(vPos)))
 		Safe_Delete(pGameObject);
 
 	return pGameObject;
@@ -71,6 +82,8 @@ CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice)
 
 void CPlayer::Release(void)
 {	
+	Engine::Get_InfoSubject()->UnSubscribe(m_pCamObserver);
+	Safe_Delete(m_pCamObserver);
 }
 
 HRESULT CPlayer::AddComponent(void)
@@ -102,79 +115,67 @@ void CPlayer::MoveCheck(void)
 	float		fTime = Engine::Get_TimeMgr()->GetTime();
 	DWORD		KeyState = Engine::Get_KeyMgr()->GetKey();
 
-	m_pInfo->m_vPos.y = 2.25f;
+	float fExAngle = m_fAngle;
+	D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
+	BOOL bChange = FALSE;
 
-	CGameObject* pObject = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"CameraControl");
-	NULL_CHECK(pObject);
-	CCameraControl* pControl = dynamic_cast<CCameraControl*>(pObject);
+	D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
+	D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
 
-	if(!(~KeyState & Engine::KEY_SPACE_PRESS) && pControl->GetCamera() != CCameraControl::CAM_ACTION)
+	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
+
+	m_fAngle -= vMouseMove.x * D3DXToRadian(260.f) * fTime;		
+
+	if(m_fAngle >= D3DXToRadian(360.f))
+		m_fAngle -= D3DXToRadian(360.f);
+	else if(m_fAngle <= D3DXToRadian(-360.f))
+		m_fAngle += D3DXToRadian(360.f);
+
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
+
+	if(fExAngle != m_fAngle)
+		bChange = TRUE;
+
+	if(!(~KeyState & Engine::KEY_W_PRESS))
 	{
-		pControl->SetCamera(CCameraControl::CAM_ACTION);
+		bChange = TRUE;
+		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
 	}
-	else if(pControl->GetCamera() == CCameraControl::CAM_FIRST)
+
+	if(!(~KeyState & Engine::KEY_S_PRESS))
 	{
-		float fExAngle = m_fAngle;
-		D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
-		BOOL bChange = FALSE;
+		bChange = TRUE;
+		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	}
 
-		D3DXVECTOR3 vMousePos = Engine::Get_MouseMgr()->GetMousePos();
-		D3DXVECTOR3 vMouseMove = m_vExMousePos - vMousePos;
+	D3DXVECTOR3		vRight;
+	memcpy(&vRight, &m_pInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
+	D3DXVec3Normalize(&vRight, &vRight);
 
-		m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
+	if(!(~KeyState & Engine::KEY_A_PRESS))
+	{
+		bChange = TRUE;
+		m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	}
 
-		m_fAngle -= vMouseMove.x * D3DXToRadian(180.f) * fTime;		
+	if(!(~KeyState & Engine::KEY_D_PRESS))
+	{
+		bChange = TRUE;
+		m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+	}
 
-		if(m_fAngle >= D3DXToRadian(360.f))
-			m_fAngle -= D3DXToRadian(360.f);
-		else if(m_fAngle <= D3DXToRadian(-360.f))
-			m_fAngle += D3DXToRadian(360.f);
+	if(bChange == TRUE)
+	{
+		m_pInfo->Update();
 
-		m_pInfo->m_fAngle[Engine::ANGLE_Y] = m_fAngle;
-
-		if(fExAngle != m_fAngle)
-			bChange = TRUE;
-
-		if(!(~KeyState & Engine::KEY_W_PRESS))
+		if(CheckCollision() == TRUE)
 		{
-			bChange = TRUE;
-			m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
-		}
-
-		if(!(~KeyState & Engine::KEY_S_PRESS))
-		{
-			bChange = TRUE;
-			m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
-		}
-
-		D3DXVECTOR3		vRight;
-		memcpy(&vRight, &m_pInfo->m_matWorld.m[0][0], sizeof(D3DXVECTOR3));
-		D3DXVec3Normalize(&vRight, &vRight);
-
-		if(!(~KeyState & Engine::KEY_A_PRESS))
-		{
-			bChange = TRUE;
-			m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
-		}
-
-		if(!(~KeyState & Engine::KEY_D_PRESS))
-		{
-			bChange = TRUE;
-			m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
-		}
-
-		if(bChange == TRUE)
-		{
-			m_pInfo->Update();
-
-			if(CheckCollision() == TRUE)
-			{
-				m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
-				m_fAngle = fExAngle;
-				m_pInfo->m_vPos = vExPos;
-			}
+			m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
+			m_fAngle = fExAngle;
+			m_pInfo->m_vPos = vExPos;
 		}
 	}
+	
 }
 
 BOOL CPlayer::CheckCollision(void)
@@ -186,17 +187,14 @@ BOOL CPlayer::CheckCollision(void)
 
 void CPlayer::AttackCheck(void)
 {
-//	if(pControl->GetCamera() == CCameraControl::CAM_FIRST)
+	DWORD    MouseState = Engine::Get_MouseMgr()->GetMouseKey();
+
+	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{
-		DWORD    MouseState = Engine::Get_MouseMgr()->GetMouseKey();
+		Engine::CGameObject* pGameObject = NULL;
 
-		if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
-		{
-			Engine::CGameObject* pGameObject = NULL;
-
-			pGameObject = CBomb::Create(m_pDevice, m_pInfo->m_vPos + m_pInfo->m_vDir * 2.f, 3);
-			NULL_CHECK(pGameObject);
-			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
-		}
-	}	
+		pGameObject = CBomb::Create(m_pDevice, m_pInfo->m_vPos + m_pInfo->m_vDir * 2.f, 10);
+		NULL_CHECK(pGameObject);
+		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
+	}		
 }

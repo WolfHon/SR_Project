@@ -43,6 +43,7 @@ public:
 
 private:
 	HRESULT Initialize(void);
+	void	KeyCheck(void);
 
 public:
 	void SetCameraTarget(const Engine::CTransform* pTargetInfo);

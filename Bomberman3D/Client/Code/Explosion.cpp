@@ -33,7 +33,7 @@ HRESULT CExplosion::Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
 	m_eDir = edir;
 	
 	m_pInfo->m_vPos = vPos;
-	m_pInfo->m_vScale = D3DXVECTOR3(2.f, 2.f, 2.f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE, WOLRD_SCALE, WOLRD_SCALE);
 
 	m_iPower = iPower;
 	m_fFrameSpeed = 30.f;

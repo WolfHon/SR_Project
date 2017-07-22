@@ -27,6 +27,7 @@
 BEGIN(Engine)
 
 class CComponent;
+class CTextureObserver;
 
 class ENGINE_DLL CGameObject
 {

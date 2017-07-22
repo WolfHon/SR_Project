@@ -32,7 +32,7 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower)
 	FAILED_CHECK(AddComponent());
 
 	m_pInfo->m_vPos = vPos;
-	m_pInfo->m_vScale = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/4.f, WOLRD_SCALE/4.f, WOLRD_SCALE/4.f);
 	
 	m_iPower = iPower;
 	m_wEffect = 255;

@@ -1,5 +1,8 @@
 #include "Texture.h"
 
+TCHAR	Engine::CTexture::m_ExszPath[MAX_PATH] = L"";
+DWORD	Engine::CTexture::m_ExiIndex[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
 Engine::CTexture::CTexture(LPDIRECT3DDEVICE9 pDevice)
 : CResources(pDevice)
 {
@@ -9,7 +12,8 @@ Engine::CTexture::CTexture(const CTexture& rhs)
 : CResources(rhs)
 , m_dwContainerSize(rhs.m_dwContainerSize)
 , m_vecTexture(rhs.m_vecTexture)
-{
+, m_wstrPath(rhs.m_wstrPath)
+{	
 }
 
 Engine::CTexture::~CTexture(void)
@@ -27,6 +31,8 @@ HRESULT Engine::CTexture::LoadTexture(TEXTURETYPE eTextureType, const wstring& w
 
 	if(wCnt == 0)
 		return E_FAIL;
+
+	m_wstrPath = wstrFilePath;
 
 	m_vecTexture.reserve(wCnt);
 
@@ -62,7 +68,13 @@ void Engine::CTexture::Render(const DWORD& dwStage, const DWORD& iIndex)
 	if(iIndex >= m_dwContainerSize)
 		return;
 
-	m_pDevice->SetTexture(dwStage, m_vecTexture[iIndex]);
+	if(m_wstrPath.compare(m_ExszPath) != 0 || m_ExiIndex[dwStage] != iIndex)
+	{
+		m_pDevice->SetTexture(dwStage, m_vecTexture[iIndex]);
+
+		lstrcpy(m_ExszPath, m_wstrPath.c_str());
+		m_ExiIndex[dwStage] = iIndex;
+	}
 }
 
 Engine::CTexture* Engine::CTexture::Create(LPDIRECT3DDEVICE9 pGraphicDev, TEXTURETYPE eTextureType
