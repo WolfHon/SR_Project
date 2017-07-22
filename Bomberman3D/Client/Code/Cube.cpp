@@ -32,9 +32,8 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 
 	FAILED_CHECK(AddComponent());
 
-
-	m_pInfo->m_vScale = m_tagTileInfo.vScale * 2.f;
-	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * 2.f, m_tagTileInfo.vPos.y * 2.f - 2.f, m_tagTileInfo.vPos.z * 2.f);
+	m_pInfo->m_vScale = m_tagTileInfo.vScale *WOLRD_SCALE;
+	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * WOLRD_SCALE, m_tagTileInfo.vPos.y * WOLRD_SCALE, m_tagTileInfo.vPos.z * WOLRD_SCALE);
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
 	m_fSpeed = 10.f;
 	
@@ -60,6 +59,10 @@ void CCube::Render(void)
 	/*m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00000088);
 	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
+
+	/*m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSW, D3DTADDRESS_WRAP);*/
 
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 

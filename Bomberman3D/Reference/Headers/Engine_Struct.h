@@ -60,6 +60,12 @@ namespace Engine
 
 	}TILEINFO;
 
+	typedef struct tagItemInfo
+	{
+		float		fSpeed;
+		int			iAddBomb;
+		float		fPower;
+	}ITEMINFO;
 
 }
 

@@ -143,14 +143,16 @@ BOOL Engine::CLayer::IsInSphere(D3DXPLANE* m_plane, CGameObject* Obj)
 	if(pComponent == NULL)
 		return TRUE;
 
-	D3DXVECTOR3 vtargetPos = dynamic_cast<Engine::CTransform*>(pComponent)->m_vPos;
+	CTransform* pInfo = dynamic_cast<Engine::CTransform*>(pComponent);
 
+	float		fRadius;
 	float		fDist;
 
 	for(int i=0; i<6; ++i)
 	{
-		fDist = D3DXPlaneDotCoord(&m_plane[i], &vtargetPos);
-		if( fDist > (8.f+PLANE_EPSILON) ) 
+		fRadius = D3DXVec3Length(&pInfo->m_vScale) + 8.f;
+		fDist = D3DXPlaneDotCoord(&m_plane[i], &pInfo->m_vPos);
+		if( fDist > (fRadius+PLANE_EPSILON) ) 
 			return FALSE;
 	}
 

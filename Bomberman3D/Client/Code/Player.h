@@ -32,6 +32,7 @@ namespace Engine
 }
 
 class CCollision_OBB;
+class CCameraObserver;
 
 class CPlayer
 	: public Engine::CGameObject
@@ -47,7 +48,7 @@ public:
 	virtual void Render(void);
 
 public:
-	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice);
+	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos);
 
 public:
 	void SetSpeed(float _Speed)
@@ -64,7 +65,7 @@ public:
 	}
 	
 private:
-	HRESULT Initialize(void);
+	HRESULT Initialize(D3DXVECTOR3 vPos);
 	HRESULT	AddComponent(void);
 	void AttackCheck(void);
 	void MoveCheck(void);
@@ -77,6 +78,9 @@ private:
 	Engine::CPlayerModel*	m_pPlayerModel;
 
 	CCollision_OBB*	m_pCollisionOBB;
+
+private:
+	CCameraObserver*		m_pCamObserver;
 
 private:	
 	float			m_fSpeed;

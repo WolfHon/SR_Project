@@ -29,6 +29,8 @@ HRESULT CCameraControl::Initialize(const Engine::CTransform* pTargetInfo)
 	m_pCamera[CAM_FIRST] = CFirstCamera::Create(m_pDevice, pTargetInfo);
 	NULL_CHECK_RETURN(m_pCamera[CAM_FIRST], E_FAIL);
 
+	Engine::Get_InfoSubject()->AddData(L"CameraType", &m_eNowCam);
+
 	return S_OK;
 }
 
@@ -42,6 +44,8 @@ void CCameraControl::Release(void)
 
 Engine::OBJECT_RESULT CCameraControl::Update(void)
 {
+	Engine::Get_InfoSubject()->Notify(L"CameraType");
+
 	return m_pCamera[m_eNowCam]->Update();
 }
 
@@ -63,9 +67,4 @@ CCameraControl* CCameraControl::Create(LPDIRECT3DDEVICE9 pDevice, const Engine::
 void CCameraControl::SetCamera(CAMERATYPE NowCam)
 {
 	m_eNowCam = NowCam;
-}
-
-CCameraControl::CAMERATYPE CCameraControl::GetCamera()
-{
-	return m_eNowCam;
 }
