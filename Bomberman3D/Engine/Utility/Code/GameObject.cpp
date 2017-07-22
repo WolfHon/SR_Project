@@ -2,6 +2,10 @@
 
 #include "Component.h"
 #include "Export_Function.h"
+<<<<<<< HEAD
+=======
+
+>>>>>>> da2b5421edbbbe7b83a97ef4560e79ebc8a796c8
 
 Engine::CGameObject::CGameObject(LPDIRECT3DDEVICE9 pDevice)
 : m_pDevice(pDevice)
