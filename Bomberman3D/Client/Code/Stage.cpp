@@ -174,10 +174,9 @@ HRESULT CStage::Add_UI_Layer(void)
 
 void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 {
-	int i=0;
 	DWORD dwByte = 0;
 
-	HANDLE hFile = CreateFile(L"../../Data/stage2.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+	HANDLE hFile = CreateFile(L"../../Data/STAGE3.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 
 	//vector<D3DXVECTOR3> t;
@@ -192,24 +191,25 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		{
 			break;
 		}
+		//for(size_t i = 0; i<t.size(); ++i)
+		//{
+		//	if(t[i] == TileInfo.vPos)
+		//		int t = 0;
+		//}
+
+		/*t.push_back(TileInfo.vPos);*/
+
 		if(TileInfo.eTileOption == Engine::TILE_UNBROKEN)
 		{
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
 
 			pLayer->AddObject(L"UnBroken_Box", pGameObject);
-			++i;
+	
 		}
 		else if(TileInfo.eTileOption == Engine::TILE_BROKEN)
 		{
-			++i;
-			/*for(size_t i = 0; i<t.size(); ++i)
-			{
-				if(t[i] == TileInfo.vPos)
-					int t = 0;
-			}
-
-			t.push_back(TileInfo.vPos);*/
+			
 			/*pGameObject = CBrokenCube::Create(m_pDevice , TileInfo);
 			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Broken_Box", pGameObject);*/
