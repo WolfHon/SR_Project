@@ -38,11 +38,12 @@ Engine::OBJECT_RESULT CItemUi::Update( void )
 
 	D3DXMatrixInverse(&matBill, NULL, &matBill);
 	
-	;
+	
 
 	D3DXMatrixIdentity(&matUI);
 
-	D3DXMatrixOrthoLH(&matUI, WINCX, WINCY, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&matUI, WINCX, WINCY, 0.f, 500.f);
+
 	
 
 
@@ -53,12 +54,19 @@ Engine::OBJECT_RESULT CItemUi::Update( void )
 
 void CItemUi::Render( void )
 {
-		
 
-	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
+	 
+
+
+
 	
-	m_pTexture->Render(0,0);
-	m_pBuffer->Render();
+
+	m_pTexture->Render(0, 0);
+	m_pBuffer->Render();	
+
+	m_Sprite->End();
+	
+	
 
 }
 
@@ -76,6 +84,8 @@ HRESULT CItemUi::Initialize( D3DXVECTOR3 vPos)
 
 
 	FAILED_CHECK(AddComponent());
+
+	D3DXCreateSprite(m_pDevice,&m_Sprite);
 
 	m_pInfo->m_vPos = vPos;
 

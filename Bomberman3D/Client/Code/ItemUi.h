@@ -36,6 +36,8 @@ private:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 
+	LPD3DXSPRITE			m_Sprite;
+
 	D3DXMATRIX				 matUI;
 
 
