@@ -20,6 +20,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 , m_fSpeed(0.f)
 , m_fAngle(0.f)
 , m_pInfo(NULL)
+, m_iAddBomb(0)
+, m_fPower(0.f)
+, m_fPlayerSpeed(0.f)
 , m_pCollisionOBB(NULL)
 {
 }

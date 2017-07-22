@@ -90,4 +90,5 @@ HRESULT CSkybox::AddComponent(void)
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
 
 	return S_OK;
+
 }

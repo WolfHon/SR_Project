@@ -70,11 +70,11 @@ void CAddCube::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO4, m_Radio1[0]);
 	DDX_Control(pDX, IDC_RADIO5, m_Radio1[1]);
 
-	if(m_bRadioButtonStartCheck)
-	{
-		m_Radio[0].SetCheck(TRUE);
-		m_bRadioButtonStartCheck = false;
-	}
+	//if(m_bRadioButtonStartCheck)
+	//{
+	//	m_Radio[0].SetCheck(TRUE);
+	//	m_bRadioButtonStartCheck = false;
+	//}
 
 	DDX_Control(pDX, IDC_LIST2, m_ListBox1);
 	DDX_Control(pDX, IDC_LIST3, m_SlopList);
@@ -124,12 +124,13 @@ void CAddCube::OnBnClickedAddcube()
 	m_TileInfo.vPos.x = m_vPos.x;
 	m_TileInfo.vPos.y = m_vPos.y;
 	m_TileInfo.vPos.z = m_vPos.z;
+	m_TileInfo.eTileOption = (Engine::TILETYPE)m_iEnum;
 
 	if(m_Radio1[0].GetCheck())
 	{
 	
 				m_TileInfo.eTileShape = Engine::TILE_CUBE;
-				m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
+ 				m_pCube = CToolCube::Create(pAddCube->GetDevice() , m_TileInfo);
 
 				m_vecCube.push_back(m_pCube);
 
