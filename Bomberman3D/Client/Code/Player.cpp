@@ -21,7 +21,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 , m_fAngle(0.f)
 , m_pInfo(NULL)
 , m_iAddBomb(0)
-, m_fPower(0.f)
+, m_iPower(0)
 , m_fPlayerSpeed(0.f)
 , m_pCollisionOBB(NULL)
 {
@@ -42,6 +42,10 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
 	m_fSpeed = 10.f;
+
+	m_fPlayerSpeed = 1.f;
+	m_iAddBomb = 1;
+	m_iPower = 1;
 
 	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/6.f, WOLRD_SCALE/6.f, WOLRD_SCALE/6.f);
 
@@ -142,13 +146,13 @@ void CPlayer::MoveCheck(void)
 	if(!(~KeyState & Engine::KEY_W_PRESS))
 	{
 		bChange = TRUE;
-		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
 	}
 
 	if(!(~KeyState & Engine::KEY_S_PRESS))
 	{
 		bChange = TRUE;
-		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
 	}
 
 	D3DXVECTOR3		vRight;
@@ -158,34 +162,26 @@ void CPlayer::MoveCheck(void)
 	if(!(~KeyState & Engine::KEY_A_PRESS))
 	{
 		bChange = TRUE;
-		m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
 	}
 
 	if(!(~KeyState & Engine::KEY_D_PRESS))
 	{
 		bChange = TRUE;
-		m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime();
+		m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
 	}
 
 	if(bChange == TRUE)
 	{
 		m_pInfo->Update();
 
-		if(CheckCollision() == TRUE)
+		if(m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Block_Cube", m_pInfo->m_vPos) != NULL)
 		{
 			m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
 			m_fAngle = fExAngle;
 			m_pInfo->m_vPos = vExPos;
 		}
-	}
-	
-}
-
-BOOL CPlayer::CheckCollision(void)
-{
-	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"UnBroken_Box");
-
-	return m_pCollisionOBB->CheckCollision(m_pInfo->m_vPos, listObj);
+	}	
 }
 
 void CPlayer::AttackCheck(void)
@@ -194,10 +190,23 @@ void CPlayer::AttackCheck(void)
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{
-		Engine::CGameObject* pGameObject = NULL;
 
-		pGameObject = CBomb::Create(m_pDevice, m_pInfo->m_vPos + m_pInfo->m_vDir * 2.f, 10);
-		NULL_CHECK(pGameObject);
-		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
+		float DirX = fabs(m_pInfo->m_vDir.x) < fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.x < 0 ? -1.f : 1.f);
+		float DirZ = fabs(m_pInfo->m_vDir.x) > fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.z < 0 ? -1.f : 1.f);
+
+		if(fabs(m_pInfo->m_vDir.x) > 0.2f && fabs(m_pInfo->m_vDir.z) > 0.2f)
+			return;
+
+		float fX = int((m_pInfo->m_vPos.x + (DirX  * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+		float fZ = int((m_pInfo->m_vPos.z + (DirZ * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	
+		D3DXVECTOR3 vBombPos = D3DXVECTOR3(fX, m_pInfo->m_vPos.y, fZ);	
+
+ 		Engine::CGameObject* pGameObject = NULL;
+
+		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower);
+
+		if(pGameObject != NULL)
+			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
 	}		
 }

@@ -99,13 +99,6 @@ void CMonster::MoveCheck( void )
 	AI();
 }
 
-BOOL CMonster::CheckCollision( void )
-{
-	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"UnBroken_Box");
-
-	return m_pCollisionOBB->CheckCollision(m_pInfo->m_vPos, listObj);
-}
-
 void CMonster::Release( void )
 {
 
@@ -117,9 +110,8 @@ void CMonster::AI( void )
 
 	D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
 
-		if(CheckCollision() == TRUE)
+		if(m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Block_Cube", m_pInfo->m_vPos) != NULL)
 		{		
-
 			ChangeDir(vExPos);
 		}
 		else

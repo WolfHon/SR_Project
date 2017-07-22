@@ -114,11 +114,11 @@ void CCollision_OBB::ComputeAxis(void)
 		D3DXVec3Normalize(&m_tOBB.vParallel[i], &m_tOBB.vParallel[i]);
 }
 
-
-bool CCollision_OBB::CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj)
+Engine::CGameObject* CCollision_OBB::CheckCollision(Engine::LAYERID eLayerID, wstring wstrName, D3DXVECTOR3 vPos)
 {
-	if (listObj == NULL)
-		return FALSE;
+	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(eLayerID, wstrName);
+
+	NULL_CHECK_RETURN(listObj, NULL);
 
 	Engine::OBJLIST::iterator iterBegin = listObj->begin();
 	Engine::OBJLIST::iterator iterEnd = listObj->end();
@@ -135,10 +135,10 @@ bool CCollision_OBB::CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj)
 			continue;	
 
 		if (ProcessingCollision(ptarget))
-			return TRUE;
+			return *iterBegin;
 	}
 
-	return FALSE;
+	return NULL;
 }
 
 bool CCollision_OBB::ProcessingCollision(CCollision_OBB* pTarget)
@@ -249,6 +249,11 @@ bool CCollision_OBB::CheckAABB(CCollision_OBB* pTarget)
 void CCollision_OBB::Render(const DWORD& dwColor)
 {
 #ifdef _DEBUG	
+	DWORD KeyState = Engine::Get_KeyMgr()->GetKey();
+
+	if(!(~KeyState & Engine::KEY_F1_CLICK))
+		m_bWireRender = !m_bWireRender;
+
 	if(m_bWireRender == TRUE)
 	{
 	m_pCubeColor->GetVtxInfo(pVertex);
@@ -274,14 +279,4 @@ void CCollision_OBB::Render(const DWORD& dwColor)
 	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
 #endif
-}
-
-Engine::OBJECT_RESULT CCollision_OBB::Update(void)
-{
-	DWORD KeyState = Engine::Get_KeyMgr()->GetKey();
-
-	if(!(~KeyState & Engine::KEY_F1_CLICK))
-		m_bWireRender = !m_bWireRender;
-
-	return Engine::OR_OK;
 }

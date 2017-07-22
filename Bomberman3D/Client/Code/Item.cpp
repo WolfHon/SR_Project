@@ -18,7 +18,7 @@ CItem::CItem( LPDIRECT3DDEVICE9 pDevice )
 ,m_inum(0)
 ,m_fPlayerSpeed(0)
 ,m_iAddBomb(0)
-,m_fPower(0)
+,m_iPower(0)
 
 {
 
@@ -29,7 +29,7 @@ CItem::~CItem( void )
 	Release();
 }
 
-CItem* CItem::create( LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vpos, Engine::ITEMOPTION _ItemOption )
+CItem* CItem::Create( LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vpos, Engine::ITEMOPTION _ItemOption )
 {
 	CItem*	pGameObject = new CItem(pDevice);
 	if(FAILED(pGameObject->Initialize(vpos, _ItemOption)))
@@ -52,7 +52,7 @@ HRESULT CItem::Initialize( D3DXVECTOR3 vPos, Engine::ITEMOPTION _ItemOption )
 			break;
 
 		case Engine::ITEM_POWER:
-			m_fPower = 1.f;
+			m_iPower = 1;
 			break;
 
 		case Engine::ITEM_ADDBOMB:
@@ -133,38 +133,25 @@ void CItem::Release( void )
 
 BOOL CItem::CheckCollision( void )
 {
-	 Engine::CGameObject* pGameObject = NULL;
-	++m_inum;
-
-	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"Player");
-
-	if(m_pCollisionOBB->CheckCollision(m_pInfo->m_vPos, listObj))
+	 Engine::CGameObject* pGameObject = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
+	
+	if(pGameObject != NULL)
 	{
-		Engine::OBJLIST::iterator iter = listObj->begin();
-		Engine::OBJLIST::iterator iter_end = listObj->end();
-
-		for( ; iter != iter_end ; ++iter)
+		switch(m_tagItemOption)
 		{
-			if(m_inum == 1)
-				continue;
+		case Engine::ITEM_SPEED:
+			dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed);
+			break;
 
-			switch(m_tagItemOption)
-			{
-			case Engine::ITEM_SPEED:
-				dynamic_cast<CPlayer*>((*iter))->SetSpeed(m_fPlayerSpeed);
-				break;
+		case Engine::ITEM_POWER:
+			dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower);
+			break;
 
-			case Engine::ITEM_POWER:
-				dynamic_cast<CPlayer*>((*iter))->SetPower(m_fPower);
-				break;
-
-			case Engine::ITEM_ADDBOMB:
-				dynamic_cast<CPlayer*>((*iter))->SetAddBomb(m_iAddBomb);
-				break;
-
-			}
+		case Engine::ITEM_ADDBOMB:
+			dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb);
+			break;
 		}
-	return TRUE;
+		return TRUE;
 	}
 	else
 	{

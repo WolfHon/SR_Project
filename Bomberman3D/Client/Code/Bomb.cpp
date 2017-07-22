@@ -125,19 +125,19 @@ Engine::OBJECT_RESULT CBomb::Explosion(void)
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 4.f, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 4.f, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z + 4.f), m_iPower - 1, CExplosion::DIR_BACK);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z - 4.f), m_iPower - 1, CExplosion::DIR_FORWARD);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
 		NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
 		Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 

@@ -58,14 +58,13 @@ public:
 	void SetColInfo(const D3DXMATRIX* pWorld, const D3DXVECTOR3* pMin = NULL, const D3DXVECTOR3* pMax = NULL);
 
 public:	
-	virtual Engine::OBJECT_RESULT Update(void);
 	void Render(const DWORD& dwColor);
 	virtual DWORD Release(void);
 
 public:
 	void CollisionUpdate(void);
 	void AABBUpdate(void);
-	bool CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj);
+	Engine::CGameObject* CheckCollision(Engine::LAYERID eLayerID, wstring wstrName, D3DXVECTOR3 vPos);
 
 public:
 	const D3DXVECTOR3* GetMin(void) const {return &m_vColliderMin;}

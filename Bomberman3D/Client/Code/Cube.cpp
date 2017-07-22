@@ -5,7 +5,6 @@
 #include "VIBuffer.h"
 #include "Transform.h"
 #include "Collision_OBB.h"
-
 #include "Include.h"
 #include "Export_Function.h"
 
@@ -13,8 +12,6 @@ CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
 , m_pTexture(NULL)
 , m_pBuffer(NULL)
-, m_fSpeed(0.f)
-, m_fAngle(0.f)
 , m_pInfo(NULL)
 , m_pCollisionOBB(NULL)
 {
@@ -31,47 +28,30 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 	m_tagTileInfo = _TileInfo;
 
 	FAILED_CHECK(AddComponent());
-
-	m_pInfo->m_vScale = m_tagTileInfo.vScale *WOLRD_SCALE;
+	
+	m_pInfo->m_vScale = m_tagTileInfo.vScale * WOLRD_SCALE;
 	m_pInfo->m_vPos = D3DXVECTOR3(m_tagTileInfo.vPos.x * WOLRD_SCALE, m_tagTileInfo.vPos.y * WOLRD_SCALE, m_tagTileInfo.vPos.z * WOLRD_SCALE);
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
-	m_fSpeed = 10.f;
+
+	m_pInfo->Update();
+
+	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 	
 	return S_OK;
 }
 
 Engine::OBJECT_RESULT CCube::Update(void)
 {
-	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
-
-	return Engine::CGameObject::Update();
+	return Engine::OR_OK;
 }
 
 void CCube::Render(void)
 {	
-	//m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
-	
-	/*m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	m_pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-	m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);*/
-
-	/*m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00000088);
-	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);*/
-
-	/*m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
-	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
-	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSW, D3DTADDRESS_WRAP);*/
-
 	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 
 	m_pTexture->Render(0, m_tagTileInfo.eTexture);
 	m_pBuffer->Render();
-	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 0, 255, 0));
-
-	//m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	/*m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);*/
+	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 0, 255, 100));
 }
 
 CCube* CCube::Create(LPDIRECT3DDEVICE9 pDevice, Engine::TILEINFO _TileInfo)
@@ -101,24 +81,12 @@ HRESULT CCube::AddComponent(void)
 	m_pTexture = dynamic_cast<Engine::CTexture*>(pComponent);
 	NULL_CHECK_RETURN(m_pTexture, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
-
-	switch(m_tagTileInfo.eTileShape)
-	{
-	case Engine::TILE_CUBE://Buffer
-		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
-		m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
-		NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
-		m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
-		break;
-
-	case Engine::TILE_SLOPE:
-		pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_SlopeTex");
-		m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
-		NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
-		m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
-		break;
-	}
-
+	
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
+	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
+	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
+	
 	//OBBCollision_OBB
 	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);

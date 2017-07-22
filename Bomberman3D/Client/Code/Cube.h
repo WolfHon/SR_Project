@@ -1,18 +1,5 @@
-/*!
- * \file Cube.h
- * \date 2017/07/13 10:19
- *
- * \author Administrator
- * Contact: user@company.com
- *
- * \brief 
- *
- * TODO: long description
- *
- * \note
-*/
-#ifndef Cube_h__
-#define Cube_h__
+#ifndef __Cube_h_
+#define __Cube_h_
 
 #include "GameObject.h"
 
@@ -22,7 +9,6 @@ namespace Engine
 	class CVIBuffer;
 	class CTransform;
 }
-
 class CCollision_OBB;
 
 class CCube
@@ -49,15 +35,10 @@ private:
 private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
-	Engine::CTransform*		m_pInfo;	
+	Engine::CTransform*		m_pInfo;
 	Engine::TILEINFO		m_tagTileInfo;
 
 	CCollision_OBB*	m_pCollisionOBB;
-
-private:
-	float			m_fSpeed;
-	float			m_fAngle;
 };
 
-
-#endif // Cube_h__
+#endif // __Cube_h_

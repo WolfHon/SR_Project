@@ -25,7 +25,7 @@ public:
 	virtual void Render(void);
 
 public:
-	static CItem* create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vpos, Engine::ITEMOPTION _ItemOption);
+	static CItem* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vpos, Engine::ITEMOPTION _ItemOption);
 
 
 private:
@@ -49,7 +49,7 @@ private:
 
 	float       m_fPlayerSpeed;
 	int			m_iAddBomb;
-	float		m_fPower;
+	int			m_iPower;
 
 
 

@@ -307,24 +307,24 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="98.Temp"
+					Name="07.Block"
 					>
-					<File
-						RelativePath="..\Code\BrokenCube.cpp"
+					<Filter
+						Name="00.Cube"
 						>
-					</File>
-					<File
-						RelativePath="..\Code\BrokenCube.h"
+						<File
+							RelativePath="..\Code\Cube.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Cube.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="01.Slope"
 						>
-					</File>
-					<File
-						RelativePath="..\Code\Cube.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\Code\Cube.h"
-						>
-					</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="99.Camera"
