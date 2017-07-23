@@ -11,6 +11,7 @@
 #include "Transform.h"
 
 #include "Cube.h"
+#include "Slope.h"
 #include "Monster.h"
 
 #include "Item.h"
@@ -182,7 +183,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 	HANDLE hFile = CreateFile(L"../../Data/STAGE3.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 
-	vector<D3DXVECTOR3> t;
+	//vector<D3DXVECTOR3> t;
 
 	while(1)
 	{
@@ -211,12 +212,19 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		}
 		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
 		{
-			/*if(TileInfo.eTileOption == Engine::TILE_BROKEN)
-				continue;*/
+			if(TileInfo.eTileOption == Engine::TILE_BROKEN)
+				continue;
+
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Block", pGameObject);	
-		}			
+		}	
+		else if(TileInfo.eTileShape == Engine::TILE_SLOPE)
+		{
+			pGameObject = CSlope::Create(m_pDevice, TileInfo);
+			NULL_CHECK(pGameObject);
+			pLayer->AddObject(L"Block", pGameObject);	
+		}
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
 	}
