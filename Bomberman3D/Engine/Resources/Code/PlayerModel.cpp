@@ -131,6 +131,7 @@ Engine::CPlayerModel::CPlayerModel(const CPlayerModel& rhs)
 ,m_matRightFootPibotTrans(rhs.m_matRightFootPibotTrans)
 ,m_matLeftFootPibotTrans(rhs.m_matLeftFootPibotTrans)
 ,m_bAnimationCh(false)
+,m_bFirstTime(true)
 {
 	m_pHeadBuffer->AddRefCnt();
 	m_pBodyBuffer->AddRefCnt();
@@ -339,11 +340,20 @@ HRESULT Engine::CPlayerModel::Initialize(void)
 	D3DXMatrixTranslation(&m_matLeftFootPibotTrans,	 -m_vLeftFootPibotPos.x,  -m_vLeftFootPibotPos.y,	-m_vLeftFootPibotPos.z); 
 	D3DXMatrixTranslation(&m_matRightFootPibotTrans, -m_vRightFootPibotPos.x, -m_vRightFootPibotPos.y,  -m_vRightFootPibotPos.z);
 	m_bAnimationCh = false;
+
 	return S_OK;
 }
 
 void Engine::CPlayerModel::Render(void)
 {
+	if(m_bFirstTime)
+	{
+		ANIFRAME			FirstAngle;
+		ResetAngle(&FirstAngle);
+		m_listAni.push_back(FirstAngle);
+
+		m_bFirstTime = false;
+	}
 
 	if(m_bDiscrimination_Fr_Ani)
 	{
@@ -359,7 +369,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------Body-----------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vBodyScale.x ,m_vBodyScale.y ,m_vBodyScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyTrans * m_matBodyWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyWorld * matWorld));
 	m_pBodyTexture->Render(0,0);
 	m_pBodyBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -367,7 +377,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------Head-----------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vHeadScale.x ,m_vHeadScale.y ,m_vHeadScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matHeadPibotTrans * m_matHeadWorld * m_matBodyWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matHeadPibotTrans * m_matHeadWorld * matWorld));
 	m_pHeadTexture->Render(0,0);
 	m_pHeadBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -375,7 +385,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------LeftArm--------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vArmScale.x ,m_vArmScale.y ,m_vArmScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftArmPibotTrans * m_matLeftArmWorld * m_matBodyWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftArmPibotTrans * m_matLeftArmWorld * matWorld));
 	m_pLeftArmTexture->Render(0,0);
 	m_pLeftArmBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -383,7 +393,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------RightArm-------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vArmScale.x ,m_vArmScale.y ,m_vArmScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightArmPibotTrans * m_matRightArmWorld * m_matBodyWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightArmPibotTrans * m_matRightArmWorld * matWorld));
 	m_pRightArmTexture->Render(0,0);
 	m_pRightArmBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -392,7 +402,7 @@ void Engine::CPlayerModel::Render(void)
 
 	D3DXMatrixScaling(&m_matScale, m_vFootScale.x ,m_vFootScale.y ,m_vFootScale.z);
 	D3DXMATRIX matPibot, matTrans, matRot;
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftFootPibotTrans * m_matLeftFootWorld * m_matBodyWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftFootPibotTrans * m_matLeftFootWorld * matWorld));
 	m_pLeftFootTexture->Render(0,0);
 	m_pLeftFootBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -400,7 +410,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------RightFoot------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vFootScale.x ,m_vFootScale.y ,m_vFootScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightFootPibotTrans * m_matRightFootWorld * m_matBodyWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightFootPibotTrans * m_matRightFootWorld * matWorld));
 	m_pRightFootTexture->Render(0,0);
 	m_pRightFootBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -852,5 +862,33 @@ void Engine::CPlayerModel::Frame(void)
 	D3DXMatrixRotationY(&m_matRightFootRotationY, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleY));
 	D3DXMatrixRotationZ(&m_matRightFootRotationZ, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleZ));
 	m_matRightFootWorld = m_matRightFootRotationX * m_matRightFootRotationY * m_matRightFootRotationZ * m_matRightFootTrans;
+}
+
+void Engine::CPlayerModel::ResetAngle(ANIFRAME* pFrame)
+{
+	pFrame->HeadAngle.AngleX = 0.f;
+	pFrame->HeadAngle.AngleY = 0.f;
+	pFrame->HeadAngle.AngleZ = 0.f;
+
+	pFrame->BodyAngle.AngleX = 0.f;
+	pFrame->BodyAngle.AngleY = 0.f;
+	pFrame->BodyAngle.AngleZ = 0.f;
+
+	pFrame->LeftArmAngle.AngleX = 0.f;
+	pFrame->LeftArmAngle.AngleY = 0.f;
+	pFrame->LeftArmAngle.AngleZ = 0.f;
+
+	pFrame->RightArmAngle.AngleX = 0.f;
+	pFrame->RightArmAngle.AngleY = 0.f;
+	pFrame->RightArmAngle.AngleZ = 0.f;
+
+	pFrame->LeftFootAngle.AngleX = 0.f;
+	pFrame->LeftFootAngle.AngleY = 0.f;
+	pFrame->LeftFootAngle.AngleZ = 0.f;
+
+	pFrame->RightFootAngle.AngleX = 0.f;
+	pFrame->RightFootAngle.AngleY = 0.f;
+	pFrame->RightFootAngle.AngleZ = 0.f;
+	pFrame->fTime = 0.f;
 }
 

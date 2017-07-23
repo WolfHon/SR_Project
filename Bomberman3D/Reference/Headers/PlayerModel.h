@@ -69,6 +69,7 @@ public:
 	}
 
 public:
+	void	ResetAngle(ANIFRAME* pFrame);
 	void	Frame(void);
 	void	Animation(void);
 	bool	CompareAngle(void);
@@ -134,6 +135,7 @@ private:
 	vector<ANIFRAME>	m_listAni;
 	vector<ANIFRAME>	m_LastAniList;
 	float				m_fScaleSize;
+	bool				m_bFirstTime;
 	bool				m_bHeadCom;
 	bool				m_bBodyCom;
 	bool				m_bLeftArmCom;
