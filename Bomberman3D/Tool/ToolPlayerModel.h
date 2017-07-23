@@ -41,7 +41,8 @@ public:
 		m_pMainView = pView;
 	}
 
-	void SetAnimation(Engine::ANIFRAME* _AniFrame);
+	void SetAnimation(vector<Engine::ANIFRAME> _Animation);
+	void SetFrame(Engine::ANIFRAME	_AniFrame);
 
 private:
 	Engine::CTexture*		m_pTexture;
@@ -49,9 +50,9 @@ private:
 	Engine::CPlayerModel*	m_pPlayerModel;
 
 private:
-	vector<Engine::LPANIFRAME>		m_pAnimation;
+	vector<Engine::ANIFRAME>		m_pAnimation;
 	CToolView*		m_pMainView;
-	Engine::ANIFRAME*	m_pAniFrame;
+	Engine::ANIFRAME	m_pAniFrame;
 	float			m_fAngle;
 	float			m_fSpeed;
 };

@@ -54,13 +54,22 @@ public:
 	virtual DWORD Release(void);
 
 public:
-	void	SetAngle(list<LPANIFRAME>	pAniList)
+	void	SetAngle(vector<ANIFRAME>	pAniList)
 	{
 		m_listAni = pAniList;
 		m_bFirst = true;
+
+		m_bDiscrimination_Fr_Ani = true;
 	};
 
+	void	SetFrame(ANIFRAME	pFrameAngle)
+	{
+		m_pFrameAngle = pFrameAngle;
+		m_bDiscrimination_Fr_Ani = false;
+	}
+
 public:
+	void	Frame(void);
 	void	Animation(void);
 	bool	CompareAngle(void);
 	bool	CompareHeadAngle(void);
@@ -120,11 +129,12 @@ protected:
 private:
 	typedef map<wstring, CComponent*>		MAPCOMPONENT;
 	MAPCOMPONENT		m_mapComponent;
-	ANIFRAME*			m_pFrameAngle;
-	ANIFRAME*			m_pNextFrame;
-	list<ANIFRAME*>		m_listAni;
+	ANIFRAME			m_pFrameAngle;
+	ANIFRAME			m_pNextFrame;
+	vector<ANIFRAME>		m_listAni;
 	float				m_fScaleSize;
 	bool				m_bFirst;
+	bool				m_bDiscrimination_Fr_Ani;
 };
 
 END

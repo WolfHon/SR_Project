@@ -41,8 +41,9 @@ Engine::CPlayerModel::CPlayerModel(LPDIRECT3DDEVICE9 pDevice)
 ,m_pRightFootBuffer(NULL)
 ,m_fScaleSize(1.f)
 //Extra
-,m_pFrameAngle(NULL)
 ,m_bFirst(true)
+,m_bDiscrimination_Fr_Ani(true)
+
 {
 	D3DXMatrixIdentity(&m_matHeadWorld);
 	D3DXMatrixIdentity(&m_matBodyWorld);
@@ -341,14 +342,21 @@ HRESULT Engine::CPlayerModel::Initialize(void)
 void Engine::CPlayerModel::Render(void)
 {
 
-	Animation();
+	if(m_bDiscrimination_Fr_Ani)
+	{
+		Animation();
+	}
+	else
+	{
+		Frame();
+	}
 	D3DXMATRIX matWorld;
 	m_pDevice->GetTransform(D3DTS_WORLD, &matWorld);
 
 	//--------------------------------------Body-----------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vBodyScale.x ,m_vBodyScale.y ,m_vBodyScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyWorld/* * matWorld*/));
 	m_pBodyTexture->Render(0,0);
 	m_pBodyBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -356,7 +364,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------Head-----------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vHeadScale.x ,m_vHeadScale.y ,m_vHeadScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matHeadPibotTrans * m_matHeadWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matHeadPibotTrans * m_matHeadWorld * m_matBodyWorld));
 	m_pHeadTexture->Render(0,0);
 	m_pHeadBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -364,7 +372,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------LeftArm--------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vArmScale.x ,m_vArmScale.y ,m_vArmScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftArmPibotTrans * m_matLeftArmWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftArmPibotTrans * m_matLeftArmWorld * m_matBodyWorld));
 	m_pLeftArmTexture->Render(0,0);
 	m_pLeftArmBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -372,7 +380,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------RightArm-------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vArmScale.x ,m_vArmScale.y ,m_vArmScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightArmPibotTrans * m_matRightArmWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightArmPibotTrans * m_matRightArmWorld * m_matBodyWorld));
 	m_pRightArmTexture->Render(0,0);
 	m_pRightArmBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -381,7 +389,7 @@ void Engine::CPlayerModel::Render(void)
 
 	D3DXMatrixScaling(&m_matScale, m_vFootScale.x ,m_vFootScale.y ,m_vFootScale.z);
 	D3DXMATRIX matPibot, matTrans, matRot;
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftFootPibotTrans * m_matLeftFootWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matLeftFootPibotTrans * m_matLeftFootWorld * m_matBodyWorld));
 	m_pLeftFootTexture->Render(0,0);
 	m_pLeftFootBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -389,7 +397,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------RightFoot------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vFootScale.x ,m_vFootScale.y ,m_vFootScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightFootPibotTrans * m_matRightFootWorld * matWorld));
+	m_pDevice->SetTransform(D3DTS_WORLD,&(m_matScale * m_matRightFootPibotTrans * m_matRightFootWorld * m_matBodyWorld));
 	m_pRightFootTexture->Render(0,0);
 	m_pRightFootBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -462,8 +470,8 @@ Engine::CResources* Engine::CPlayerModel::CloneResource(void)
 void Engine::CPlayerModel::Animation(void)
 {
 
-	static vector<ANIFRAME*>::iterator		iter;
-	static vector<ANIFRAME*>::iterator		iter2;
+	static vector<ANIFRAME>::iterator		iter;
+	static vector<ANIFRAME>::iterator		iter2;
 
 	if(m_bFirst)
 	{
@@ -473,8 +481,8 @@ void Engine::CPlayerModel::Animation(void)
 		m_bFirst = false;
 	}
 
-	vector<ANIFRAME*>::iterator		iter_begin = m_listAni.begin();
-	vector<ANIFRAME*>::iterator		iter_end = m_listAni.end();
+	vector<ANIFRAME>::iterator		iter_begin = m_listAni.begin();
+	vector<ANIFRAME>::iterator		iter_end = m_listAni.end();
 
 
 	if( iter == iter_end || iter2 == iter_end )
@@ -484,61 +492,38 @@ void Engine::CPlayerModel::Animation(void)
 	m_pNextFrame = (*iter2);
 
 
-	/*if(m_bFirst)
-	{
-		m_pFrameAngle = (*iter);
-		if(++iter2 != iter_end)
-			m_pNextFrame = (*iter2);
-		else
-		{
-			m_pNextFrame = (*--iter2);
-		}
-		m_bFirst = false;
-	}*/
-	D3DXMatrixRotationX(&m_matHeadRotationX, D3DXToRadian(m_pFrameAngle->HeadAngle.AngleX));
-	D3DXMatrixRotationY(&m_matHeadRotationY, D3DXToRadian(m_pFrameAngle->HeadAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matHeadRotationZ, D3DXToRadian(m_pFrameAngle->HeadAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matHeadRotationX, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleX));
+	D3DXMatrixRotationY(&m_matHeadRotationY, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matHeadRotationZ, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleZ));
 	m_matHeadWorld = m_matHeadRotationX * m_matHeadRotationY * m_matHeadRotationZ * m_matHeadTrans;
 
-	D3DXMatrixRotationX(&m_matBodyRotationX, D3DXToRadian(m_pFrameAngle->BodyAngle.AngleX));
-	D3DXMatrixRotationY(&m_matBodyRotationY, D3DXToRadian(m_pFrameAngle->BodyAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matBodyRotationZ, D3DXToRadian(m_pFrameAngle->BodyAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matBodyRotationX, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleX));
+	D3DXMatrixRotationY(&m_matBodyRotationY, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matBodyRotationZ, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleZ));
 	m_matBodyWorld = m_matBodyRotationX * m_matBodyRotationY * m_matBodyRotationZ * m_matBodyWorld;
 
-	D3DXMatrixRotationX(&m_matLeftArmRotationX, D3DXToRadian(m_pFrameAngle->LeftArmAngle.AngleX));
-	D3DXMatrixRotationY(&m_matLeftArmRotationY, D3DXToRadian(m_pFrameAngle->LeftArmAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matLeftArmRotationZ, D3DXToRadian(m_pFrameAngle->LeftArmAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matLeftArmRotationX, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleX));
+	D3DXMatrixRotationY(&m_matLeftArmRotationY, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matLeftArmRotationZ, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleZ));
 	m_matLeftArmWorld = m_matLeftArmRotationX * m_matLeftArmRotationY * m_matLeftArmRotationZ * m_matLeftArmTrans;
 
-	D3DXMatrixRotationX(&m_matRightArmRotationX, D3DXToRadian(m_pFrameAngle->RightArmAngle.AngleX));
-	D3DXMatrixRotationY(&m_matRightArmRotationY, D3DXToRadian(m_pFrameAngle->RightArmAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matRightArmRotationZ, D3DXToRadian(m_pFrameAngle->RightArmAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matRightArmRotationX, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleX));
+	D3DXMatrixRotationY(&m_matRightArmRotationY, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matRightArmRotationZ, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleZ));
 	m_matRightArmWorld = m_matRightArmRotationX * m_matRightArmRotationY * m_matRightArmRotationZ * m_matRightArmTrans;
 
-	D3DXMatrixRotationX(&m_matLeftFootRotationX, D3DXToRadian(m_pFrameAngle->LeftFootAngle.AngleX));
-	D3DXMatrixRotationY(&m_matLeftFootRotationY, D3DXToRadian(m_pFrameAngle->LeftFootAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matLeftFootRotationZ, D3DXToRadian(m_pFrameAngle->LeftFootAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matLeftFootRotationX, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleX));
+	D3DXMatrixRotationY(&m_matLeftFootRotationY, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matLeftFootRotationZ, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleZ));
 	m_matLeftFootWorld = m_matLeftFootRotationX * m_matLeftFootRotationY * m_matLeftFootRotationZ * m_matLeftFootTrans;
 
-	D3DXMatrixRotationX(&m_matRightFootRotationX, D3DXToRadian(m_pFrameAngle->RightFootAngle.AngleX));
-	D3DXMatrixRotationY(&m_matRightFootRotationY, D3DXToRadian(m_pFrameAngle->RightFootAngle.AngleY));
-	D3DXMatrixRotationZ(&m_matRightFootRotationZ, D3DXToRadian(m_pFrameAngle->RightFootAngle.AngleZ));
+	D3DXMatrixRotationX(&m_matRightFootRotationX, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleX));
+	D3DXMatrixRotationY(&m_matRightFootRotationY, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matRightFootRotationZ, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleZ));
 	m_matRightFootWorld = m_matRightFootRotationX * m_matRightFootRotationY * m_matRightFootRotationZ * m_matRightFootTrans;
 
 	if(CompareAngle())
 	{
-		//++iter;
-		//if(iter2 != iter_end)
-		//	++iter2;
-
-		//if(iter == iter2)
-		//{
-		//	iter = m_listAni.begin();
-		//	iter2 = m_listAni.begin();
-		//	++iter2;
-		//}
-		//m_pFrameAngle = (*iter);
-		//m_pNextFrame  = (*iter2);
 
 		iter = iter2;
 
@@ -562,34 +547,34 @@ bool Engine::CPlayerModel::CompareHeadAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->HeadAngle.AngleX == m_pNextFrame->HeadAngle.AngleX)
+	if(m_pFrameAngle.HeadAngle.AngleX == m_pNextFrame.HeadAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->HeadAngle.AngleX > m_pNextFrame->HeadAngle.AngleX)
-		--(m_pFrameAngle->HeadAngle.AngleX);
+	else if(m_pFrameAngle.HeadAngle.AngleX > m_pNextFrame.HeadAngle.AngleX)
+		--(m_pFrameAngle.HeadAngle.AngleX);
 
-	else if(m_pFrameAngle->HeadAngle.AngleX < m_pNextFrame->HeadAngle.AngleX)
-		++(m_pFrameAngle->HeadAngle.AngleX);
+	else if(m_pFrameAngle.HeadAngle.AngleX < m_pNextFrame.HeadAngle.AngleX)
+		++(m_pFrameAngle.HeadAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->HeadAngle.AngleY == m_pNextFrame->HeadAngle.AngleY)
+	if(m_pFrameAngle.HeadAngle.AngleY == m_pNextFrame.HeadAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->HeadAngle.AngleY > m_pNextFrame->HeadAngle.AngleY)
-		--(m_pFrameAngle->HeadAngle.AngleY);
+	else if(m_pFrameAngle.HeadAngle.AngleY > m_pNextFrame.HeadAngle.AngleY)
+		--(m_pFrameAngle.HeadAngle.AngleY);
 
-	else if(m_pFrameAngle->HeadAngle.AngleY < m_pNextFrame->HeadAngle.AngleY)
-		++(m_pFrameAngle->HeadAngle.AngleY);
+	else if(m_pFrameAngle.HeadAngle.AngleY < m_pNextFrame.HeadAngle.AngleY)
+		++(m_pFrameAngle.HeadAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->HeadAngle.AngleZ == m_pNextFrame->HeadAngle.AngleZ)
+	if(m_pFrameAngle.HeadAngle.AngleZ == m_pNextFrame.HeadAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->HeadAngle.AngleZ > m_pNextFrame->HeadAngle.AngleZ)
-		--(m_pFrameAngle->HeadAngle.AngleZ);
+	else if(m_pFrameAngle.HeadAngle.AngleZ > m_pNextFrame.HeadAngle.AngleZ)
+		--(m_pFrameAngle.HeadAngle.AngleZ);
 
-	else if(m_pFrameAngle->HeadAngle.AngleZ < m_pNextFrame->HeadAngle.AngleZ)
-		++(m_pFrameAngle->HeadAngle.AngleZ);
+	else if(m_pFrameAngle.HeadAngle.AngleZ < m_pNextFrame.HeadAngle.AngleZ)
+		++(m_pFrameAngle.HeadAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -603,34 +588,34 @@ bool Engine::CPlayerModel::CompareLeftArmAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->LeftArmAngle.AngleX == m_pNextFrame->LeftArmAngle.AngleX)
+	if(m_pFrameAngle.LeftArmAngle.AngleX == m_pNextFrame.LeftArmAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleX > m_pNextFrame->LeftArmAngle.AngleX)
-		--(m_pFrameAngle->LeftArmAngle.AngleX);
+	else if(m_pFrameAngle.LeftArmAngle.AngleX > m_pNextFrame.LeftArmAngle.AngleX)
+		--(m_pFrameAngle.LeftArmAngle.AngleX);
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleX < m_pNextFrame->LeftArmAngle.AngleX)
-		++(m_pFrameAngle->LeftArmAngle.AngleX);
+	else if(m_pFrameAngle.LeftArmAngle.AngleX < m_pNextFrame.LeftArmAngle.AngleX)
+		++(m_pFrameAngle.LeftArmAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->LeftArmAngle.AngleY == m_pNextFrame->LeftArmAngle.AngleY)
+	if(m_pFrameAngle.LeftArmAngle.AngleY == m_pNextFrame.LeftArmAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleY > m_pNextFrame->LeftArmAngle.AngleY)
-		--(m_pFrameAngle->LeftArmAngle.AngleY);
+	else if(m_pFrameAngle.LeftArmAngle.AngleY > m_pNextFrame.LeftArmAngle.AngleY)
+		--(m_pFrameAngle.LeftArmAngle.AngleY);
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleY < m_pNextFrame->LeftArmAngle.AngleY)
-		++(m_pFrameAngle->LeftArmAngle.AngleY);
+	else if(m_pFrameAngle.LeftArmAngle.AngleY < m_pNextFrame.LeftArmAngle.AngleY)
+		++(m_pFrameAngle.LeftArmAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->LeftArmAngle.AngleZ == m_pNextFrame->LeftArmAngle.AngleZ)
+	if(m_pFrameAngle.LeftArmAngle.AngleZ == m_pNextFrame.LeftArmAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleZ > m_pNextFrame->LeftArmAngle.AngleZ)
-		--(m_pFrameAngle->LeftArmAngle.AngleZ);
+	else if(m_pFrameAngle.LeftArmAngle.AngleZ > m_pNextFrame.LeftArmAngle.AngleZ)
+		--(m_pFrameAngle.LeftArmAngle.AngleZ);
 
-	else if(m_pFrameAngle->LeftArmAngle.AngleZ < m_pNextFrame->LeftArmAngle.AngleZ)
-		++(m_pFrameAngle->LeftArmAngle.AngleZ);
+	else if(m_pFrameAngle.LeftArmAngle.AngleZ < m_pNextFrame.LeftArmAngle.AngleZ)
+		++(m_pFrameAngle.LeftArmAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -646,34 +631,34 @@ bool Engine::CPlayerModel::CompareRightArmAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->RightArmAngle.AngleX == m_pNextFrame->RightArmAngle.AngleX)
+	if(m_pFrameAngle.RightArmAngle.AngleX == m_pNextFrame.RightArmAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->RightArmAngle.AngleX > m_pNextFrame->RightArmAngle.AngleX)
-		--(m_pFrameAngle->RightArmAngle.AngleX);
+	else if(m_pFrameAngle.RightArmAngle.AngleX > m_pNextFrame.RightArmAngle.AngleX)
+		--(m_pFrameAngle.RightArmAngle.AngleX);
 
-	else if(m_pFrameAngle->RightArmAngle.AngleX < m_pNextFrame->RightArmAngle.AngleX)
-		++(m_pFrameAngle->RightArmAngle.AngleX);
+	else if(m_pFrameAngle.RightArmAngle.AngleX < m_pNextFrame.RightArmAngle.AngleX)
+		++(m_pFrameAngle.RightArmAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->RightArmAngle.AngleY == m_pNextFrame->RightArmAngle.AngleY)
+	if(m_pFrameAngle.RightArmAngle.AngleY == m_pNextFrame.RightArmAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->RightArmAngle.AngleY > m_pNextFrame->RightArmAngle.AngleY)
-		--(m_pFrameAngle->RightArmAngle.AngleY);
+	else if(m_pFrameAngle.RightArmAngle.AngleY > m_pNextFrame.RightArmAngle.AngleY)
+		--(m_pFrameAngle.RightArmAngle.AngleY);
 
-	else if(m_pFrameAngle->RightArmAngle.AngleY < m_pNextFrame->RightArmAngle.AngleY)
-		++(m_pFrameAngle->RightArmAngle.AngleY);
+	else if(m_pFrameAngle.RightArmAngle.AngleY < m_pNextFrame.RightArmAngle.AngleY)
+		++(m_pFrameAngle.RightArmAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->RightArmAngle.AngleZ == m_pNextFrame->RightArmAngle.AngleZ)
+	if(m_pFrameAngle.RightArmAngle.AngleZ == m_pNextFrame.RightArmAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->RightArmAngle.AngleZ > m_pNextFrame->RightArmAngle.AngleZ)
-		--(m_pFrameAngle->RightArmAngle.AngleZ);
+	else if(m_pFrameAngle.RightArmAngle.AngleZ > m_pNextFrame.RightArmAngle.AngleZ)
+		--(m_pFrameAngle.RightArmAngle.AngleZ);
 
-	else if(m_pFrameAngle->RightArmAngle.AngleZ < m_pNextFrame->RightArmAngle.AngleZ)
-		++(m_pFrameAngle->RightArmAngle.AngleZ);
+	else if(m_pFrameAngle.RightArmAngle.AngleZ < m_pNextFrame.RightArmAngle.AngleZ)
+		++(m_pFrameAngle.RightArmAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -688,34 +673,34 @@ bool Engine::CPlayerModel::CompareLeftFootAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->LeftFootAngle.AngleX == m_pNextFrame->LeftFootAngle.AngleX)
+	if(m_pFrameAngle.LeftFootAngle.AngleX == m_pNextFrame.LeftFootAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleX > m_pNextFrame->LeftFootAngle.AngleX)
-		--(m_pFrameAngle->LeftFootAngle.AngleX);
+	else if(m_pFrameAngle.LeftFootAngle.AngleX > m_pNextFrame.LeftFootAngle.AngleX)
+		--(m_pFrameAngle.LeftFootAngle.AngleX);
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleX < m_pNextFrame->LeftFootAngle.AngleX)
-		++(m_pFrameAngle->LeftFootAngle.AngleX);
+	else if(m_pFrameAngle.LeftFootAngle.AngleX < m_pNextFrame.LeftFootAngle.AngleX)
+		++(m_pFrameAngle.LeftFootAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->LeftFootAngle.AngleY == m_pNextFrame->LeftFootAngle.AngleY)
+	if(m_pFrameAngle.LeftFootAngle.AngleY == m_pNextFrame.LeftFootAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleY > m_pNextFrame->LeftFootAngle.AngleY)
-		--(m_pFrameAngle->LeftFootAngle.AngleY);
+	else if(m_pFrameAngle.LeftFootAngle.AngleY > m_pNextFrame.LeftFootAngle.AngleY)
+		--(m_pFrameAngle.LeftFootAngle.AngleY);
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleY < m_pNextFrame->LeftFootAngle.AngleY)
-		++(m_pFrameAngle->LeftFootAngle.AngleY);
+	else if(m_pFrameAngle.LeftFootAngle.AngleY < m_pNextFrame.LeftFootAngle.AngleY)
+		++(m_pFrameAngle.LeftFootAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->LeftFootAngle.AngleZ == m_pNextFrame->LeftFootAngle.AngleZ)
+	if(m_pFrameAngle.LeftFootAngle.AngleZ == m_pNextFrame.LeftFootAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleZ > m_pNextFrame->LeftFootAngle.AngleZ)
-		--(m_pFrameAngle->LeftFootAngle.AngleZ);
+	else if(m_pFrameAngle.LeftFootAngle.AngleZ > m_pNextFrame.LeftFootAngle.AngleZ)
+		--(m_pFrameAngle.LeftFootAngle.AngleZ);
 
-	else if(m_pFrameAngle->LeftFootAngle.AngleZ < m_pNextFrame->LeftFootAngle.AngleZ)
-		++(m_pFrameAngle->LeftFootAngle.AngleZ);
+	else if(m_pFrameAngle.LeftFootAngle.AngleZ < m_pNextFrame.LeftFootAngle.AngleZ)
+		++(m_pFrameAngle.LeftFootAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -729,34 +714,34 @@ bool Engine::CPlayerModel::CompareRightFootAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->RightFootAngle.AngleX == m_pNextFrame->RightFootAngle.AngleX)
+	if(m_pFrameAngle.RightFootAngle.AngleX == m_pNextFrame.RightFootAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->RightFootAngle.AngleX > m_pNextFrame->RightFootAngle.AngleX)
-		--(m_pFrameAngle->RightFootAngle.AngleX);
+	else if(m_pFrameAngle.RightFootAngle.AngleX > m_pNextFrame.RightFootAngle.AngleX)
+		--(m_pFrameAngle.RightFootAngle.AngleX);
 
-	else if(m_pFrameAngle->RightFootAngle.AngleX < m_pNextFrame->RightFootAngle.AngleX)
-		++(m_pFrameAngle->RightFootAngle.AngleX);
+	else if(m_pFrameAngle.RightFootAngle.AngleX < m_pNextFrame.RightFootAngle.AngleX)
+		++(m_pFrameAngle.RightFootAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->RightFootAngle.AngleY == m_pNextFrame->RightFootAngle.AngleY)
+	if(m_pFrameAngle.RightFootAngle.AngleY == m_pNextFrame.RightFootAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->RightFootAngle.AngleY > m_pNextFrame->RightFootAngle.AngleY)
-		--(m_pFrameAngle->RightFootAngle.AngleY);
+	else if(m_pFrameAngle.RightFootAngle.AngleY > m_pNextFrame.RightFootAngle.AngleY)
+		--(m_pFrameAngle.RightFootAngle.AngleY);
 
-	else if(m_pFrameAngle->RightFootAngle.AngleY < m_pNextFrame->RightFootAngle.AngleY)
-		++(m_pFrameAngle->RightFootAngle.AngleY);
+	else if(m_pFrameAngle.RightFootAngle.AngleY < m_pNextFrame.RightFootAngle.AngleY)
+		++(m_pFrameAngle.RightFootAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->RightFootAngle.AngleZ == m_pNextFrame->RightFootAngle.AngleZ)
+	if(m_pFrameAngle.RightFootAngle.AngleZ == m_pNextFrame.RightFootAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->RightFootAngle.AngleZ > m_pNextFrame->RightFootAngle.AngleZ)
-		--(m_pFrameAngle->RightFootAngle.AngleZ);
+	else if(m_pFrameAngle.RightFootAngle.AngleZ > m_pNextFrame.RightFootAngle.AngleZ)
+		--(m_pFrameAngle.RightFootAngle.AngleZ);
 
-	else if(m_pFrameAngle->RightFootAngle.AngleZ < m_pNextFrame->RightFootAngle.AngleZ)
-		++(m_pFrameAngle->RightFootAngle.AngleZ);
+	else if(m_pFrameAngle.RightFootAngle.AngleZ < m_pNextFrame.RightFootAngle.AngleZ)
+		++(m_pFrameAngle.RightFootAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -770,34 +755,34 @@ bool Engine::CPlayerModel::CompareBodyAngle(void)
 	bool	ComX = false, ComY = false, ComZ = false;
 
 	//Compare X
-	if(m_pFrameAngle->BodyAngle.AngleX == m_pNextFrame->BodyAngle.AngleX)
+	if(m_pFrameAngle.BodyAngle.AngleX == m_pNextFrame.BodyAngle.AngleX)
 		ComX = true;
 
-	else if(m_pFrameAngle->BodyAngle.AngleX > m_pNextFrame->BodyAngle.AngleX)
-		--(m_pFrameAngle->BodyAngle.AngleX);
+	else if(m_pFrameAngle.BodyAngle.AngleX > m_pNextFrame.BodyAngle.AngleX)
+		--(m_pFrameAngle.BodyAngle.AngleX);
 
-	else if(m_pFrameAngle->BodyAngle.AngleX < m_pNextFrame->BodyAngle.AngleX)
-		++(m_pFrameAngle->BodyAngle.AngleX);
+	else if(m_pFrameAngle.BodyAngle.AngleX < m_pNextFrame.BodyAngle.AngleX)
+		++(m_pFrameAngle.BodyAngle.AngleX);
 
 	//Compare Y
-	if(m_pFrameAngle->BodyAngle.AngleY == m_pNextFrame->BodyAngle.AngleY)
+	if(m_pFrameAngle.BodyAngle.AngleY == m_pNextFrame.BodyAngle.AngleY)
 		ComY = true;
 
-	else if(m_pFrameAngle->BodyAngle.AngleY > m_pNextFrame->BodyAngle.AngleY)
-		--(m_pFrameAngle->BodyAngle.AngleY);
+	else if(m_pFrameAngle.BodyAngle.AngleY > m_pNextFrame.BodyAngle.AngleY)
+		--(m_pFrameAngle.BodyAngle.AngleY);
 
-	else if(m_pFrameAngle->BodyAngle.AngleY < m_pNextFrame->BodyAngle.AngleY)
-		++(m_pFrameAngle->BodyAngle.AngleY);
+	else if(m_pFrameAngle.BodyAngle.AngleY < m_pNextFrame.BodyAngle.AngleY)
+		++(m_pFrameAngle.BodyAngle.AngleY);
 
 	//Compare Z
-	if(m_pFrameAngle->BodyAngle.AngleZ == m_pNextFrame->BodyAngle.AngleZ)
+	if(m_pFrameAngle.BodyAngle.AngleZ == m_pNextFrame.BodyAngle.AngleZ)
 		ComZ = true;
 
-	else if(m_pFrameAngle->BodyAngle.AngleZ > m_pNextFrame->BodyAngle.AngleZ)
-		--(m_pFrameAngle->BodyAngle.AngleZ);
+	else if(m_pFrameAngle.BodyAngle.AngleZ > m_pNextFrame.BodyAngle.AngleZ)
+		--(m_pFrameAngle.BodyAngle.AngleZ);
 
-	else if(m_pFrameAngle->BodyAngle.AngleZ < m_pNextFrame->BodyAngle.AngleZ)
-		++(m_pFrameAngle->BodyAngle.AngleZ);
+	else if(m_pFrameAngle.BodyAngle.AngleZ < m_pNextFrame.BodyAngle.AngleZ)
+		++(m_pFrameAngle.BodyAngle.AngleZ);
 
 	if(ComX && ComY && ComZ)
 		return true;
@@ -806,5 +791,38 @@ bool Engine::CPlayerModel::CompareBodyAngle(void)
 	else
 		return false;
 
+}
+
+void Engine::CPlayerModel::Frame(void)
+{
+	D3DXMatrixRotationX(&m_matHeadRotationX, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleX));
+	D3DXMatrixRotationY(&m_matHeadRotationY, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matHeadRotationZ, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleZ));
+	m_matHeadWorld = m_matHeadRotationX * m_matHeadRotationY * m_matHeadRotationZ * m_matHeadTrans;
+
+	D3DXMatrixRotationX(&m_matBodyRotationX, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleX));
+	D3DXMatrixRotationY(&m_matBodyRotationY, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matBodyRotationZ, D3DXToRadian(m_pFrameAngle.BodyAngle.AngleZ));
+	m_matBodyWorld = m_matBodyRotationX * m_matBodyRotationY * m_matBodyRotationZ * m_matBodyWorld;
+
+	D3DXMatrixRotationX(&m_matLeftArmRotationX, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleX));
+	D3DXMatrixRotationY(&m_matLeftArmRotationY, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matLeftArmRotationZ, D3DXToRadian(m_pFrameAngle.LeftArmAngle.AngleZ));
+	m_matLeftArmWorld = m_matLeftArmRotationX * m_matLeftArmRotationY * m_matLeftArmRotationZ * m_matLeftArmTrans;
+
+	D3DXMatrixRotationX(&m_matRightArmRotationX, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleX));
+	D3DXMatrixRotationY(&m_matRightArmRotationY, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matRightArmRotationZ, D3DXToRadian(m_pFrameAngle.RightArmAngle.AngleZ));
+	m_matRightArmWorld = m_matRightArmRotationX * m_matRightArmRotationY * m_matRightArmRotationZ * m_matRightArmTrans;
+
+	D3DXMatrixRotationX(&m_matLeftFootRotationX, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleX));
+	D3DXMatrixRotationY(&m_matLeftFootRotationY, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matLeftFootRotationZ, D3DXToRadian(m_pFrameAngle.LeftFootAngle.AngleZ));
+	m_matLeftFootWorld = m_matLeftFootRotationX * m_matLeftFootRotationY * m_matLeftFootRotationZ * m_matLeftFootTrans;
+
+	D3DXMatrixRotationX(&m_matRightFootRotationX, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleX));
+	D3DXMatrixRotationY(&m_matRightFootRotationY, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleY));
+	D3DXMatrixRotationZ(&m_matRightFootRotationZ, D3DXToRadian(m_pFrameAngle.RightFootAngle.AngleZ));
+	m_matRightFootWorld = m_matRightFootRotationX * m_matRightFootRotationY * m_matRightFootRotationZ * m_matRightFootTrans;
 }
 

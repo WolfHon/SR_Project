@@ -101,10 +101,16 @@ void CPlayerAnimation::Release()
 
 }
 
-void CPlayerAnimation::SetAnimation(Engine::ANIFRAME* _AniFrame)
+void CPlayerAnimation::SetAnimation(vector<Engine::ANIFRAME> _Animation)
+{
+	m_pAnimation = _Animation;
+	MoveCheck();
+}
+
+void CPlayerAnimation::SetFrame(Engine::ANIFRAME _AniFrame)
 {
 	m_pAniFrame = _AniFrame;
-	m_pAnimation.push_back(m_pAniFrame);
-	MoveCheck();
+	m_pPlayerModel->SetFrame(m_pAniFrame);
+
 }
 

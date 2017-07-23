@@ -166,7 +166,6 @@ void CAddCube::OnBnClickedAddcube()
 void CAddCube::OnLbnSelchangeList2()
 {
 	UpdateData(TRUE);
-	
 
 	int iSelect = m_ListBox1.GetCurSel();
 
@@ -236,7 +235,6 @@ void CAddCube::OnLbnSelchangeList1()
 	m_vPos.y =m_vecCube[m_CubeListBoxIndex]->GetInfo().vPos.y;
 	m_vPos.z =m_vecCube[m_CubeListBoxIndex]->GetInfo().vPos.z;
 
-
 	for(int i = 0; i < 3; ++i)
 		m_Radio[i].SetCheck(FALSE);
 
@@ -244,7 +242,6 @@ void CAddCube::OnLbnSelchangeList1()
 
 	m_Radio[iA].SetCheck(TRUE);
 	m_Radio1[0].SetCheck(TRUE);
-
 
 	UpdateData(FALSE);
 	
@@ -257,7 +254,6 @@ void CAddCube::OnLbnSelchangeList3()
 
 	for(int i =0; i < 2 ; ++i)
 		m_Radio1[i].SetCheck(FALSE);
-
 
 	m_SlopeListBoxIndex = m_SlopList.GetCurSel();
 
@@ -276,7 +272,6 @@ void CAddCube::OnLbnSelchangeList3()
 
 	m_Radio[iA].SetCheck(TRUE);
 	m_Radio1[1].SetCheck(TRUE);
-
 
 	UpdateData(FALSE);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
