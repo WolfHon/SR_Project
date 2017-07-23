@@ -69,6 +69,7 @@ private:
 	HRESULT	AddComponent(void);
 	void AttackCheck(void);
 	void MoveCheck(void);
+	void HeightCheck(void);
 	void Release(void);
 
 private:
@@ -77,6 +78,7 @@ private:
 	Engine::CPlayerModel*	m_pPlayerModel;
 
 	CCollision_OBB*	m_pCollisionOBB;
+	CCollision_OBB*	m_pCollSlopeCheck;
 
 private:
 	CCameraObserver*		m_pCamObserver;

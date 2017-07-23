@@ -62,6 +62,8 @@ Engine::OBJECT_RESULT CBomb::Update(void)
 	if(Explosion() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
 
+	HeightCheck();
+
 	return Engine::CGameObject::Update();
 }
 
@@ -135,29 +137,36 @@ HRESULT CBomb::AddComponent(void)
 	return S_OK;
 }
 
+void CBomb::HeightCheck(void)
+{
+	float Height = CTerrainInfo::GetInstance()->CheckHeight(m_pInfo->m_vPos);
+	m_vExplosionPosY = Height + WOLRD_SCALE;
+	m_pInfo->m_vPos.y =  Height + (m_pCollisionOBB->GetMin()->y * m_pInfo->m_vScale.y * - 1.f) + 0.1f;
+}
+
 Engine::OBJECT_RESULT CBomb::Explosion(void)
 {
 	if(m_wEffect <= 100 || m_bIsDead == TRUE)
 	{
 		Engine::CGameObject*	pGameObject = NULL;
 
-		pGameObject = CExplosion::Create(m_pDevice,  D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), 0, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice,  D3DXVECTOR3(m_pInfo->m_vPos.x, m_vExplosionPosY, m_pInfo->m_vPos.z), 0, CExplosion::DIR_LEFT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WOLRD_SCALE, m_vExplosionPosY, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WOLRD_SCALE, m_vExplosionPosY, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_vExplosionPosY, m_pInfo->m_vPos.z + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 1.25f, m_pInfo->m_vPos.z - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_vExplosionPosY, m_pInfo->m_vPos.z - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 

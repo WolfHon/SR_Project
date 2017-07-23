@@ -40,6 +40,7 @@ public:
 	void InsertInfo(CBlock* Block);
 	void EraseInfo(CBlock* Block);
 	CBlock* CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos);
+	float CheckHeight(D3DXVECTOR3 vPos);
 
 private:
 	typedef struct tagMapVector
