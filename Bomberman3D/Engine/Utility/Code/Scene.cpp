@@ -34,7 +34,7 @@ void Engine::CScene::Render(void)
 	MAPLAYER::iterator		iter_end = m_mapLayer.end();
 
 	for(; iter != iter_end; ++iter)
-		iter->second->Render(m_plane, (iter->first == LAYER_GAMELOGIC ? TRUE : FALSE));
+		iter->second->Render(m_plane, (iter->first == FALSE));//LAYER_GAMELOGIC ? TRUE : FALSE));
 }
 
 void Engine::CScene::Release(void)

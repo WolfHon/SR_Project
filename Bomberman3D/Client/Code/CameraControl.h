@@ -19,6 +19,9 @@
  *
  */
 
+#ifndef __CameraControl_h__
+#define __CameraControl_h__
+
 #include "Gameobject.h"
 
 namespace Engine
@@ -47,9 +50,6 @@ public:
 	void SetCamera(CAMERATYPE NowCam);
 
 public:
-	CAMERATYPE GetCamera();
-
-public:
 	static CCameraControl* Create(LPDIRECT3DDEVICE9 pDevice, const Engine::CTransform* pTargetInfo);
 
 private:
@@ -60,3 +60,5 @@ private:
 	CAMERATYPE				m_eNowCam;
 	Engine::CCamera*		m_pCamera[CAM_END];
 };
+
+#endif __CameraControl_h__

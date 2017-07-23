@@ -4,7 +4,13 @@
 #include "RcTex.h"
 
 #include "Include.h"
+
 #include "Transform.h"
+#include "Collision_OBB.h"
+
+#include "TerrainInfo.h"
+
+#include "Block.h"
 #include "Export_Function.h"
 
 CExplosion::CExplosion(LPDIRECT3DDEVICE9 pDevice)
@@ -16,7 +22,6 @@ CExplosion::CExplosion(LPDIRECT3DDEVICE9 pDevice)
 , m_pInfo(NULL)
 , m_dwMaxFrame(0)
 {
-
 }
 
 CExplosion::~CExplosion(void)
@@ -33,10 +38,22 @@ HRESULT CExplosion::Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
 	m_eDir = edir;
 	
 	m_pInfo->m_vPos = vPos;
-	m_pInfo->m_vScale = D3DXVECTOR3(2.f, 2.f, 2.f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE, WOLRD_SCALE, WOLRD_SCALE);
 
 	m_iPower = iPower;
-	m_fFrameSpeed = 30.f;
+	m_fFrameSpeed = 50.f;
+
+	m_pInfo->Update();	
+
+	m_matCol = m_pInfo->m_matWorld;
+
+	CBlock* pBlock = NULL;
+
+	pBlock = CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos);
+	if(pBlock != NULL && pBlock->GetTileType() == Engine::TILE_UNBROKEN)
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -47,6 +64,8 @@ Engine::OBJECT_RESULT CExplosion::Update(void)
 
 	if(FrameCheck() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
+
+	CheckExplosion();
 		
 	if(Engine::CGameObject::Update() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
@@ -58,6 +77,7 @@ Engine::OBJECT_RESULT CExplosion::Update(void)
 
 	D3DXMatrixInverse(&matBill, NULL, &matBill);
 
+	m_matCol = m_pInfo->m_matWorld;
 	m_pInfo->m_matWorld = matBill * m_pInfo->m_matWorld;
 	
 	return Engine::OR_OK;
@@ -75,6 +95,8 @@ void CExplosion::Render(void)
 	m_pBuffer->Render();
 
 	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);	
+
+	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 255, 0));
 }
 
 CExplosion* CExplosion::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
@@ -111,6 +133,12 @@ HRESULT CExplosion::AddComponent(void)
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
 
+	//OBBCollision_OBB	
+	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
+	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
+	m_pCollisionOBB->SetColInfo(&m_matCol, &D3DXVECTOR3(-0.9f, -0.9f, -0.9f), &D3DXVECTOR3(0.9f, 0.9f, 0.9f));
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
+
 	return S_OK;
 }
 
@@ -120,34 +148,34 @@ Engine::OBJECT_RESULT CExplosion::FrameCheck(void)
 
 	if (m_fFrame >= float(m_dwMaxFrame))	
 		return Engine::OR_DELETE;
-
+	
 	if (m_fFrame >= float(m_dwMaxFrame) / 10.f)
 	{
-		if(m_iPower != 0)
+		if(m_iPower != 0 && m_bIsDead == FALSE)
 		{
 			CGameObject* pGameObject = NULL;
 
 			switch(m_eDir)
 			{	
 			case DIR_LEFT:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
-				NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
-				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+				if(pGameObject != NULL)
+					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_RIGHT:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 4.f, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
-				NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
-				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+				if(pGameObject != NULL)
+					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_BACK:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 4.f), m_iPower - 1, CExplosion::DIR_BACK);
-				NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
-				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
+				if(pGameObject != NULL)
+					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_FORWARD:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 4.f), m_iPower - 1, CExplosion::DIR_FORWARD);
-				NULL_CHECK_RETURN(pGameObject, Engine::OR_DELETE);
-				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
+				if(pGameObject != NULL)
+					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			}
 
@@ -156,4 +184,27 @@ Engine::OBJECT_RESULT CExplosion::FrameCheck(void)
 	}
 
 	return Engine::OR_OK;
+}
+
+void CExplosion::CheckExplosion(void)
+{		
+	CBlock* pBlockObj = NULL;
+
+	pBlockObj = CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos);
+	if(pBlockObj != NULL)
+	{
+		if(pBlockObj->GetTileType() == Engine::TILE_BROKEN)
+		{
+			m_bIsDead = TRUE;
+			pBlockObj->IsDead();
+		}
+	}
+
+	CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
+	if(pGameObj != NULL)
+		pGameObj->IsDead();
+
+	pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
+	if(pGameObj != NULL)
+		pGameObj->IsDead();
 }

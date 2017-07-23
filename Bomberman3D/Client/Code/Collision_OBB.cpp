@@ -3,17 +3,22 @@
 
 #include "Export_Function.h"
 #include "GameObject.h"
-#include "Transform.h"
 
 #include "CubeColor.h"
+
+#ifdef _DEBUG	
+bool	CCollision_OBB::m_bWireRender = FALSE;
+#endif
 
 CCollision_OBB::CCollision_OBB(LPDIRECT3DDEVICE9 pDevice)
 : m_pDevice(pDevice)
 , m_vMin(0.f, 0.f, 0.f)
 , m_vMax(0.f, 0.f, 0.f)
 , m_pmatWorld(NULL)
-, m_bWireRender(FALSE)
 {
+#ifdef _DEBUG
+	m_bExWire = FALSE;
+#endif
 	ZeroMemory(m_vPoint, sizeof(D3DXVECTOR3) * 8);
 }
 
@@ -25,8 +30,10 @@ CCollision_OBB::CCollision_OBB(const CCollision_OBB& rhs)
 , m_vMax(rhs.m_vMax)
 , m_tOBB(rhs.m_tOBB)
 , pVertex(rhs.pVertex)
-, m_bWireRender(FALSE)
 {
+#ifdef _DEBUG
+	m_bExWire = rhs.m_bExWire;
+#endif
 	memcpy(m_vPoint, rhs.m_vPoint, sizeof(D3DXVECTOR3) * 8);
 }
 
@@ -114,11 +121,12 @@ void CCollision_OBB::ComputeAxis(void)
 		D3DXVec3Normalize(&m_tOBB.vParallel[i], &m_tOBB.vParallel[i]);
 }
 
-
-bool CCollision_OBB::CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj)
+Engine::CGameObject* CCollision_OBB::CheckCollision(Engine::LAYERID eLayerID, wstring wstrName, D3DXVECTOR3 vPos)
 {
-	if (listObj == NULL)
-		return FALSE;
+	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(eLayerID, wstrName);
+
+	if(listObj == NULL)
+		return NULL;
 
 	Engine::OBJLIST::iterator iterBegin = listObj->begin();
 	Engine::OBJLIST::iterator iterEnd = listObj->end();
@@ -131,15 +139,43 @@ bool CCollision_OBB::CheckCollision(D3DXVECTOR3 vPos, Engine::OBJLIST* listObj)
 		NULL_CHECK_RETURN(pComponent, FALSE);
 		CCollision_OBB* ptarget = dynamic_cast<CCollision_OBB*>(pComponent);
 
-		if(CheckAABB(ptarget) == FALSE)
-			continue;	
-
+		if(CheckDist(ptarget) == FALSE)
+			continue;			
+		
 		if (ProcessingCollision(ptarget))
-			return TRUE;
+			return *iterBegin;
 	}
 
-	return FALSE;
+	return NULL;
 }
+
+
+
+bool CCollision_OBB::CheckDist(CCollision_OBB* pTarget)
+{
+	const D3DXMATRIX* pMatCollider = pTarget->GetMatrix();
+	D3DXVECTOR3 vTargetScale = D3DXVECTOR3(pMatCollider->_11, pMatCollider->_22, pMatCollider->_33);
+	D3DXVECTOR3 vTargetCol = ((*pTarget->GetMax()) - (*pTarget->GetMin())) / 2.f;
+	D3DXVECTOR3	vTargetSize = D3DXVECTOR3(vTargetCol.x * vTargetScale.x, vTargetCol.y * vTargetScale.y, vTargetCol.z * vTargetScale.z);
+	D3DXVECTOR3 vTargetPos;
+	memcpy(&vTargetPos, &pMatCollider->m[3][0], sizeof(D3DXVECTOR3));
+
+	D3DXVECTOR3 vScale = D3DXVECTOR3(m_pmatWorld->_11, m_pmatWorld->_22, m_pmatWorld->_33); 
+	D3DXVECTOR3 vCol = (m_vMax - m_vMin) / 2.f;
+	D3DXVECTOR3	vSize = D3DXVECTOR3(vCol.x * vScale.x, vCol.y * vScale.y, vCol.z * vScale.z);
+	D3DXVECTOR3 vPos;
+	memcpy(&vPos, &m_pmatWorld->m[3][0], sizeof(D3DXVECTOR3));
+
+	float		fRadius = D3DXVec3Length(&vSize) + 2.f;
+	float		fRadiusTarget = D3DXVec3Length(&vTargetSize) + 2.f;
+	float		fDist = D3DXVec3Length(&(vPos - vTargetPos));
+	
+	if(fDist > fRadius + fRadiusTarget) 
+		return FALSE;
+
+	return TRUE;
+}
+
 
 bool CCollision_OBB::ProcessingCollision(CCollision_OBB* pTarget)
 {
@@ -187,23 +223,6 @@ void CCollision_OBB::CollisionUpdate(void)
 	ComputeAxis();
 }
 
-void CCollision_OBB::AABBUpdate(void)
-{
-	D3DXVECTOR3		vScale, vPosition;
-	vScale = D3DXVECTOR3(D3DXVec3Length((D3DXVECTOR3*)&m_pmatWorld->m[0][0])
-		, D3DXVec3Length((D3DXVECTOR3*)&m_pmatWorld->m[1][0])
-		, D3DXVec3Length((D3DXVECTOR3*)&m_pmatWorld->m[2][0]));
-
-	memcpy(&vPosition, &m_pmatWorld->m[3][0], sizeof(D3DXVECTOR3));
-
-	D3DXMATRIX		matScale, matTrans;
-	m_matColliderMatrix = (*D3DXMatrixScaling(&matScale, vScale.x, vScale.y, vScale.z))
-		* (*D3DXMatrixTranslation(&matTrans, vPosition.x, vPosition.y, vPosition.z));
-
-	D3DXVec3TransformCoord(&m_vColliderMin, &m_vMin, &m_matColliderMatrix);
-	D3DXVec3TransformCoord(&m_vColliderMax, &m_vMax, &m_matColliderMatrix);
-}
-
 HRESULT CCollision_OBB::InitCollision(void)
 {
 #ifdef _DEBUG	
@@ -217,38 +236,18 @@ HRESULT CCollision_OBB::InitCollision(void)
 	return S_OK;
 }
 
-bool CCollision_OBB::CheckAABB(CCollision_OBB* pTarget)
-{
-	AABBUpdate();
-	pTarget->AABBUpdate();
-
-	D3DXVECTOR3		vDestMin = *pTarget->GetMin();
-	D3DXVECTOR3		vDestMax = *pTarget->GetMax();
-
-	float			fMin = 0.f;
-	float			fMax = 0.f;
-
-	fMin = max(m_vColliderMin.x, vDestMin.x);
-	fMax = min(m_vColliderMax.x, vDestMax.x);
-	if(fMin > fMax)
-		return false;
-
-	fMin = max(m_vColliderMin.y, vDestMin.y);
-	fMax = min(m_vColliderMax.y, vDestMax.y);
-	if(fMin > fMax)
-		return false;
-
-	fMin = max(m_vColliderMin.z, vDestMin.z);
-	fMax = min(m_vColliderMax.z, vDestMax.z);
-	if(fMin > fMax)
-		return false;
-
-	return true;
-}
-
 void CCollision_OBB::Render(const DWORD& dwColor)
 {
 #ifdef _DEBUG	
+	DWORD KeyState = Engine::Get_KeyMgr()->GetKey();
+
+	if(!(~KeyState & Engine::KEY_F1_CLICK))
+	{
+		if(m_bExWire==m_bWireRender)
+			m_bWireRender = !m_bWireRender;
+	}
+	m_bExWire = m_bWireRender;
+
 	if(m_bWireRender == TRUE)
 	{
 	m_pCubeColor->GetVtxInfo(pVertex);
@@ -274,14 +273,4 @@ void CCollision_OBB::Render(const DWORD& dwColor)
 	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
 #endif
-}
-
-Engine::OBJECT_RESULT CCollision_OBB::Update(void)
-{
-	DWORD KeyState = Engine::Get_KeyMgr()->GetKey();
-
-	if(!(~KeyState & Engine::KEY_F1_CLICK))
-		m_bWireRender = !m_bWireRender;
-
-	return Engine::OR_OK;
 }

@@ -57,6 +57,10 @@ private:
 
 private:
 	DWORD		m_dwContainerSize;
+	wstring		m_wstrPath;
+
+	static		TCHAR	m_ExszPath[MAX_PATH];
+	static		DWORD	m_ExiIndex[8];
 };
 
 END

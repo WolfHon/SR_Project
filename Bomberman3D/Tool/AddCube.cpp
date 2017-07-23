@@ -26,6 +26,17 @@ void CAddCube::Release( void )
 
 	m_vecCube.clear();
 	m_vecTileInfo.clear();
+
+	vector<CToolSlopeCube*>::iterator iter1 = m_vecSlopeCube.begin();
+	vector<CToolSlopeCube*>::iterator iter1_end = m_vecSlopeCube.end();
+
+	for( ;iter1 != iter1_end ; ++iter1)
+	{
+		Safe_Delete(*iter1);
+	}
+
+	m_vecSlopeCube.clear();
+	m_vecSlopeCube.clear();
 }
 
 
@@ -760,6 +771,7 @@ void CAddCube::OnBnClickedLoadcube()
 
 	Release();
 	m_ListBox.ResetContent();
+	m_SlopList.ResetContent();
 
 	HANDLE hFile = CreateFile(
 		Dlg.GetPathName(),

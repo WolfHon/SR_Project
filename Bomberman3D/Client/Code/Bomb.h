@@ -52,6 +52,7 @@ public:
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
 	HRESULT	AddComponent(void);
+	void FrameCheck(void);
 	Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
@@ -66,6 +67,7 @@ private:
 	float			m_fTime;
 	WORD			m_wEffect;
 	int				m_iPower;
+	int				m_iExplosionTime;
 };
 
 
