@@ -69,7 +69,6 @@ private:
 	HRESULT	AddComponent(void);
 	void AttackCheck(void);
 	void MoveCheck(void);
-	void HeightCheck(void);
 	void Release(void);
 
 private:
@@ -85,7 +84,7 @@ private:
 
 private:	
 	float			m_fSpeed;
-	float			m_fAngle;
+	float			m_fAngle;	
 
 	D3DXVECTOR3 m_vExMousePos;
 

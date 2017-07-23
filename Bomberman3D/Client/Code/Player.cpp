@@ -10,6 +10,7 @@
 #include "PlayerModel.h"
 #include "CameraControl.h"
 #include "CameraObserver.h"
+#include "Gravity.h"
 
 #include "TerrainInfo.h"
 #include "Block.h"
@@ -46,7 +47,7 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
 	m_fSpeed = 10.f;
-
+	
 	m_fPlayerSpeed = 1.f;
 	m_iAddBomb = 1;
 	m_iPower = 1;
@@ -68,10 +69,9 @@ Engine::OBJECT_RESULT CPlayer::Update(void)
 	if(eCamType == CCameraControl::CAM_FIRST)
 	{
 		MoveCheck();
-		AttackCheck();
+		
 	}
-
-	HeightCheck();
+	AttackCheck();
 
 	return Engine::CGameObject::Update();	
 }
@@ -124,35 +124,20 @@ HRESULT CPlayer::AddComponent(void)
 	NULL_CHECK_RETURN(m_pCollSlopeCheck, E_FAIL);
 	m_pCollSlopeCheck->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -2.f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_Slope", pComponent));	
-	
-	return S_OK;
-}
 
-
-void CPlayer::HeightCheck(void)
-{
+	CGravity* pGravity;
+	pComponent = pGravity = CGravity::Create();
+	NULL_CHECK_RETURN(pGravity, E_FAIL);
 	D3DXVECTOR3 vPoint[4];
 	vPoint[0] = D3DXVECTOR3(-2.f, 0.f, -1.f);
 	vPoint[1] = D3DXVECTOR3(-2.f, 0.f, 1.f);
 	vPoint[2] = D3DXVECTOR3(2.f, 0.f, -1.f);
 	vPoint[3] = D3DXVECTOR3(2.f, 0.f, 1.f);
-
-	for(int i=0; i<4; ++i)
-		D3DXVec3TransformCoord(&vPoint[i], &vPoint[i], &m_pInfo->m_matWorld);
-
-	float Maxheight = -1000.f;
-	float Height = 0.f;
-
-	for(int i=0; i<4; ++i)
-	{
-		Height = CTerrainInfo::GetInstance()->CheckHeight(vPoint[i]);
-		if(Height > Maxheight)
-			Maxheight = Height;
-	}
-
-	m_pInfo->m_vPos.y = Maxheight + (m_pCollisionOBB->GetMin()->y * m_pInfo->m_vScale.y * - 1.f) + 0.1f;
+	pGravity->SetInfo(vPoint, &m_pInfo->m_vPos, &m_pInfo->m_matWorld, m_pCollisionOBB->GetMin()->y * - 1.f);
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Gravity", pComponent));	
+	
+	return S_OK;
 }
-
 
 void CPlayer::MoveCheck(void)
 {
@@ -245,23 +230,15 @@ void CPlayer::AttackCheck(void)
 	DWORD    MouseState = Engine::Get_MouseMgr()->GetMouseKey();
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
-	{
-		float DirX = fabs(m_pInfo->m_vDir.x) < fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.x < 0 ? -1.f : 1.f);
-		float DirZ = fabs(m_pInfo->m_vDir.x) > fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.z < 0 ? -1.f : 1.f);
-		
-		if(fabs(m_pInfo->m_vDir.x) > 0.25f && fabs(m_pInfo->m_vDir.z) > 0.25f)
-			return;
-
-		float fX = int((m_pInfo->m_vPos.x + (DirX  * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-		float fZ = int((m_pInfo->m_vPos.z + (DirZ * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-		
-		D3DXVECTOR3 vBombPos = D3DXVECTOR3(fX, m_pInfo->m_vPos.y, fZ);	
+	{		
+		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 3.3f, m_pInfo->m_vPos.z);	
 
  		Engine::CGameObject* pGameObject = NULL;
 
-		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower);
+		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower, 60.f, this);
 
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
 	}		
 }
+

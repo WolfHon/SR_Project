@@ -397,6 +397,10 @@
 							>
 						</File>
 					</Filter>
+					<Filter
+						Name="01.SliceBlock"
+						>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="05.Monster"
@@ -451,6 +455,18 @@
 					</File>
 					<File
 						RelativePath="..\Code\Collision_OBB.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.Gravity"
+					>
+					<File
+						RelativePath="..\Code\Gravity.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Gravity.h"
 						>
 					</File>
 				</Filter>
