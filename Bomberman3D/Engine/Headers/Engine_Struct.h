@@ -62,7 +62,6 @@ namespace Engine
 
 	typedef struct tagRotationInfo
 	{
-<<<<<<< HEAD
 		float			AngleX; //Positive Y
 		float			AngleY; //Negative Y
 		float			AngleZ; //Negative X
@@ -78,12 +77,12 @@ namespace Engine
 		ANGLEINFO		RightFootAngle;
 	}ANIFRAME,	*LPANIFRAME;
 
-=======
+	typedef struct tagItemInfo
+	{
 		float		fSpeed;
 		int			iAddBomb;
 		float		fPower;
 	}ITEMINFO;
->>>>>>> 80b9876d3878f3ddd9f0722d648d00d079be60ab
 }
 
 #endif // __Engine_Struct_h__
