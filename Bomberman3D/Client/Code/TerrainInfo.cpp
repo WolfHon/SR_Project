@@ -74,3 +74,46 @@ CBlock* CTerrainInfo::CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos)
 
 	return NULL;
 }
+
+float CTerrainInfo::CheckHeight(D3DXVECTOR3 vPos)
+{
+	float fX = int((vPos.x + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	float fY = int((vPos.y + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	float fZ = int((vPos.z + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	
+	D3DXVECTOR3 SrcPos = D3DXVECTOR3(fX, fY, fZ);	
+
+	for(int y = 0; ;y--)
+	{
+		MAPVECTOR vecTargetPos;
+		vecTargetPos.x = SrcPos.x;
+		vecTargetPos.y = SrcPos.y + y * WOLRD_SCALE * 2.f;
+		vecTargetPos.z = SrcPos.z;
+
+		if(vecTargetPos.y < -12.f)
+			break;
+
+		map<MAPVECTOR, CBlock*>::iterator iter = mapBlock.find(vecTargetPos);
+		if(iter != mapBlock.end())
+		{
+			if(y == 0 && iter->second->GetTileShpae() == Engine::TILE_CUBE)
+				continue;
+
+			D3DXVECTOR3* vUpPoint = iter->second->GetUpPoint();
+		
+			float	fRatioX = (vPos.x - vUpPoint[0].x) / (WOLRD_SCALE * 2.f);
+			float	fRatioZ = (vUpPoint[0].z - vPos.z) / (WOLRD_SCALE * 2.f);
+
+			D3DXPLANE		Plane;
+
+			if(fRatioX > fRatioZ)
+				D3DXPlaneFromPoints(&Plane, &vUpPoint[0], &vUpPoint[1], &vUpPoint[2]);
+			else 
+				D3DXPlaneFromPoints(&Plane, &vUpPoint[0], &vUpPoint[2], &vUpPoint[3]);
+			
+			return (-Plane.a * vPos.x - Plane.c * vPos.z - Plane.d) / Plane.b;
+		}
+	}
+
+	return -1000.f;
+}

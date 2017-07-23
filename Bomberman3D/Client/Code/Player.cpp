@@ -12,6 +12,7 @@
 #include "CameraObserver.h"
 
 #include "TerrainInfo.h"
+#include "Block.h"
 
 #include "Bomb.h"
 
@@ -26,6 +27,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 , m_iPower(0)
 , m_fPlayerSpeed(0.f)
 , m_pCollisionOBB(NULL)
+, m_pCollSlopeCheck(NULL)
 {
 }
 
@@ -51,8 +53,7 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 
 	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/6.f, WOLRD_SCALE/6.f, WOLRD_SCALE/6.f);
 
-	m_pInfo->m_vPos = vPos * WOLRD_SCALE;
-	m_pInfo->m_vPos.y = 0.26f; //##TEMP 지형 높이 충돌 만들고 삭제
+	m_pInfo->m_vPos = vPos * WOLRD_SCALE;	
 	m_pInfo->Update();
 
 	return S_OK;
@@ -70,6 +71,8 @@ Engine::OBJECT_RESULT CPlayer::Update(void)
 		AttackCheck();
 	}
 
+	HeightCheck();
+
 	return Engine::CGameObject::Update();	
 }
 
@@ -78,6 +81,7 @@ void CPlayer::Render(void)
  	m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);
 	m_pPlayerModel->Render();
 	m_pCollisionOBB->Render(D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pCollSlopeCheck->Render(D3DCOLOR_ARGB(255, 255, 255, 0));
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos)
@@ -115,9 +119,40 @@ HRESULT CPlayer::AddComponent(void)
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
 	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -4.5f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
+
+	pComponent = m_pCollSlopeCheck = CCollision_OBB::Create(m_pDevice);
+	NULL_CHECK_RETURN(m_pCollSlopeCheck, E_FAIL);
+	m_pCollSlopeCheck->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-2.f, -2.f, -1.f), &D3DXVECTOR3(2.f, 3.5f, 1.f));
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_Slope", pComponent));	
 	
 	return S_OK;
 }
+
+
+void CPlayer::HeightCheck(void)
+{
+	D3DXVECTOR3 vPoint[4];
+	vPoint[0] = D3DXVECTOR3(-2.f, 0.f, -1.f);
+	vPoint[1] = D3DXVECTOR3(-2.f, 0.f, 1.f);
+	vPoint[2] = D3DXVECTOR3(2.f, 0.f, -1.f);
+	vPoint[3] = D3DXVECTOR3(2.f, 0.f, 1.f);
+
+	for(int i=0; i<4; ++i)
+		D3DXVec3TransformCoord(&vPoint[i], &vPoint[i], &m_pInfo->m_matWorld);
+
+	float Maxheight = -1000.f;
+	float Height = 0.f;
+
+	for(int i=0; i<4; ++i)
+	{
+		Height = CTerrainInfo::GetInstance()->CheckHeight(vPoint[i]);
+		if(Height > Maxheight)
+			Maxheight = Height;
+	}
+
+	m_pInfo->m_vPos.y = Maxheight + (m_pCollisionOBB->GetMin()->y * m_pInfo->m_vScale.y * - 1.f) + 0.1f;
+}
+
 
 void CPlayer::MoveCheck(void)
 {
@@ -177,8 +212,26 @@ void CPlayer::MoveCheck(void)
 	{
 		m_pInfo->Update();
 
-		if( CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
-			m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos) != NULL)
+		bool TerrainCheck = FALSE;
+		CBlock* pBlock = CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos);
+		if(pBlock != NULL)
+		{
+			Engine::TILESHAPE eShpae = pBlock->GetTileShpae();
+			if(eShpae == Engine::TILE_CUBE)
+			{
+				TerrainCheck = TRUE;
+			}
+			else if(eShpae == Engine::TILE_SLOPE)
+			{
+				if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollSlopeCheck, m_pInfo->m_vPos) != NULL)
+				{
+					TerrainCheck = TRUE;
+				}
+			}
+		}
+
+		if(TerrainCheck == TRUE ||
+		   m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos) != NULL)
 		{
 			m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
 			m_fAngle = fExAngle;

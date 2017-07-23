@@ -332,6 +332,14 @@
 					<Filter
 						Name="01.Slope"
 						>
+						<File
+							RelativePath="..\Code\Slope.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\Code\Slope.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 				<Filter

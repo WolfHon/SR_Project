@@ -53,6 +53,7 @@ private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
 	HRESULT	AddComponent(void);
 	void FrameCheck(void);
+	void HeightCheck(void);
 	Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
@@ -64,6 +65,7 @@ private:
 	CCollision_OBB*	m_pCollisionOBB;
 
 private:
+	float			m_vExplosionPosY;
 	float			m_fTime;
 	WORD			m_wEffect;
 	int				m_iPower;

@@ -25,8 +25,10 @@ public:
 
 public:
 	Engine::TILETYPE GetTileType(void) { return m_tagTileInfo.eTileOption; }
+	Engine::TILESHAPE GetTileShpae(void) { return m_tagTileInfo.eTileShape; }
 	D3DXVECTOR3 GetTilePos(void) { return m_tagTileInfo.vPos; }
 	CCollision_OBB* GetCollision_OBB(void) { return m_pCollisionOBB; }
+	D3DXVECTOR3*	GetUpPoint(void) { return m_vUpPoint; }
 
 private:
 	void Release(void);
@@ -36,6 +38,8 @@ protected:
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 	Engine::TILEINFO		m_tagTileInfo;
+
+	D3DXVECTOR3				m_vUpPoint[4];
 
 	CCollision_OBB*	m_pCollisionOBB;
 };
