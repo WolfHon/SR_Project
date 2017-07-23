@@ -87,6 +87,10 @@
 #define IDC_START_ANI                   1046
 #define IDC_FR_DELETE                   1047
 #define IDC_ANI_DELETE                  1048
+#define IDC_EDIT_PART                   1049
+#define IDC_SAVE_STRUCT                 1050
+#define IDC_SAVE_STRUCT2                1051
+#define IDC_LOAD_STRUCT2                1051
 
 // Next default values for new objects
 // 
@@ -94,7 +98,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1049
+#define _APS_NEXT_CONTROL_VALUE         1051
 #define _APS_NEXT_SYMED_VALUE           316
 #endif
 #endif

@@ -61,6 +61,8 @@ public:
 
 	void ResetFrame(Engine::ANIFRAME* pFrame);
 
+	void ChoicePart(void);
+
 	void ResetPos(void);
 
 public:
@@ -84,6 +86,7 @@ public:
 	CSliderCtrl		m_Rot_Z;
 	CListBox		m_ListAnimation;
 	CListBox		m_ListFrame;
+	CString			m_strPart;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedResetModel();
 	afx_msg void OnBnClickedRotYRight();
@@ -94,4 +97,7 @@ public:
 	afx_msg void OnBnClickedStartAni();
 	afx_msg void OnBnClickedFrDelete();
 	afx_msg void OnLbnSelchangeFrList();
+	afx_msg void OnNMCustomdrawRotationY(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedSaveStruct();
+	afx_msg void OnBnClickedLoadStruct2();
 };

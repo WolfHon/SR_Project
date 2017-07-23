@@ -22,10 +22,11 @@ CAnimation::CAnimation(CWnd* pParent /*=NULL*/)
 	, fLastX(0.f)
 	, fLastY(0.f)
 	, fLastZ(0.f)
-	, iPart(0)
+	, iPart(1)
 	, m_iAniCount(0)
 	, m_iFrameCount(0)
 	, m_bReset(true)
+	, m_strPart(_T(""))
 {
 }
 
@@ -44,6 +45,7 @@ void CAnimation::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_VALUE_Z, fAngleZ);
 	DDX_Control(pDX, IDC_ANI_LIST, m_ListAnimation);
 	DDX_Control(pDX, IDC_FR_LIST, m_ListFrame);
+	DDX_Text(pDX, IDC_EDIT_PART, m_strPart);
 }
 
 
@@ -58,6 +60,9 @@ BEGIN_MESSAGE_MAP(CAnimation, CDialog)
 	ON_BN_CLICKED(IDC_START_ANI, &CAnimation::OnBnClickedStartAni)
 	ON_BN_CLICKED(IDC_FR_DELETE, &CAnimation::OnBnClickedFrDelete)
 	ON_LBN_SELCHANGE(IDC_FR_LIST, &CAnimation::OnLbnSelchangeFrList)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_ROTATION_Y, &CAnimation::OnNMCustomdrawRotationY)
+	ON_BN_CLICKED(IDC_SAVE_STRUCT, &CAnimation::OnBnClickedSaveStruct)
+	ON_BN_CLICKED(IDC_LOAD_STRUCT2, &CAnimation::OnBnClickedLoadStruct2)
 END_MESSAGE_MAP()
 
 
@@ -166,11 +171,6 @@ BOOL CAnimation::OnInitDialog()
 
 void CAnimation::OnBnClickedResetModel()
 {
-
-	m_vecAnimation.clear();
-	m_ListFrame.ResetContent();
-	ResetFrame(&m_AnimationInfo);
-	m_bReset = true;
 	//m_AnimationInfo.HeadAngle.AngleX = 0.f;
 	//m_AnimationInfo.HeadAngle.AngleY = 0.f;
 	//m_AnimationInfo.HeadAngle.AngleZ = 0.f;
@@ -198,6 +198,14 @@ void CAnimation::OnBnClickedResetModel()
 	//m_vecAnimation.push_back(&m_AnimationInfo);
 
 	UpdateData(TRUE);
+
+	iPart = 0;
+	ChoicePart();
+
+	m_vecAnimation.clear();
+	m_ListFrame.ResetContent();
+	ResetFrame(&m_AnimationInfo);
+	m_bReset = true;
 
 	m_Rot_X.SetPos(0.f);
 	fAngleX = 0.f;
@@ -231,6 +239,8 @@ void CAnimation::OnBnClickedRotYRight()
 	if(iPart > 5)
 		iPart = 5;
 
+	ChoicePart();
+
 	ResetPos();
 
 	UpdateData(FALSE);
@@ -246,7 +256,7 @@ void CAnimation::OnBnClickedRotYLeft()
 
 	if(iPart < 0)
 		iPart = 0;
-
+	ChoicePart();
 	ResetPos();
 
 	UpdateData(FALSE);
@@ -255,6 +265,7 @@ void CAnimation::OnBnClickedRotYLeft()
 
 void CAnimation::OnBnClickedFrSave()
 {		
+	UpdateData(TRUE);
 	Engine::ANIFRAME		m_TempFrame;
 
 	ResetFrame(&m_TempFrame);
@@ -267,6 +278,7 @@ void CAnimation::OnBnClickedFrSave()
 	m_ListFrame.AddString(szText);
 
 	m_bReset = true;
+	UpdateData(FALSE);
 }
 
 void CAnimation::OnBnClickedFrDelete()
@@ -277,10 +289,13 @@ void CAnimation::OnBnClickedFrDelete()
 
 void CAnimation::OnBnClickedAniSave()
 {
+	UpdateData(TRUE);
 	m_vecSavedAni.push_back(m_vecAnimation);
 	TCHAR szText[256] = L"";
-	wsprintf(szText, L"Animation %d", m_vecAnimation.size() -1);
+	wsprintf(szText, L"Animation %d", m_vecSavedAni.size() -1);
 	m_ListAnimation.AddString(szText);
+
+	UpdateData(FALSE);
 }
 
 void CAnimation::OnLbnSelchangeAniList()
@@ -353,6 +368,7 @@ void CAnimation::ResetFrame(Engine::ANIFRAME* pFrame)
 	pFrame->RightFootAngle.AngleX = 0.f;
 	pFrame->RightFootAngle.AngleY = 0.f;
 	pFrame->RightFootAngle.AngleZ = 0.f;
+	pFrame->fTime = 0.f;
 }
 
 void CAnimation::ResetPos(void)
@@ -425,4 +441,138 @@ void CAnimation::SetFrame(void)
 	m_pPlayer->SetFrame(m_TempFrameInfo);
 	m_bReset = false;
 
+}
+
+void CAnimation::ChoicePart(void)
+{
+	switch(iPart)
+	{
+	case 0:
+		m_strPart = "머리";
+		break;
+
+	case 1:
+		m_strPart = "몸통";
+		break;
+
+	case 2:
+		m_strPart = "왼팔";
+		break;
+
+	case 3:
+		m_strPart = "오른팔";
+		break;
+	
+	case 4:
+		m_strPart = "왼다리";
+		break;
+
+	case 5:
+		m_strPart = "오른다리";
+		break;
+	}
+}
+
+void CAnimation::OnNMCustomdrawRotationY(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	*pResult = 0;
+}
+
+void CAnimation::OnBnClickedSaveStruct()
+{
+	CFileDialog Dlg(FALSE, 
+		L"dat",
+		L"*.dat", 
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"*.dat",
+		this);
+	//1인자 : 창속성->저장  FALSE  |   로드 TRUE
+	//2인자 : 파일의 확장자 명
+	//3인자 : 최초의 띄워줄 파일명
+	//4인자 : 중복된 파일에 대한 처리를 관리하는 인자값.
+	//5인자 : 파일형식에 띄어줄 확장자명
+	//6인자 : 부모창의 주소.
+
+
+	if(Dlg.DoModal() == IDCANCEL)
+		return;
+
+	Dlg.m_ofn.lpstrInitialDir = L"..\\Data";		//절대경로로 설정을 해보자.
+
+
+	HANDLE hFile = CreateFile(
+		Dlg.GetPathName(),
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL
+		);
+
+	DWORD dwByte;
+
+	vector<Engine::ANIFRAME>::iterator	iter = (m_vecSavedAni[m_iAniCount]).begin();
+	vector<Engine::ANIFRAME>::iterator	iter_end = (m_vecSavedAni[m_iAniCount]).end();
+
+	for(iter; iter != iter_end; ++iter)
+	{
+		WriteFile(hFile,&(*iter),sizeof(Engine::ANIFRAME), &dwByte, NULL);
+	}
+
+	CloseHandle(hFile);
+}
+
+void CAnimation::OnBnClickedLoadStruct2()
+{
+	UpdateData(TRUE);
+
+	CFileDialog Dlg(TRUE, 
+		L"dat",
+		L"*.dat", 
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		L"*.dat",
+		this);
+
+	Dlg.m_ofn.lpstrInitialDir = L"..\\Data";
+
+	if(Dlg.DoModal() == IDCANCEL)
+		return;
+
+	m_vecAnimation.clear();
+
+	HANDLE hFile = CreateFile(
+		Dlg.GetPathName(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL
+		);
+
+	DWORD dwByte;
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte, NULL);
+
+		if(dwByte == 0)
+			break;
+
+		m_vecAnimation.push_back(pFrameData);
+	}
+
+	CloseHandle(hFile);
+
+	m_vecSavedAni.push_back(m_vecAnimation);
+	TCHAR szText[256] = L"";
+	wsprintf(szText, L"Animation %d", m_vecSavedAni.size() -1);
+	m_ListAnimation.AddString(szText);
+
+	UpdateData(FALSE);
 }

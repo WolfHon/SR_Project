@@ -130,6 +130,7 @@ Engine::CPlayerModel::CPlayerModel(const CPlayerModel& rhs)
 ,m_matLeftArmPibotTrans(rhs.m_matLeftArmPibotTrans)
 ,m_matRightFootPibotTrans(rhs.m_matRightFootPibotTrans)
 ,m_matLeftFootPibotTrans(rhs.m_matLeftFootPibotTrans)
+,m_bAnimationCh(false)
 {
 	m_pHeadBuffer->AddRefCnt();
 	m_pBodyBuffer->AddRefCnt();
@@ -332,10 +333,12 @@ HRESULT Engine::CPlayerModel::Initialize(void)
 
 	//회전 중점으로 부터 큐브의 중점까지의 거리
 	D3DXMatrixTranslation(&m_matHeadPibotTrans,		 -m_vHeadPibotPos.x,	  -m_vHeadPibotPos.y,		-m_vHeadPibotPos.z);
+	D3DXMatrixTranslation(&m_matBodyTrans, 0.f, 0.f, 0.f);
 	D3DXMatrixTranslation(&m_matLeftArmPibotTrans,	 -m_vLeftArmPibotPos.x,	  -m_vLeftArmPibotPos.y,	-m_vLeftArmPibotPos.z);
 	D3DXMatrixTranslation(&m_matRightArmPibotTrans,	 -m_vRightArmPibotPos.x,  -m_vRightArmPibotPos.y,	-m_vRightArmPibotPos.z);
 	D3DXMatrixTranslation(&m_matLeftFootPibotTrans,	 -m_vLeftFootPibotPos.x,  -m_vLeftFootPibotPos.y,	-m_vLeftFootPibotPos.z); 
 	D3DXMatrixTranslation(&m_matRightFootPibotTrans, -m_vRightFootPibotPos.x, -m_vRightFootPibotPos.y,  -m_vRightFootPibotPos.z);
+	m_bAnimationCh = false;
 	return S_OK;
 }
 
@@ -356,7 +359,7 @@ void Engine::CPlayerModel::Render(void)
 	//--------------------------------------Body-----------------------------------------
 
 	D3DXMatrixScaling(&m_matScale, m_vBodyScale.x ,m_vBodyScale.y ,m_vBodyScale.z);
-	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyWorld/* * matWorld*/));
+	m_pDevice->SetTransform(D3DTS_WORLD, &(m_matScale * m_matBodyTrans * m_matBodyWorld * matWorld));
 	m_pBodyTexture->Render(0,0);
 	m_pBodyBuffer->Render();
 	D3DXMatrixIdentity(&m_matScale);
@@ -469,27 +472,44 @@ Engine::CResources* Engine::CPlayerModel::CloneResource(void)
 
 void Engine::CPlayerModel::Animation(void)
 {
-
 	static vector<ANIFRAME>::iterator		iter;
 	static vector<ANIFRAME>::iterator		iter2;
+	vector<ANIFRAME>::iterator		iter_begin = m_listAni.begin();
+	vector<ANIFRAME>::iterator		iter_end = m_listAni.end();
+
 
 	if(m_bFirst)
 	{
 		iter = m_listAni.begin();
 		iter2 = m_listAni.begin();
 		++iter2;
+
+		if(m_LastAniList.size() <= 1)
+		{
+			m_LastAniList = m_listAni;
+		}
+
+		else if(&m_LastAniList != &m_listAni)
+		{
+			m_bAnimationCh = true;
+			m_LastAniList = m_listAni;
+		}
+
+		if( iter == iter_end || iter2 == iter_end )  
+			iter2 = iter_begin;
+
+		if(m_bAnimationCh)
+		{
+			m_pNextFrame = (*m_listAni.begin());
+		}
+		else
+		{
+			m_pFrameAngle = (*iter);
+			m_pNextFrame = (*iter2);
+		}
+
 		m_bFirst = false;
 	}
-
-	vector<ANIFRAME>::iterator		iter_begin = m_listAni.begin();
-	vector<ANIFRAME>::iterator		iter_end = m_listAni.end();
-
-
-	if( iter == iter_end || iter2 == iter_end )
-		iter2 = iter_begin;
-
-	m_pFrameAngle = (*iter);
-	m_pNextFrame = (*iter2);
 
 
 	D3DXMatrixRotationX(&m_matHeadRotationX, D3DXToRadian(m_pFrameAngle.HeadAngle.AngleX));
@@ -524,19 +544,27 @@ void Engine::CPlayerModel::Animation(void)
 
 	if(CompareAngle())
 	{
-
-		iter = iter2;
+		m_pFrameAngle = m_pNextFrame;
 
 		if( ++iter2 == iter_end )
 			iter2 = iter_begin;
+
+		m_pNextFrame = (*iter2);
 	}
 }
 
 bool Engine::CPlayerModel::CompareAngle(void)
 {
-	if(CompareHeadAngle() && CompareLeftArmAngle()
-		&& CompareRightArmAngle() && CompareBodyAngle() 
-		&& CompareLeftFootAngle() && CompareRightFootAngle())
+	m_bHeadCom = CompareHeadAngle();
+	m_bBodyCom = CompareBodyAngle();
+	m_bLeftArmCom = CompareLeftArmAngle();
+	m_bRightArmCom = CompareRightArmAngle();
+	m_bLeftFootCom = CompareLeftFootAngle();
+	m_bRightFootCom = CompareRightFootAngle();
+
+	if(m_bHeadCom && m_bLeftArmCom
+		&& m_bRightArmCom && m_bBodyCom 
+		&& m_bLeftFootCom && m_bRightFootCom)
 		return true;
 	else
 		return false;
@@ -687,7 +715,7 @@ bool Engine::CPlayerModel::CompareLeftFootAngle(void)
 		ComY = true;
 
 	else if(m_pFrameAngle.LeftFootAngle.AngleY > m_pNextFrame.LeftFootAngle.AngleY)
-		--(m_pFrameAngle.LeftFootAngle.AngleY);
+		--(m_pFrameAngle.LeftFootAngle.AngleY); /*+ fTime * Get_TimeMgr()->GetTime();*/
 
 	else if(m_pFrameAngle.LeftFootAngle.AngleY < m_pNextFrame.LeftFootAngle.AngleY)
 		++(m_pFrameAngle.LeftFootAngle.AngleY);

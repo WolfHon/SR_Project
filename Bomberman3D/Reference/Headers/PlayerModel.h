@@ -131,10 +131,18 @@ private:
 	MAPCOMPONENT		m_mapComponent;
 	ANIFRAME			m_pFrameAngle;
 	ANIFRAME			m_pNextFrame;
-	vector<ANIFRAME>		m_listAni;
+	vector<ANIFRAME>	m_listAni;
+	vector<ANIFRAME>	m_LastAniList;
 	float				m_fScaleSize;
+	bool				m_bHeadCom;
+	bool				m_bBodyCom;
+	bool				m_bLeftArmCom;
+	bool				m_bRightArmCom;
+	bool				m_bLeftFootCom;
+	bool				m_bRightFootCom;
 	bool				m_bFirst;
 	bool				m_bDiscrimination_Fr_Ani;
+	bool				m_bAnimationCh;
 };
 
 END

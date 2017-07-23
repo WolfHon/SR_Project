@@ -75,6 +75,7 @@ namespace Engine
 		ANGLEINFO		RightArmAngle;
 		ANGLEINFO		LeftFootAngle;
 		ANGLEINFO		RightFootAngle;
+		float			fTime;
 	}ANIFRAME,	*LPANIFRAME;
 
 	typedef struct tagItemInfo
@@ -83,7 +84,6 @@ namespace Engine
 		int			iAddBomb;
 		float		fPower;
 	}ITEMINFO;
-
 }
 
 #endif // __Engine_Struct_h__
