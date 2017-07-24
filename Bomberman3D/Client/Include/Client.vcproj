@@ -448,6 +448,74 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="07.UI"
+					>
+					<File
+						RelativePath="..\Code\AddBombNum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\AddBombNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\AddBombUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\AddBombUI.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Crosshair.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Crosshair.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Number1.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Number1.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerNum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerUI.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseNum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseUI.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="03.Design"

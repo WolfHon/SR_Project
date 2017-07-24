@@ -54,6 +54,8 @@ private:
 
 
 	int				m_inum;
+	bool			m_bDungSill;
+	float			m_fTime;
 };
 
 #endif // Item_h__

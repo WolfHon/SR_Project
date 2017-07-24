@@ -22,9 +22,11 @@ CActionCamera::~CActionCamera(void)
 
 Engine::OBJECT_RESULT CActionCamera::Update(void)
 {
+	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 500.f);	
+
 	ViewCheck();
 	TargetRenewal();
-
+	
 	return Engine::OR_OK;
 }
 
@@ -38,8 +40,7 @@ HRESULT CActionCamera::Initialize(void)
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	SetProjectionMatrix(D3DXToRadian(45.f), float(WINCX) / WINCY, 1.f, 500.f);	
-
+	
 	return S_OK;
 }
 

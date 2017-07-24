@@ -13,8 +13,17 @@
 #include "Cube.h"
 #include "Slope.h"
 #include "Monster.h"
+#include "ItemUi.h"
 
 #include "Item.h"
+#include "PowerUI.h"
+#include "ShoseUI.h"
+#include "Number1.h"
+#include "ShoseNum.h"
+#include "PowerNum.h"
+#include "AddBombNum.h"
+#include "Crosshair.h"
+
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -67,8 +76,24 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Bomb"
+		, L"../bin/Texture/item/bomb/Bomb%d.png", 3);
+	FAILED_CHECK(hr);
+
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Num"
+		, L"../bin/Texture/Number/Num%d.png", 12);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Crosshair"
+		, L"../bin/Texture/Crosshair/crosshair%d.png", 1);
 	FAILED_CHECK(hr);
 
 	//Buffer
@@ -78,6 +103,10 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_SLOPETEX, L"Buffer_SlopeTex");
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_RCTEX, L"Buffer_RCTex");
 	FAILED_CHECK(hr);
 
 	//Model
@@ -136,13 +165,10 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	Engine::CGameObject*	pGameObject = NULL;
 
-	/*pGameObject = CItem::Create(m_pDevice, D3DXVECTOR3(6.f, 3.f, 12.f), Engine::ITEM_POWER);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Item", pGameObject);
 
-	pGameObject = CMonster::Create(m_pDevice);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Monster", pGameObject);*/
+	//pGameObject = CMonster::Create(m_pDevice);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//pLayer->AddObject(L"Monster", pGameObject);
 
 	LoadData(pLayer,pGameObject);
 	
@@ -163,6 +189,57 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	const Engine::CComponent*	pComponent = iter->second->GetComponent(L"Player", L"Transform");
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
+
+	pGameObject = CItemUi::Create(m_pDevice, D3DXVECTOR3(560.f, -230.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CPowerUI::Create(m_pDevice, D3DXVECTOR3(560.f, -160.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CShoseUI::Create(m_pDevice, D3DXVECTOR3(560.f, -300.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -180.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -240.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -310.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CShoseNum::Create(m_pDevice, D3DXVECTOR3(475.f, -170.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ShoseNum", pGameObject);
+
+	pGameObject = CPowerNum::Create(m_pDevice, D3DXVECTOR3(475.f, -230.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"PowerNum", pGameObject);
+
+	pGameObject = CAddBombNum::Create(m_pDevice, D3DXVECTOR3(475.f, -300.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"AddBombNum", pGameObject);
+
+	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 0.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
 
 	pGameObject = CCameraControl::Create(m_pDevice
 		, dynamic_cast<const Engine::CTransform*>(pComponent));

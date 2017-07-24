@@ -37,6 +37,7 @@ private:
 	Engine::OBJECT_RESULT FrameCheck(void);
 	void Release(void);
 
+
 private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
@@ -46,6 +47,7 @@ private:
 
 private:
 	D3DXMATRIX		m_matCol;
+	D3DXMATRIX      m_matView;
 
 	float			m_fFrame;
 	float			m_fFrameSpeed;

@@ -68,7 +68,7 @@ namespace Engine
 	static unsigned int index = 0;
 
 	static int getInt(int nMin, int nMax)
-	{		
+	{	
 		unsigned long a, b, c, d;
 		a = state[index];
 		c = state[(index + 13) & 15];

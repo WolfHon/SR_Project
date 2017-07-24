@@ -12,6 +12,7 @@
 
 #include "Block.h"
 #include "Export_Function.h"
+#include "FirstCamera.h"
 
 CExplosion::CExplosion(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
@@ -32,7 +33,7 @@ CExplosion::~CExplosion(void)
 HRESULT CExplosion::Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
 {
 	FAILED_CHECK(AddComponent());
-
+	
 	m_dwMaxFrame = m_pTexture->GetMaxSize();
 
 	m_eDir = edir;
@@ -61,7 +62,7 @@ HRESULT CExplosion::Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
 Engine::OBJECT_RESULT CExplosion::Update(void)
 {
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
-
+	
 	if(FrameCheck() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
 
@@ -70,17 +71,29 @@ Engine::OBJECT_RESULT CExplosion::Update(void)
 	if(Engine::CGameObject::Update() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
 
+	
 	D3DXMATRIX		matBill;
 	D3DXMatrixIdentity(&matBill);
 	m_pDevice->GetTransform(D3DTS_VIEW, &matBill);
-	ZeroMemory(&matBill.m[3][0], sizeof(D3DXVECTOR3));
 
+	ZeroMemory(&matBill.m[3][0], sizeof(D3DXVECTOR3));
 	D3DXMatrixInverse(&matBill, NULL, &matBill);
 
+	
+	//matBill._11 = m_pInfo->m_vScale.x;
+	//matBill._22 = m_pInfo->m_vScale.y;
+	//matBill._33 = m_pInfo->m_vScale.z;
+
+	//vBillpos = m_pInfo->m_vPos;
+
+	//memcpy(&matBill._41,&vBillpos,sizeof(D3DXVECTOR3));
+
 	m_matCol = m_pInfo->m_matWorld;
-	m_pInfo->m_matWorld = matBill * m_pInfo->m_matWorld;
+ 	m_pInfo->m_matWorld = matBill * m_pInfo->m_matWorld;
 	
 	return Engine::OR_OK;
+
+
 }
 
 void CExplosion::Render(void)

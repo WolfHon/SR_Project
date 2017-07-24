@@ -118,15 +118,9 @@ void CMonster::AI( void )
 		{
 			m_pInfo->m_vPos += m_pInfo->m_vDir * 10.f * Engine::Get_TimeMgr()->GetInstance()->GetTime();
 		}
-	
-
-
-
-	//이동 -> 충돌확인 ->  이동 -> 충돌확인 				
+		//이동 -> 충돌확인 ->  이동 -> 충돌확인 				
 				//	->방향변경 -> 충돌확인 -> 이동
 				//  -> 정지 -> 시간흐름 -> 이동
-
-
 }
 
 void CMonster::ChangeDir( D3DXVECTOR3 _pos )

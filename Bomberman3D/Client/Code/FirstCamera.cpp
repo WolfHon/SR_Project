@@ -23,7 +23,9 @@ Engine::OBJECT_RESULT CFirstCamera::Update(void)
 	ViewCheck();
 	TargetRenewal();
 	KeyCheck();
+	SetProjectionMatrix(D3DXToRadian(60.f), float(WINCX) / WINCY, 0.1f, 500.f);
 
+	
 	return Engine::OR_OK;
 }
 
@@ -31,8 +33,7 @@ HRESULT CFirstCamera::Initialize(void)
 {
 	m_fAngleY = D3DXToRadian(0.f);
 	
-	SetProjectionMatrix(D3DXToRadian(60.f), float(WINCX) / WINCY, 0.1f, 500.f);
-
+	
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
 	return S_OK;
