@@ -52,6 +52,9 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 	m_iAddBomb = 1;
 	m_iPower = 1;
 
+	m_fPress = 10.f;
+	m_fPressValue = 1.f;
+
 	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE/6.f, WORLD_SCALE/6.f, WORLD_SCALE/6.f);
 
 	m_pInfo->m_vPos = vPos * WORLD_SCALE;	
@@ -228,16 +231,34 @@ void CPlayer::AttackCheck(void)
 {
 	DWORD    MouseState = Engine::Get_MouseMgr()->GetMouseKey();
 
+	if(!(~MouseState & Engine::MOUSE_LBUTTON_PRESS))
+	{
+		m_fPress += m_fPressValue * 20.f * Engine::Get_TimeMgr()->GetTime();
+		if(m_fPress > 50.f)
+		{
+			m_fPress = 50.f;
+			m_fPressValue = -1.f;
+		}
+		if(m_fPress < 10.f)
+		{
+			m_fPress = 10.f;
+			m_fPressValue = 1.f;
+		}
+	}
+
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{		
 		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 2.7f, m_pInfo->m_vPos.z);	
 
  		Engine::CGameObject* pGameObject = NULL;
 
-		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower, 50.f, this);
+		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower, m_fPress, this);
 
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);
+
+		m_fPress = 10.f;
+		m_fPressValue = 1.f;
 	}		
 }
 

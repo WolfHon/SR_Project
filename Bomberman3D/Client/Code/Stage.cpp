@@ -235,7 +235,7 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	pLayer->AddObject(L"AddBombNum", pGameObject);
 
-	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 0.f , 0.f));
+	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 40.f , 0.f));
 	NULL_CHECK_RETURN(pGameObject,E_FAIL);
 
 	pLayer->AddObject(L"ItemUi", pGameObject);

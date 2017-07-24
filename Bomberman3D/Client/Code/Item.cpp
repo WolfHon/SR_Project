@@ -56,7 +56,7 @@ HRESULT CItem::Initialize( D3DXVECTOR3 vPos, Engine::ITEMOPTION _ItemOption )
 	switch(_ItemOption)
 	{
 		case Engine::ITEM_SPEED:
-			m_fPlayerSpeed = 1.f;
+			m_fPlayerSpeed = 0.25f;
 			break;
 
 		case Engine::ITEM_POWER:
@@ -174,37 +174,29 @@ BOOL CItem::CheckCollision( void )
 	 Engine::CGameObject* Power = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"PowerNum");
 	 Engine::CGameObject* AddBomb = Engine::Get_Management()->GetObject(Engine::LAYER_UI, L"AddBombNum");
 
-	
+	 if(pGameObject != NULL)
+	 {
+		 switch(m_tagItemOption)
+		 {
+		 case Engine::ITEM_SPEED:
+			 dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed);
+			 dynamic_cast<CShoseNum*>(Shose)->SetiNum(1);
+			 break;
 
+		 case Engine::ITEM_POWER:
+			 dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower);
+			 dynamic_cast<CPowerNum*>(Power)->SetiNum(1);
+			 break;
 
-
-	if(pGameObject != NULL)
-	{
-		switch(m_tagItemOption)
-		{
-		case Engine::ITEM_SPEED:
-			dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed);
-			dynamic_cast<CShoseNum*>(Shose)->SetiNum(m_fPlayerSpeed);
-			break;
-
-		case Engine::ITEM_POWER:
-			dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower);
-			dynamic_cast<CPowerNum*>(Power)->SetiNum(m_iPower);
-			break;
-
-		case Engine::ITEM_ADDBOMB:
-			dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb);
-			dynamic_cast<CAddBombNum*>(AddBomb)->SetiNum(m_iAddBomb);
-			break;
-		}
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
-
-	
-
-	
+		 case Engine::ITEM_ADDBOMB:
+			 dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb);
+			 dynamic_cast<CAddBombNum*>(AddBomb)->SetiNum(1);
+			 break;
+		 }
+		 return TRUE;
+	 }
+	 else
+	 {
+		 return FALSE;
+	 }	
 }

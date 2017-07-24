@@ -44,7 +44,7 @@ HRESULT CSliceBlock::Initialize(D3DXVECTOR3 vPos, Engine::TILETEXTURE eTexture)
 	m_fPower = 50.f;
 
 	m_fTime = 0.f;
-	m_fDestroyTime = 4.f;
+	m_fDestroyTime = 3.f;
 	m_fDecreasePower = 5.f;
 
 	return S_OK;
@@ -73,7 +73,7 @@ Engine::OBJECT_RESULT CSliceBlock::Update(void)
 
 void CSliceBlock::Render(void)
 {
-	if(m_fTime < m_fDestroyTime - 1.5f || int(m_fTime * 10)%2 == 0)
+	if(m_fTime < m_fDestroyTime - 1.f || int(m_fTime * 10)%2 == 0)
 	{
 		m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);	
 
