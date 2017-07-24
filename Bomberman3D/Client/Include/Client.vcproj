@@ -309,6 +309,14 @@
 				<Filter
 					Name="07.Block"
 					>
+					<File
+						RelativePath="..\Code\Block.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Block.h"
+						>
+					</File>
 					<Filter
 						Name="00.Cube"
 						>
@@ -410,11 +418,67 @@
 					Name="07.UI"
 					>
 					<File
-						RelativePath="..\Code\ItemUi.cpp"
+						RelativePath="..\Code\AddBombNum.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\Code\ItemUi.h"
+						RelativePath="..\Code\AddBombNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\AddBombUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\AddBombUI.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Crosshair.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Crosshair.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Number1.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\Number1.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerNum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\PowerUI.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseNum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseNum.h"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseUI.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\ShoseUI.h"
 						>
 					</File>
 				</Filter>
@@ -463,6 +527,18 @@
 					</File>
 					<File
 						RelativePath="..\Code\CameraControl.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="01.TerrainInfo"
+					>
+					<File
+						RelativePath="..\Code\TerrainInfo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\TerrainInfo.h"
 						>
 					</File>
 				</Filter>

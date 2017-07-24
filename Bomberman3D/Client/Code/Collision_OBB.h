@@ -69,11 +69,11 @@ public:
 public:
 	void CollisionUpdate(void);
 	Engine::CGameObject* CheckCollision(Engine::LAYERID eLayerID, wstring wstrName, D3DXVECTOR3 vPos);
+	bool ProcessingCollision(CCollision_OBB* pTarget);
 
 private:	
 	HRESULT	InitCollision(void);	
-	bool CheckDist(CCollision_OBB* pTarget);
-	bool ProcessingCollision(CCollision_OBB* pTarget);
+	bool CheckDist(CCollision_OBB* pTarget);	
 	void ComputePoint(void);
 	void ComputeAxis(void);
 

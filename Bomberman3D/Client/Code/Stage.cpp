@@ -15,6 +15,14 @@
 #include "ItemUi.h"
 
 #include "Item.h"
+#include "PowerUI.h"
+#include "ShoseUI.h"
+#include "Number1.h"
+#include "ShoseNum.h"
+#include "PowerNum.h"
+#include "AddBombNum.h"
+#include "Crosshair.h"
+
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CScene(pDevice)
@@ -68,21 +76,23 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_Bomb"
-		, L"../bin/Texture/item/bomb/Bomb%d.png", 1);
+		, L"../bin/Texture/item/bomb/Bomb%d.png", 3);
 	FAILED_CHECK(hr);
 
-	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_NORMAL, L"Texture_Fire"
-		, L"../bin/Texture/item/fire/Fire%d.png", 1);
-	FAILED_CHECK(hr);
-	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_NORMAL, L"Texture_Shoes"
-		, L"../bin/Texture/item/shoes/shoes%d.png", 1);
-	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
 		, L"../bin/Texture/SkyBox/Skybox.dds", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Num"
+		, L"../bin/Texture/Number/Num%d.png", 12);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Texture_Crosshair"
+		, L"../bin/Texture/Crosshair/crosshair%d.png", 1);
 	FAILED_CHECK(hr);
 
 	//Buffer
@@ -131,7 +141,6 @@ CStage* CStage::Create(LPDIRECT3DDEVICE9 pDevice)
 
 void CStage::Release(void)
 {
-	
 }
 
 HRESULT CStage::Add_Enviroment_Layer(void)
@@ -155,13 +164,10 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	Engine::CGameObject*	pGameObject = NULL;
 
-	/*pGameObject = CItem::Create(m_pDevice, D3DXVECTOR3(6.f, 3.f, 12.f), Engine::ITEM_POWER);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Item", pGameObject);
 
-	pGameObject = CMonster::Create(m_pDevice);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	pLayer->AddObject(L"Monster", pGameObject);*/
+	//pGameObject = CMonster::Create(m_pDevice);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//pLayer->AddObject(L"Monster", pGameObject);
 
 	LoadData(pLayer,pGameObject);
 	
@@ -183,17 +189,63 @@ HRESULT CStage::Add_UI_Layer(void)
 	const Engine::CComponent*	pComponent = iter->second->GetComponent(L"Player", L"Transform");
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 
+	pGameObject = CItemUi::Create(m_pDevice, D3DXVECTOR3(560.f, -230.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CPowerUI::Create(m_pDevice, D3DXVECTOR3(560.f, -160.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CShoseUI::Create(m_pDevice, D3DXVECTOR3(560.f, -300.f, 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -180.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -240.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CNumber1::Create(m_pDevice, D3DXVECTOR3(505.f, -310.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CShoseNum::Create(m_pDevice, D3DXVECTOR3(475.f, -170.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ShoseNum", pGameObject);
+
+	pGameObject = CPowerNum::Create(m_pDevice, D3DXVECTOR3(475.f, -230.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"PowerNum", pGameObject);
+
+	pGameObject = CAddBombNum::Create(m_pDevice, D3DXVECTOR3(475.f, -300.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"AddBombNum", pGameObject);
+
+	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 0.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+
 	pGameObject = CCameraControl::Create(m_pDevice
 		, dynamic_cast<const Engine::CTransform*>(pComponent));
 	dynamic_cast<CCameraControl*>(pGameObject)->SetCamera(CCameraControl::CAM_FIRST);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 	pLayer->AddObject(L"CameraControl", pGameObject);
-
-		pGameObject = CItemUi::Create(m_pDevice, D3DXVECTOR3(10.f, 0.f , 0.f));
-	NULL_CHECK_RETURN(pGameObject,E_FAIL);
-
-	pLayer->AddObject(L"ItemUi", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_UI, pLayer));
 
@@ -236,9 +288,11 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 		}
 		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
 		{
+			/*if(TileInfo.eTileOption == Engine::TILE_BROKEN)
+				continue;*/
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
-			pLayer->AddObject(L"Block_Cube", pGameObject);	
+			pLayer->AddObject(L"Block", pGameObject);	
 		}			
 
 		m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));

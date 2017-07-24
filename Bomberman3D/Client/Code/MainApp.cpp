@@ -5,6 +5,8 @@
 #include "Export_Function.h"
 #include "SceneSelector.h"
 
+#include "TerrainInfo.h"
+
 CMainApp::CMainApp(void) 
 : m_pGraphicDev(Engine::Get_GraphicDev())
 , m_pDevice(NULL)
@@ -91,4 +93,5 @@ void CMainApp::Release(void)
 	Engine::Get_InfoSubject()->DestroyInstance();
 	Engine::Get_MouseMgr()->DestroyInstance();
 	Engine::Get_KeyMgr()->DestroyInstance();
+	CTerrainInfo::GetInstance()->DestroyInstance();
 }

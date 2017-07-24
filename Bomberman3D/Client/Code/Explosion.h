@@ -10,6 +10,8 @@ namespace Engine
 	class CTransform;
 }
 
+class CCollision_OBB;
+
 class CExplosion
 	: public Engine::CGameObject
 {
@@ -30,16 +32,23 @@ public:
 
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir);
+	void CheckExplosion(void);
 	HRESULT	AddComponent(void);
 	Engine::OBJECT_RESULT FrameCheck(void);
 	void Release(void);
+
 
 private:
 	Engine::CTexture*		m_pTexture;
 	Engine::CVIBuffer*		m_pBuffer;
 	Engine::CTransform*		m_pInfo;
 
+	CCollision_OBB*	m_pCollisionOBB;
+
 private:
+	D3DXMATRIX		m_matCol;
+	D3DXMATRIX      m_matView;
+
 	float			m_fFrame;
 	float			m_fFrameSpeed;
 	DWORD		m_dwMaxFrame;

@@ -8,7 +8,7 @@
 #include "Transform.h"
 #include "Export_Function.h"
 #include "Collision_OBB.h"
-
+#include "TerrainInfo.h"
 
 CMonster::CMonster( LPDIRECT3DDEVICE9 pDevice )
 :Engine::CGameObject(pDevice)
@@ -110,7 +110,7 @@ void CMonster::AI( void )
 
 	D3DXVECTOR3 vExPos = m_pInfo->m_vPos;
 
-		if(m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Block_Cube", m_pInfo->m_vPos) != NULL)
+		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL)
 		{		
 			ChangeDir(vExPos);
 		}
@@ -118,15 +118,9 @@ void CMonster::AI( void )
 		{
 			m_pInfo->m_vPos += m_pInfo->m_vDir * 10.f * Engine::Get_TimeMgr()->GetInstance()->GetTime();
 		}
-	
-
-
-
-	//이동 -> 충돌확인 ->  이동 -> 충돌확인 				
+		//이동 -> 충돌확인 ->  이동 -> 충돌확인 				
 				//	->방향변경 -> 충돌확인 -> 이동
 				//  -> 정지 -> 시간흐름 -> 이동
-
-
 }
 
 void CMonster::ChangeDir( D3DXVECTOR3 _pos )

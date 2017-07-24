@@ -11,6 +11,8 @@
 #include "CameraControl.h"
 #include "CameraObserver.h"
 
+#include "TerrainInfo.h"
+
 #include "Bomb.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
@@ -131,7 +133,7 @@ void CPlayer::MoveCheck(void)
 
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
-	m_fAngle -= vMouseMove.x * D3DXToRadian(260.f) * fTime;		
+	m_fAngle -= vMouseMove.x * D3DXToRadian(200.f) * fTime;		
 
 	if(m_fAngle >= D3DXToRadian(360.f))
 		m_fAngle -= D3DXToRadian(360.f);
@@ -152,7 +154,7 @@ void CPlayer::MoveCheck(void)
 	if(!(~KeyState & Engine::KEY_S_PRESS))
 	{
 		bChange = TRUE;
-		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
+		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed * 0.5f;
 	}
 
 	D3DXVECTOR3		vRight;
@@ -175,7 +177,8 @@ void CPlayer::MoveCheck(void)
 	{
 		m_pInfo->Update();
 
-		if(m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Block_Cube", m_pInfo->m_vPos) != NULL)
+		if( CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
+			m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos) != NULL)
 		{
 			m_pInfo->m_fAngle[Engine::ANGLE_Y] = fExAngle;
 			m_fAngle = fExAngle;
@@ -190,16 +193,15 @@ void CPlayer::AttackCheck(void)
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{
-
 		float DirX = fabs(m_pInfo->m_vDir.x) < fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.x < 0 ? -1.f : 1.f);
 		float DirZ = fabs(m_pInfo->m_vDir.x) > fabs(m_pInfo->m_vDir.z) ? 0 : (m_pInfo->m_vDir.z < 0 ? -1.f : 1.f);
-
-		if(fabs(m_pInfo->m_vDir.x) > 0.2f && fabs(m_pInfo->m_vDir.z) > 0.2f)
+		
+		if(fabs(m_pInfo->m_vDir.x) > 0.25f && fabs(m_pInfo->m_vDir.z) > 0.25f)
 			return;
 
 		float fX = int((m_pInfo->m_vPos.x + (DirX  * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
 		float fZ = int((m_pInfo->m_vPos.z + (DirZ * WOLRD_SCALE * 1.5f) + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-	
+		
 		D3DXVECTOR3 vBombPos = D3DXVECTOR3(fX, m_pInfo->m_vPos.y, fZ);	
 
  		Engine::CGameObject* pGameObject = NULL;
