@@ -34,7 +34,7 @@ HRESULT CSliceBlock::Initialize(D3DXVECTOR3 vPos, Engine::TILETEXTURE eTexture)
 	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE/10.f, WORLD_SCALE/10.f, WORLD_SCALE/10.f);	
 
 	m_pInfo->m_vDir.x = (float)Engine::getInt(-10, 11);
-	m_pInfo->m_vDir.y = (float)Engine::getInt(-3, 11);
+	m_pInfo->m_vDir.y = (float)Engine::getInt(-1, 11);
 	m_pInfo->m_vDir.z = (float)Engine::getInt(-10, 11);
 
 	D3DXVec3Normalize(&m_pInfo->m_vDir, &m_pInfo->m_vDir);
