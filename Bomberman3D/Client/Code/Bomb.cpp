@@ -37,7 +37,7 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Ow
 	FAILED_CHECK(AddComponent());
 
 	m_pInfo->m_vPos = vPos;
-	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/3.f, WOLRD_SCALE/3.f, WOLRD_SCALE/3.f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE/3.f, WORLD_SCALE/3.f, WORLD_SCALE/3.f);
 
 	D3DXMATRIX matView;
 	m_pDevice->GetTransform(D3DTS_VIEW, &matView);
@@ -47,11 +47,21 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Ow
 
 	if(m_pInfo->m_vDir.y < -0.92f)
 		return E_FAIL;
+
+	D3DXVECTOR3 a = D3DXVECTOR3(m_pInfo->m_vDir.x, 0.f, m_pInfo->m_vDir.z);
+	D3DXVec3Normalize(&a, &a);
+	D3DXVECTOR3 b = D3DXVECTOR3(0.f, 0.0f, 1.f);
+
+	float cosAngle  = acosf(D3DXVec3Dot(&a, &b));
+
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] =  (b.x * a.z - b.z * a.x < 0.0f) ? cosAngle : -cosAngle; 
 	
 	m_ThrowPower = Throw;
 	m_iPower = iPower;
 	m_wEffect = 255;
 	m_iExplosionTime = 65;
+
+	m_fDecreasePower = 5.f;
 
 	m_Own = Own;
 
@@ -62,11 +72,21 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Ow
 		return E_FAIL;
 	}
 
+	m_bCollPlayer = FALSE;
+
 	return S_OK;
 }
 
 Engine::OBJECT_RESULT CBomb::Update(void)
 {
+	D3DXVECTOR3 a = D3DXVECTOR3(m_pInfo->m_vDir.x, 0.f, m_pInfo->m_vDir.z);
+	D3DXVec3Normalize(&a, &a);
+	D3DXVECTOR3 b = D3DXVECTOR3(0.f, 0.0f, 1.f);
+
+	float cosAngle  = acosf(D3DXVec3Dot(&a, &b));
+
+	m_pInfo->m_fAngle[Engine::ANGLE_Y] =  (b.x * a.z - b.z * a.x < 0.0f) ? cosAngle : -cosAngle; 
+
 	if(Engine::CGameObject::Update() == Engine::OR_DELETE)
 		return Engine::OR_DELETE;
 
@@ -165,27 +185,27 @@ Engine::OBJECT_RESULT CBomb::Explosion(void)
 	{
 		Engine::CGameObject*	pGameObject = NULL;
 
-		float fX = int((m_pInfo->m_vPos.x + (WOLRD_SCALE)) / (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-		float fY = int((m_pInfo->m_vPos.y + (WOLRD_SCALE)) / (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-		float fZ = int((m_pInfo->m_vPos.z + (WOLRD_SCALE)) / (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+		float fX = int((m_pInfo->m_vPos.x + (WORLD_SCALE)) / (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+		float fY = int((m_pInfo->m_vPos.y + (WORLD_SCALE)) / (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+		float fZ = int((m_pInfo->m_vPos.z + (WORLD_SCALE)) / (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
 
 		pGameObject = CExplosion::Create(m_pDevice,  D3DXVECTOR3(fX, fY, fZ), 0, CExplosion::DIR_LEFT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX - 2.f * WOLRD_SCALE, fY, fZ), m_iPower - 1, CExplosion::DIR_LEFT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX - 2.f * WORLD_SCALE, fY, fZ), m_iPower - 1, CExplosion::DIR_LEFT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX + 2.f * WOLRD_SCALE, fY, fZ), m_iPower - 1, CExplosion::DIR_RIGHT);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX + 2.f * WORLD_SCALE, fY, fZ), m_iPower - 1, CExplosion::DIR_RIGHT);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX, fY, fZ + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX, fY, fZ + 2.f * WORLD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
-		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX, fY, fZ - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
+		pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(fX, fY, fZ - 2.f * WORLD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
@@ -206,28 +226,60 @@ void CBomb::FrameCheck(void)
 void CBomb::Move(void)
 {
 	bool bStopDown = m_pGravity->GetStopDown();
-	float DecreasePower = 5.f;
+
+	if(m_bCollPlayer == FALSE)
+	{
+		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
+
+		if(pPlayer == NULL)
+		{	
+			m_bCollPlayer = TRUE;
+		}
+	}
 
 	if(bStopDown == FALSE)
 	{		
+		m_pInfo->Update();
+
 		CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
+		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
 
 		if((pGameObj != NULL && pGameObj != this) ||
-			m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos) != NULL)
+		   pPlayer != NULL)
 		{	
-			m_pInfo->m_vPos.y = m_pGravity->GetExHeight();
+			m_pInfo->m_vPos.y = m_pGravity->GetExHeight();	
 			m_pInfo->Update();
 		}
 	}	
 	else
 	{
+		m_pInfo->m_vDir.y = 0.f;
+
 		if(m_ThrowPower > 12.f)
 			m_ThrowPower = 12.f;
 
-		DecreasePower = 20.f;
+		m_fDecreasePower = 25.f;
 	}
 
-	m_ThrowPower -= DecreasePower * Engine::Get_TimeMgr()->GetTime();
+	if(m_pGravity->Replusive() == TRUE)
+	{
+		m_fDecreasePower = 15.f;	
+
+		m_pInfo->Update();
+
+		CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
+		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
+
+		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
+			(pGameObj != NULL && pGameObj != this) ||
+			(pPlayer != NULL && (m_bCollPlayer == TRUE || pPlayer != m_Own)))
+		{
+			m_pInfo->m_vPos.y = m_pGravity->GetExHeight();
+			m_pInfo->Update();
+		}
+	}
+
+	m_ThrowPower -= m_fDecreasePower * Engine::Get_TimeMgr()->GetTime();
 
 	if(m_ThrowPower <= 0.f)
 	{
@@ -246,12 +298,30 @@ void CBomb::Move(void)
 
 		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
 			(pGameObj != NULL && pGameObj != this) ||
-			(pPlayer != NULL && pPlayer != m_Own))
+			(pPlayer != NULL && (m_bCollPlayer == TRUE || pPlayer != m_Own)))
 		{
-			if(m_ThrowPower > 20.f)
-				m_ThrowPower = 20.f;
+			m_ThrowPower = m_ThrowPower * 0.6f;
+
+			D3DXVECTOR3 vDir;
+			D3DXVec3Cross(&vDir, &m_pInfo->m_vDir, &D3DXVECTOR3(0.f, 1.f, 0.f));
+
+			m_pInfo->m_vPos = ExPos + m_ThrowPower * vDir * Engine::Get_TimeMgr()->GetTime();	
+			m_pInfo->Update();
+
+			CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
+			CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
+
+			if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
+				(pGameObj != NULL && pGameObj != this) ||
+				(pPlayer != NULL && (m_bCollPlayer == TRUE || pPlayer != m_Own)))
+			{
+				D3DXVec3Cross(&vDir, &D3DXVECTOR3(0.f, 1.f, 0.f), &m_pInfo->m_vDir);
+			}
+
+			m_pInfo->m_vDir = vDir;
 
 			m_pInfo->m_vPos = ExPos;
+			m_pInfo->Update();
 		}
 	}		
 }

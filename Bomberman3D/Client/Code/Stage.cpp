@@ -63,7 +63,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_Explosion"
-		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 48);
+		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 40);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -211,10 +211,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			pLayer->AddObject(L"Player", pGameObject);
 		}
 		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
-		{
-			if(TileInfo.eTileOption == Engine::TILE_BROKEN)
-				continue;
-
+		{			
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Block", pGameObject);	

@@ -74,6 +74,9 @@ private:
 	WORD			m_wEffect;
 	int				m_iPower;
 	int				m_iExplosionTime;
+	float			m_fDecreasePower;
+
+	bool			m_bCollPlayer;
 };
 
 

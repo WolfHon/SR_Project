@@ -52,9 +52,9 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 	m_iAddBomb = 1;
 	m_iPower = 1;
 
-	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE/6.f, WOLRD_SCALE/6.f, WOLRD_SCALE/6.f);
+	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE/6.f, WORLD_SCALE/6.f, WORLD_SCALE/6.f);
 
-	m_pInfo->m_vPos = vPos * WOLRD_SCALE;	
+	m_pInfo->m_vPos = vPos * WORLD_SCALE;	
 	m_pInfo->Update();
 
 	return S_OK;
@@ -69,9 +69,8 @@ Engine::OBJECT_RESULT CPlayer::Update(void)
 	if(eCamType == CCameraControl::CAM_FIRST)
 	{
 		MoveCheck();
-		
+		AttackCheck();		
 	}
-	AttackCheck();
 
 	return Engine::CGameObject::Update();	
 }
@@ -231,11 +230,11 @@ void CPlayer::AttackCheck(void)
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{		
-		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 3.3f, m_pInfo->m_vPos.z);	
+		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 2.7f, m_pInfo->m_vPos.z);	
 
  		Engine::CGameObject* pGameObject = NULL;
 
-		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower, 60.f, this);
+		pGameObject = CBomb::Create(m_pDevice, vBombPos, m_iPower, 50.f, this);
 
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Bomb", pGameObject);

@@ -38,7 +38,7 @@ HRESULT CExplosion::Initialize(D3DXVECTOR3 vPos, int iPower, EXPLOSION_DIR edir)
 	m_eDir = edir;
 	
 	m_pInfo->m_vPos = vPos;
-	m_pInfo->m_vScale = D3DXVECTOR3(WOLRD_SCALE, WOLRD_SCALE, WOLRD_SCALE);
+	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE, WORLD_SCALE, WORLD_SCALE);
 
 	m_iPower = iPower;
 	m_fFrameSpeed = 50.f;
@@ -158,22 +158,22 @@ Engine::OBJECT_RESULT CExplosion::FrameCheck(void)
 			switch(m_eDir)
 			{	
 			case DIR_LEFT:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x - 2.f * WORLD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_LEFT);
 				if(pGameObject != NULL)
 					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_RIGHT:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WOLRD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x + 2.f * WORLD_SCALE, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z), m_iPower - 1, CExplosion::DIR_RIGHT);
 				if(pGameObject != NULL)
 					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_BACK:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z + 2.f * WORLD_SCALE), m_iPower - 1, CExplosion::DIR_BACK);
 				if(pGameObject != NULL)
 					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;
 			case DIR_FORWARD:
-				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 2.f * WOLRD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
+				pGameObject = CExplosion::Create(m_pDevice, D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y, m_pInfo->m_vPos.z - 2.f * WORLD_SCALE), m_iPower - 1, CExplosion::DIR_FORWARD);
 				if(pGameObject != NULL)
 					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 				break;

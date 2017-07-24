@@ -18,7 +18,7 @@ CTerrainInfo::~CTerrainInfo(void)
 
 void CTerrainInfo::InsertInfo(CBlock* Block)
 {
-	D3DXVECTOR3 vPos = Block->GetTilePos() * WOLRD_SCALE;
+	D3DXVECTOR3 vPos = Block->GetTilePos() * WORLD_SCALE;
 	MAPVECTOR vMapPos;
 	vMapPos.x = vPos.x;
 	vMapPos.y = vPos.y;
@@ -29,7 +29,7 @@ void CTerrainInfo::InsertInfo(CBlock* Block)
 
 void CTerrainInfo::EraseInfo(CBlock* Block)
 {
-	D3DXVECTOR3 vPos = Block->GetTilePos() * WOLRD_SCALE;
+	D3DXVECTOR3 vPos = Block->GetTilePos() * WORLD_SCALE;
 	MAPVECTOR vMapPos;
 	vMapPos.x = vPos.x;
 	vMapPos.y = vPos.y;
@@ -45,9 +45,9 @@ void CTerrainInfo::EraseInfo(CBlock* Block)
 
 CBlock* CTerrainInfo::CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos)
 {
-	float fX = int((vPos.x + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-	float fY = int((vPos.y + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-	float fZ = int((vPos.z + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	float fX = int((vPos.x + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+	float fY = int((vPos.y + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+	float fZ = int((vPos.z + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
 
 	D3DXVECTOR3 SrcPos = D3DXVECTOR3(fX, fY, fZ);	
 
@@ -58,9 +58,9 @@ CBlock* CTerrainInfo::CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos)
 			for(int x = -1; x<2;++x)
 			{
 				MAPVECTOR vecTargetPos;
-				vecTargetPos.x = SrcPos.x + x * WOLRD_SCALE * 2.f;
-				vecTargetPos.y = SrcPos.y + y * WOLRD_SCALE * 2.f;
-				vecTargetPos.z = SrcPos.z + z * WOLRD_SCALE * 2.f;
+				vecTargetPos.x = SrcPos.x + x * WORLD_SCALE * 2.f;
+				vecTargetPos.y = SrcPos.y + y * WORLD_SCALE * 2.f;
+				vecTargetPos.z = SrcPos.z + z * WORLD_SCALE * 2.f;
 
 				map<MAPVECTOR, CBlock*>::iterator iter = mapBlock.find(vecTargetPos);
 				if(iter != mapBlock.end())
@@ -77,9 +77,9 @@ CBlock* CTerrainInfo::CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos)
 
 float CTerrainInfo::CheckHeight(D3DXVECTOR3 vPos)
 {
-	float fX = int((vPos.x + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-	float fY = int((vPos.y + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
-	float fZ = int((vPos.z + (WOLRD_SCALE))/ (WOLRD_SCALE * 2.f)) * (WOLRD_SCALE * 2.f);
+	float fX = int((vPos.x + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+	float fY = int((vPos.y + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
+	float fZ = int((vPos.z + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
 	
 	D3DXVECTOR3 SrcPos = D3DXVECTOR3(fX, fY, fZ);	
 
@@ -87,7 +87,7 @@ float CTerrainInfo::CheckHeight(D3DXVECTOR3 vPos)
 	{
 		MAPVECTOR vecTargetPos;
 		vecTargetPos.x = SrcPos.x;
-		vecTargetPos.y = SrcPos.y + y * WOLRD_SCALE * 2.f;
+		vecTargetPos.y = SrcPos.y + y * WORLD_SCALE * 2.f;
 		vecTargetPos.z = SrcPos.z;
 
 		if(vecTargetPos.y < -12.f)
@@ -101,8 +101,8 @@ float CTerrainInfo::CheckHeight(D3DXVECTOR3 vPos)
 
 			D3DXVECTOR3* vUpPoint = iter->second->GetUpPoint();
 		
-			float	fRatioX = (vPos.x - vUpPoint[0].x) / (WOLRD_SCALE * 2.f);
-			float	fRatioZ = (vUpPoint[0].z - vPos.z) / (WOLRD_SCALE * 2.f);
+			float	fRatioX = (vPos.x - vUpPoint[0].x) / (WORLD_SCALE * 2.f);
+			float	fRatioZ = (vUpPoint[0].z - vPos.z) / (WORLD_SCALE * 2.f);
 
 			D3DXPLANE		Plane;
 

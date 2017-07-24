@@ -27,8 +27,8 @@ HRESULT CSlope::Initialize(Engine::TILEINFO _TileInfo)
 
 	FAILED_CHECK(AddComponent());
 	
-	m_pInfo->m_vScale = m_tagTileInfo.vScale * WOLRD_SCALE;
-	m_pInfo->m_vPos = m_tagTileInfo.vPos * WOLRD_SCALE;
+	m_pInfo->m_vScale = m_tagTileInfo.vScale * WORLD_SCALE;
+	m_pInfo->m_vPos = m_tagTileInfo.vPos * WORLD_SCALE;
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
 
 	m_pInfo->Update();

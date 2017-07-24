@@ -3,15 +3,17 @@
 
 #include "TerrainInfo.h"
 #include "Export_Function.h"
-
+#include <iostream>
+using namespace std;
 CGravity::CGravity(void)
 : CComponent()
 , m_pMatWorld(NULL)
 , m_pPos(NULL)
 , m_fModelHeight(0.f)
 , m_fAcc(0.f)
-, m_fDownSpeed(0.f)
 , m_bStopDown(FALSE)
+, m_fPower(0.f)
+, m_fRepulsivePower(0.f)
 {
 }
 
@@ -21,7 +23,8 @@ CGravity::CGravity(const CGravity& rhs)
 , m_pPos(rhs.m_pPos)
 , m_fModelHeight(rhs.m_fModelHeight)
 , m_fAcc(rhs.m_fAcc)
-, m_fDownSpeed(rhs.m_fDownSpeed)
+, m_fPower(rhs.m_fPower)
+, m_fRepulsivePower(rhs.m_fRepulsivePower)
 {
 }
 
@@ -59,32 +62,26 @@ Engine::OBJECT_RESULT CGravity::Update(void)
 			Maxheight = Height;
 	}
 
-	m_pPos->y = m_pPos->y;
+	m_bStopDown = FALSE;
 
-	if(fabs(m_pPos->y - Maxheight) < 0.7f)
+	m_fAcc += 5.f * Engine::Get_TimeMgr()->GetTime();
+
+	m_fExHeight = m_pPos->y;
+
+	m_fPower = -1 * (GRAVITY * m_fAcc * m_fAcc * 0.5f);
+
+	m_pPos->y += m_fPower * Engine::Get_TimeMgr()->GetTime();
+
+	if(Maxheight > m_pPos->y)
 	{
 		m_pPos->y = Maxheight;
 		m_fAcc = 0.f;
 
+		m_fRepulsivePower = m_fPower * -0.4f;
+
 		m_bStopDown = TRUE;
 	}
-	else
-	{
-		m_bStopDown = FALSE;
-
-		m_fAcc += 5.f * Engine::Get_TimeMgr()->GetTime();
-
-		float dir = -1.f;
-
-		if(Maxheight > m_pPos->y)
-			dir = 1.f;
-
-		m_fExHeight = m_pPos->y;
-
-		float Power = dir * m_fDownSpeed * m_fAcc - (-1 * dir * GRAVITY * m_fAcc * m_fAcc * 0.5f);
-
-		m_pPos->y += Power * Engine::Get_TimeMgr()->GetTime();
-	}
+	
 
 	return Engine::OR_OK;
 }
@@ -111,5 +108,18 @@ CGravity* CGravity::Create(void)
 void CGravity::InitializeGravity(void)
 {
 	m_fAcc = 0.f;
-	m_fDownSpeed = 5.f;
+}
+
+bool CGravity::Replusive(void)
+{
+	if(m_fRepulsivePower > 5.f)
+	{
+		m_fExHeight = m_pPos->y;
+
+		m_pPos->y += m_fRepulsivePower * 0.4f * Engine::Get_TimeMgr()->GetTime();
+
+		return TRUE;
+	}
+
+	return FALSE;
 }

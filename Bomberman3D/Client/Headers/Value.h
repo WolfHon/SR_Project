@@ -18,7 +18,7 @@
 const WORD		WINCX = 1200;
 const WORD		WINCY = 800;
 
-const float		WOLRD_SCALE = 3.f;
+const float		WORLD_SCALE = 3.f;
 
 const D3DXVECTOR3		g_vLook = D3DXVECTOR3(0.f, 0.f, 1.f);
 

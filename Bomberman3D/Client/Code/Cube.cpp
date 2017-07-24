@@ -7,6 +7,7 @@
 #include "Collision_OBB.h"
 #include "Include.h"
 #include "Export_Function.h"
+#include "SliceBlock.h"
 
 CCube::CCube(LPDIRECT3DDEVICE9 pDevice)
 : CBlock(pDevice)
@@ -25,8 +26,8 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 
 	FAILED_CHECK(AddComponent());
 	
-	m_pInfo->m_vScale = m_tagTileInfo.vScale * WOLRD_SCALE;
-	m_pInfo->m_vPos = m_tagTileInfo.vPos * WOLRD_SCALE;
+	m_pInfo->m_vScale = m_tagTileInfo.vScale * WORLD_SCALE;
+	m_pInfo->m_vPos = m_tagTileInfo.vPos * WORLD_SCALE;
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] = _TileInfo.fAngle;
 
 	m_pInfo->Update();
@@ -58,7 +59,10 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 Engine::OBJECT_RESULT CCube::Update(void)
 {	
 	if(m_bIsDead)
+	{
+		CreateEffect();
 		return Engine::OR_DELETE;
+	}
 
 	return Engine::OR_OK;
 }
@@ -112,4 +116,24 @@ HRESULT CCube::AddComponent(void)
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 
 	return S_OK;
+}
+
+void CCube::CreateEffect(void)
+{
+	Engine::CGameObject*	pGameObject = NULL;
+
+	for(int x=-(int)WORLD_SCALE + 1; x<(int)WORLD_SCALE; ++x)
+	{
+		for(int z=-(int)WORLD_SCALE + 1; z<(int)WORLD_SCALE; ++z)
+		{
+				D3DXVECTOR3 vPos = m_pInfo->m_vPos;
+				vPos.x += (float)x;
+				vPos.y += WORLD_SCALE -1.f;
+				vPos.z += (float)z;
+
+				pGameObject = CSliceBlock::Create(m_pDevice, vPos, m_tagTileInfo.eTexture);
+				if(pGameObject != NULL)
+					Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
+		}
+	}	
 }

@@ -37,6 +37,7 @@ public:
 
 public:	
 	virtual Engine::OBJECT_RESULT Update(void);
+	bool Replusive(void);
 	virtual DWORD Release(void);
 
 private:
@@ -47,13 +48,14 @@ public:
 
 private:
 	float			m_fAcc;
-	float			m_fDownSpeed;
 
 	D3DXMATRIX*			m_pMatWorld;
 	D3DXVECTOR3*		m_pPos;
 	D3DXVECTOR3			m_vPoint[4];
 	float				m_fExHeight;
 	float				m_fModelHeight;
+	float				m_fPower;
+	float				m_fRepulsivePower;
 
 	bool				m_bStopDown;
 };
