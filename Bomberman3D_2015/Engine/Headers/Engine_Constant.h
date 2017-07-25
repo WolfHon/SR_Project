@@ -1,0 +1,32 @@
+#ifndef __Engine_Constant_h__
+#define __Engine_Constant_h__
+
+namespace Engine
+{
+	class CGameObject;
+	typedef list<CGameObject*>		OBJLIST;
+
+	const DWORD MOUSE_LBUTTON_CLICK = 0x00000001;
+	const DWORD MOUSE_LBUTTON_PRESS = 0x00000002;
+	const DWORD MOUSE_RBUTTON_CLICK = 0x00000004;
+	const DWORD MOUSE_RBUTTON_PRESS = 0x00000008;
+
+	const DWORD KEY_W_PRESS = 0x00000001;
+	const DWORD KEY_W_CLICK = 0x00000002;
+	const DWORD KEY_A_PRESS = 0x00000004;
+	const DWORD KEY_A_CLICK = 0x00000008;
+	const DWORD KEY_S_PRESS = 0x00000010;
+	const DWORD KEY_S_CLICK = 0x00000020;
+	const DWORD KEY_D_PRESS = 0x00000040;	
+	const DWORD KEY_D_CLICK = 0x00000080;
+	const DWORD KEY_SPACE_PRESS = 0x00000100;	
+	const DWORD KEY_SPACE_CLICK = 0x00000200;
+	const DWORD KEY_ENTER_PRESS = 0x00000400;	
+	const DWORD KEY_ENTER_CLICK = 0x00000800;
+	const DWORD KEY_F1_PRESS = 0x00001000;	
+	const DWORD KEY_F1_CLICK = 0x00002000;
+
+	
+}
+
+#endif //__Engine_Constant_h__
