@@ -60,10 +60,11 @@ HRESULT CCube::Initialize(Engine::TILEINFO _TileInfo)
 Engine::OBJECT_RESULT CCube::Update(void)
 {	
 	Engine::CGameObject*	pGameObject = NULL;
-
-	int inum = Engine::getInt(0,10);
+	
 	if(m_bIsDead)
 	{
+		int inum = Engine::getInt(0,10);
+
 		CreateEffect();
 
 		switch(inum)
@@ -92,7 +93,7 @@ Engine::OBJECT_RESULT CCube::Update(void)
 
 		default:
 			return Engine::OR_DELETE;	
-		}
+		}	
 
 		return Engine::OR_DELETE;
 	}

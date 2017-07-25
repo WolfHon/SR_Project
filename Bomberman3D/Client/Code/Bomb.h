@@ -49,11 +49,15 @@ public:
 	virtual void Render(void);
 
 public:
+	CPlayer* GetOwn(void) { return m_Own; }
+
+public:
 	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Own);
 
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Own);
 	HRESULT	AddComponent(void);
+	void VibrationCamera(void);
 	void FrameCheck(void);
 	void Move(void);
 	Engine::OBJECT_RESULT Explosion(void);
@@ -73,7 +77,7 @@ private:
 	float			m_fTime;
 	WORD			m_wEffect;
 	int				m_iPower;
-	int				m_iExplosionTime;
+	float			m_fExplosionTime;
 	float			m_fDecreasePower;
 
 	bool			m_bCollPlayer;

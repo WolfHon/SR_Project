@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SlopeTex.h"
 #include "CubeTex.h"
+#include "SphereTex.h"
 #include "CubeColor.h"
 #include "PlayerModel.h"
 
@@ -54,6 +55,9 @@ HRESULT Engine::CResouceMgr::AddBuffer(LPDIRECT3DDEVICE9 pDevice
 		pResource = CCubeColor::Create(pDevice);
 		break;
 
+	case BUFFER_SPHERETEX:
+		pResource = CSphereTex::Create(pDevice);
+		break;
 	case MODEL_PLAYER:
 		pResource = CPlayerModel::Create(pDevice);
 		break;

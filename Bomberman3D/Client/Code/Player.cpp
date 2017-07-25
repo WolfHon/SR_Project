@@ -54,6 +54,9 @@ HRESULT CPlayer::Initialize(D3DXVECTOR3 vPos)
 
 	m_fPress = 10.f;
 	m_fPressValue = 1.f;
+	
+	m_bVibration = FALSE;
+	m_fVibrationPower = 0.f;
 
 	m_pInfo->m_vScale = D3DXVECTOR3(WORLD_SCALE/6.f, WORLD_SCALE/6.f, WORLD_SCALE/6.f);
 
@@ -248,7 +251,28 @@ void CPlayer::AttackCheck(void)
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
 	{		
-		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 2.7f, m_pInfo->m_vPos.z);	
+		int iCount = 0;
+
+		Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"Bomb");
+
+		if(listObj != NULL)
+		{
+			Engine::OBJLIST::iterator iterBegin = listObj->begin();
+			Engine::OBJLIST::iterator iterEnd = listObj->end();
+
+			for (; iterBegin != iterEnd; ++iterBegin)
+			{
+				if(dynamic_cast<CBomb*>((*iterBegin))->GetOwn() == this)
+				{
+					++iCount;
+				}
+			}
+		}
+
+		if(m_iAddBomb - iCount == 0)
+			return;
+
+		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 2.6f, m_pInfo->m_vPos.z);	
 
  		Engine::CGameObject* pGameObject = NULL;
 
@@ -261,4 +285,11 @@ void CPlayer::AttackCheck(void)
 		m_fPressValue = 1.f;
 	}		
 }
+
+D3DXVECTOR3 CPlayer::GetPos(void)
+{ 
+	return m_pInfo->m_vPos; 
+} 
+
+
 

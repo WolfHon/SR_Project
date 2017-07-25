@@ -51,11 +51,11 @@ private:
 	int			m_iAddBomb;
 	int			m_iPower;
 
-
-
 	int				m_inum;
 	bool			m_bDungSill;
 	float			m_fTime;
+	bool			m_bStart;
+	
 };
 
 #endif // Item_h__

@@ -403,13 +403,6 @@
 						<File
 							RelativePath="..\Code\SliceBlock.cpp"
 							>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-								/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath="..\Code\SliceBlock.h"

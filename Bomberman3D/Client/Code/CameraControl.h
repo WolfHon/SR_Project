@@ -50,10 +50,10 @@ public:
 	void SetCamera(CAMERATYPE NowCam);
 
 public:
-	static CCameraControl* Create(LPDIRECT3DDEVICE9 pDevice, const Engine::CTransform* pTargetInfo);
+	static CCameraControl* Create(LPDIRECT3DDEVICE9 pDevice, Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo);
 
 private:
-	HRESULT Initialize(const Engine::CTransform* pTargetInfo);
+	HRESULT Initialize(Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo);
 	void Release(void);
 
 private:
