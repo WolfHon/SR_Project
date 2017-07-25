@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\99.Default">
+      <UniqueIdentifier>{1b88a692-9aea-4e38-81c3-cda387423f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00.MainApp">
+      <UniqueIdentifier>{24c4fd65-b987-459e-8e62-d8cff5b1ddc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01.Scene">
+      <UniqueIdentifier>{a72885ef-2002-4f91-bd75-efdc3a3fb5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01.Scene\00.Logo">
+      <UniqueIdentifier>{e0a257d2-fec0-4476-b3c9-f1de18896350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01.Scene\01.Stage">
+      <UniqueIdentifier>{e3308d0c-44a0-491e-ae17-83a1cd9c7297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object">
+      <UniqueIdentifier>{92a8484d-25dc-477c-aa6b-e82b89ddff6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\00.LogoBack">
+      <UniqueIdentifier>{9c9c26ab-b91f-496d-8f06-048366c5fb40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\01.Player">
+      <UniqueIdentifier>{cdc5dcca-981e-470f-9179-98d6d3e95f5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\02.SkyBox">
+      <UniqueIdentifier>{6cca4966-e76c-4d74-a047-87914f15807b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.Block">
+      <UniqueIdentifier>{fe9e5346-9858-4bee-8056-b2ca4deb88fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.Block\00.Cube">
+      <UniqueIdentifier>{60bd1693-2a7a-4605-a357-d48492e0875a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.Block\01.Slope">
+      <UniqueIdentifier>{470d42c4-92c1-4125-830e-99c2b906e17a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\99.Camera">
+      <UniqueIdentifier>{34a2ef54-a91e-473e-b9bc-e372b0efb375}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\99.Camera\00.ActionCamera">
+      <UniqueIdentifier>{1d11e66f-c1f3-4f85-9c7e-efe025bea5ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\99.Camera\01.FirstCamera">
+      <UniqueIdentifier>{20ce574f-71f2-45ff-a328-127e721967cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\03.Bomb">
+      <UniqueIdentifier>{67817839-ad26-459e-97d1-0e99e86fec62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\04.Effect">
+      <UniqueIdentifier>{07e0379a-a7c5-4264-b339-10cf8e33fc2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\04.Effect\00.Explosion">
+      <UniqueIdentifier>{aa3b230a-79b2-4801-aa14-8658693e89c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\04.Effect\01.SliceBlock">
+      <UniqueIdentifier>{3d88b1fa-2aaf-4490-9390-c7dfd3833d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\05.Monster">
+      <UniqueIdentifier>{d85db96e-b532-4757-bbe4-eed1f9104dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\06.Item">
+      <UniqueIdentifier>{579f9b67-f1ac-40d7-a45b-4372d13e8802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.UI">
+      <UniqueIdentifier>{6cf6956a-2e4d-4151-acc5-bec793091e10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.UI\00.ItemUI">
+      <UniqueIdentifier>{d96716cf-949d-422c-af4d-eae6d9d6beee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02.Object\07.UI\Crosshair">
+      <UniqueIdentifier>{fb0c1546-0ee0-4204-9434-68625d131064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03.Design">
+      <UniqueIdentifier>{d5c0baa7-e94b-4c63-84c8-4d0100393ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03.Design\00.CameraObserver">
+      <UniqueIdentifier>{97e96f30-3918-49e3-affd-aa1a61a4f591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03.Component">
+      <UniqueIdentifier>{d0f9e11d-9753-4c42-b042-e36e5930a4ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03.Component\00.Collision_OBB">
+      <UniqueIdentifier>{42b10152-4282-4b9c-a740-638c0ee90534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03.Component\01.Gravity">
+      <UniqueIdentifier>{eb15c22d-dba3-4174-8720-5e9abafd8bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04.Manager">
+      <UniqueIdentifier>{5af38192-40c8-4dff-9d7c-c000448f3a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04.Manager\00.CameraControl">
+      <UniqueIdentifier>{82f8cf3b-f7da-46b7-b658-c11de958f61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04.Manager\01.TerrainInfo">
+      <UniqueIdentifier>{d0dbefc3-a764-48a7-b1a4-dcf7afa0971a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\Include">
+      <UniqueIdentifier>{6f641048-09e2-41aa-8c34-5a5e7eb66551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Client.cpp">
+      <Filter>소스 파일\99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일\99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MainApp.cpp">
+      <Filter>소스 파일\00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Logo.cpp">
+      <Filter>소스 파일\01.Scene\00.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Stage.cpp">
+      <Filter>소스 파일\01.Scene\01.Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\LogoBack.cpp">
+      <Filter>소스 파일\02.Object\00.LogoBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Player.cpp">
+      <Filter>소스 파일\02.Object\01.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Skybox.cpp">
+      <Filter>소스 파일\02.Object\02.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Block.cpp">
+      <Filter>소스 파일\02.Object\07.Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Cube.cpp">
+      <Filter>소스 파일\02.Object\07.Block\00.Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Slope.cpp">
+      <Filter>소스 파일\02.Object\07.Block\01.Slope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ActionCamera.cpp">
+      <Filter>소스 파일\02.Object\99.Camera\00.ActionCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\FirstCamera.cpp">
+      <Filter>소스 파일\02.Object\99.Camera\01.FirstCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Bomb.cpp">
+      <Filter>소스 파일\02.Object\03.Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Explosion.cpp">
+      <Filter>소스 파일\02.Object\04.Effect\00.Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SliceBlock.cpp">
+      <Filter>소스 파일\02.Object\04.Effect\01.SliceBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Monster.cpp">
+      <Filter>소스 파일\02.Object\05.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Item.cpp">
+      <Filter>소스 파일\02.Object\06.Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PressedUI.cpp">
+      <Filter>소스 파일\02.Object\07.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PressedUIbar.cpp">
+      <Filter>소스 파일\02.Object\07.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AddBombNum.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AddBombUI.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Number1.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PowerNum.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PowerUI.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShoseNum.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShoseUI.cpp">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Crosshair.cpp">
+      <Filter>소스 파일\02.Object\07.UI\Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CameraObserver.cpp">
+      <Filter>소스 파일\03.Design\00.CameraObserver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Collision_OBB.cpp">
+      <Filter>소스 파일\03.Component\00.Collision_OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Gravity.cpp">
+      <Filter>소스 파일\03.Component\01.Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CameraControl.cpp">
+      <Filter>소스 파일\04.Manager\00.CameraControl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\TerrainInfo.cpp">
+      <Filter>소스 파일\04.Manager\01.TerrainInfo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>소스 파일\99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>소스 파일\99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>소스 파일\99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\MainApp.h">
+      <Filter>소스 파일\00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\SceneSelector.h">
+      <Filter>소스 파일\01.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Logo.h">
+      <Filter>소스 파일\01.Scene\00.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\LogoBack.h">
+      <Filter>소스 파일\02.Object\00.LogoBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Player.h">
+      <Filter>소스 파일\02.Object\01.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Skybox.h">
+      <Filter>소스 파일\02.Object\02.SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Block.h">
+      <Filter>소스 파일\02.Object\07.Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Cube.h">
+      <Filter>소스 파일\02.Object\07.Block\00.Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Slope.h">
+      <Filter>소스 파일\02.Object\07.Block\01.Slope</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\ActionCamera.h">
+      <Filter>소스 파일\02.Object\99.Camera\00.ActionCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\FirstCamera.h">
+      <Filter>소스 파일\02.Object\99.Camera\01.FirstCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Bomb.h">
+      <Filter>소스 파일\02.Object\03.Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Explosion.h">
+      <Filter>소스 파일\02.Object\04.Effect\00.Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Monster.h">
+      <Filter>소스 파일\02.Object\05.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Item.h">
+      <Filter>소스 파일\02.Object\06.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\PressedUI.h">
+      <Filter>소스 파일\02.Object\07.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\PressedUIbar.h">
+      <Filter>소스 파일\02.Object\07.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\AddBombNum.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\AddBombUI.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Number1.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\PowerNum.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\PowerUI.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\ShoseNum.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\ShoseUI.h">
+      <Filter>소스 파일\02.Object\07.UI\00.ItemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Crosshair.h">
+      <Filter>소스 파일\02.Object\07.UI\Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\CameraObserver.h">
+      <Filter>소스 파일\03.Design\00.CameraObserver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Collision_OBB.h">
+      <Filter>소스 파일\03.Component\00.Collision_OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\Gravity.h">
+      <Filter>소스 파일\03.Component\01.Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\CameraControl.h">
+      <Filter>소스 파일\04.Manager\00.CameraControl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Code\TerrainInfo.h">
+      <Filter>소스 파일\04.Manager\01.TerrainInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Include.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Enum.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Value.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Client.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Code\Stage.h">
+      <Filter>소스 파일\01.Scene\01.Stage</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Code\SliceBlock.h">
+      <Filter>소스 파일\02.Object\04.Effect\01.SliceBlock</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
