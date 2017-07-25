@@ -23,6 +23,8 @@
 #include "PowerNum.h"
 #include "AddBombNum.h"
 #include "Crosshair.h"
+#include "PressedUIbar.h"
+#include "PressedUI.h"
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
@@ -72,7 +74,7 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_Explosion"
-		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 48);
+		, L"../bin/Texture/Effect/Explosion/Explosion%d.png", 40);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -94,6 +96,11 @@ HRESULT CStage::Initialize(void)
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_NORMAL, L"Texture_Crosshair"
 		, L"../bin/Texture/Crosshair/crosshair%d.png", 1);
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::TEXTURE_NORMAL, L"Gaugebar"
+		, L"../bin/Texture/UI/gaugebar%d.png", 2);
 	FAILED_CHECK(hr);
 
 	//Buffer
@@ -235,10 +242,23 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	pLayer->AddObject(L"AddBombNum", pGameObject);
 
-	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 0.f , 0.f));
+	pGameObject = CCrosshair::Create(m_pDevice, D3DXVECTOR3(0.f, 40.f , 0.f));
 	NULL_CHECK_RETURN(pGameObject,E_FAIL);
 
 	pLayer->AddObject(L"ItemUi", pGameObject);
+
+
+	pGameObject = CPressedUI::Create(m_pDevice, D3DXVECTOR3(560.f, 40.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	pGameObject = CPressedUIbar::Create(m_pDevice, D3DXVECTOR3(560.f, 40.f , 0.f));
+	NULL_CHECK_RETURN(pGameObject,E_FAIL);
+
+	pLayer->AddObject(L"ItemUi", pGameObject);
+
+	
 
 
 	pGameObject = CCameraControl::Create(m_pDevice
@@ -288,10 +308,7 @@ void CStage::LoadData(Engine::CLayer* pLayer , Engine::CGameObject*	pGameObject)
 			pLayer->AddObject(L"Player", pGameObject);
 		}
 		else if(TileInfo.eTileShape == Engine::TILE_CUBE )
-		{
-			if(TileInfo.eTileOption == Engine::TILE_BROKEN)
-				continue;
-
+		{			
 			pGameObject = CCube::Create(m_pDevice, TileInfo);
 			NULL_CHECK(pGameObject);
 			pLayer->AddObject(L"Block", pGameObject);	

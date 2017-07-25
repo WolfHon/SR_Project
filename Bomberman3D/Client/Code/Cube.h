@@ -24,6 +24,7 @@ public:
 
 private:
 	HRESULT Initialize(Engine::TILEINFO _TileInfo);
+	void	CreateEffect(void);
 	HRESULT	AddComponent(void);
 	void Release(void);
 };

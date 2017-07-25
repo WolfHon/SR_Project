@@ -32,6 +32,8 @@ namespace Engine
 }
 
 class CCollision_OBB;
+class CGravity;
+class CPlayer;
 
 class CBomb
 	: public Engine::CGameObject
@@ -47,13 +49,13 @@ public:
 	virtual void Render(void);
 
 public:
-	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower);
+	static CBomb* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Own);
 
 private:
-	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower);
+	HRESULT Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Own);
 	HRESULT	AddComponent(void);
 	void FrameCheck(void);
-	void HeightCheck(void);
+	void Move(void);
 	Engine::OBJECT_RESULT Explosion(void);
 	void Release(void);
 
@@ -63,13 +65,18 @@ private:
 	Engine::CTransform*		m_pInfo;
 
 	CCollision_OBB*	m_pCollisionOBB;
+	CGravity*		m_pGravity;
 
+	CPlayer*		m_Own;
 private:
-	float			m_vExplosionPosY;
+	float			m_ThrowPower;
 	float			m_fTime;
 	WORD			m_wEffect;
 	int				m_iPower;
 	int				m_iExplosionTime;
+	float			m_fDecreasePower;
+
+	bool			m_bCollPlayer;
 };
 
 

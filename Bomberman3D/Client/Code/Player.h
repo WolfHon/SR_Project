@@ -63,13 +63,17 @@ public:
 	{
 		m_iAddBomb += _AddBomb;
 	}
-	
+
+public:
+	float GetPress(void)
+	{
+		return m_fPress;
+	}
 private:
 	HRESULT Initialize(D3DXVECTOR3 vPos);
 	HRESULT	AddComponent(void);
-	void AttackCheck(void);
+	void AttackCheck(void);	
 	void MoveCheck(void);
-	void HeightCheck(void);
 	void Release(void);
 
 private:
@@ -85,7 +89,7 @@ private:
 
 private:	
 	float			m_fSpeed;
-	float			m_fAngle;
+	float			m_fAngle;	
 
 	D3DXVECTOR3 m_vExMousePos;
 
@@ -93,6 +97,8 @@ private:
 	float       m_fPlayerSpeed;
 	int			m_iAddBomb;
 	int			m_iPower;
+	float		m_fPress;
+	float		m_fPressValue;
 };
 
 #endif // Player_h__
