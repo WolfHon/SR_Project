@@ -78,7 +78,6 @@ Engine::OBJECT_RESULT CExplosion::Update(void)
 
 	ZeroMemory(&matBill.m[3][0], sizeof(D3DXVECTOR3));
 	D3DXMatrixInverse(&matBill, NULL, &matBill);
-
 	
 	//matBill._11 = m_pInfo->m_vScale.x;
 	//matBill._22 = m_pInfo->m_vScale.y;
@@ -92,8 +91,6 @@ Engine::OBJECT_RESULT CExplosion::Update(void)
  	m_pInfo->m_matWorld = matBill * m_pInfo->m_matWorld;
 	
 	return Engine::OR_OK;
-
-
 }
 
 void CExplosion::Render(void)
@@ -218,6 +215,10 @@ void CExplosion::CheckExplosion(void)
 		pGameObj->IsDead();
 
 	pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
+	if(pGameObj != NULL)
+		pGameObj->IsDead();
+
+	pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Item", m_pInfo->m_vPos);
 	if(pGameObj != NULL)
 		pGameObj->IsDead();
 }

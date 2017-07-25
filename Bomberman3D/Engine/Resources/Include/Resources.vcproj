@@ -253,6 +253,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="05.SphereTex"
+					>
+					<File
+						RelativePath="..\Code\SphereTex.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\Code\SphereTex.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="01.Texture"

@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "Export_Function.h"
 #include "CameraControl.h"
+#include "Player.h"
 
 CFirstCamera::CFirstCamera(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CCamera(pDevice)
@@ -32,25 +33,27 @@ Engine::OBJECT_RESULT CFirstCamera::Update(void)
 HRESULT CFirstCamera::Initialize(void)
 {
 	m_fAngleY = D3DXToRadian(0.f);
-	
+
+	m_fTime = 0.f;	
 	
 	m_vExMousePos = Engine::Get_MouseMgr()->InitMousePos();
 
 	return S_OK;
 }
 
-void CFirstCamera::SetCameraTarget(const Engine::CTransform* pTargetInfo)
+void CFirstCamera::SetCameraTarget(Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo)
 {
+	m_pTarget = pTarget;
 	m_pTargetInfo = pTargetInfo;
 }
 
-CFirstCamera* CFirstCamera::Create(LPDIRECT3DDEVICE9 pDevice , const Engine::CTransform* pTargetInfo)
+CFirstCamera* CFirstCamera::Create(LPDIRECT3DDEVICE9 pDevice , Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo)
 {
 	CFirstCamera*	pCamera = new CFirstCamera(pDevice);
 	if(FAILED(pCamera->Initialize()))
 		Engine::Safe_Delete(pCamera);
 
-	pCamera->SetCameraTarget(pTargetInfo);
+	pCamera->SetCameraTarget(pTarget, pTargetInfo);
 	return pCamera;
 }
 
@@ -84,8 +87,33 @@ void CFirstCamera::TargetRenewal(void)
 	D3DXMatrixRotationAxis(&matRotAxisY, &vRight, m_fAngleY);
 	D3DXVec3TransformNormal(&m_vAt, &m_vAt, &matRotAxisY);
 
-	m_vEye = m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
-	m_vAt += m_pTargetInfo->m_vPos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(m_pTarget);
+	float	fVibration = pPlayer->GetVibrationPower();
+	bool	bVibration = pPlayer->GetVibration();
+
+	D3DXVECTOR3 MovePos = m_pTargetInfo->m_vPos;
+
+	if(bVibration == TRUE)
+	{
+		if(m_fTime < 2.f)
+		{
+			m_fTime += Engine::Get_TimeMgr()->GetTime();
+
+			MovePos += vRight * sin(m_fTime*fVibration * 9) * powf(0.1f, m_fTime) * fVibration * 0.05f;
+			MovePos.y += sin(m_fTime*fVibration * 5) * powf(0.1f, m_fTime) * fVibration * 0.03f;
+		}
+		else
+		{
+			pPlayer->SetVibration(FALSE);
+		}
+	}
+	else
+	{
+		m_fTime = 0.f;
+	}
+
+	m_vEye = MovePos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
+	m_vAt += MovePos + m_pTargetInfo->m_vDir * 0.7f + D3DXVECTOR3(0.f, 1.25f, 0.f);
 
 	SetViewSpaceMatrix(&m_vEye, &m_vAt, &m_vUp);
 }

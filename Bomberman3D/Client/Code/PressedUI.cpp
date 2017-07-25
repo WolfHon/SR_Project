@@ -81,9 +81,6 @@ void CPressedUI::Render( void )
 	m_pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	m_pDevice->SetRenderState(D3DRS_ALPHAREF, 0x00000088);
 	m_pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_BORDER);
-	m_pDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_BORDER);
-	m_pDevice->SetSamplerState(0,D3DSAMP_BORDERCOLOR, 0x000000FF);
 
 	m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	//m_pDevice->SetTransform(D3DTS_WORLD, &m_pInfo->m_matWorld);

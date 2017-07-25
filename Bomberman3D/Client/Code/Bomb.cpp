@@ -59,7 +59,7 @@ HRESULT CBomb::Initialize(D3DXVECTOR3 vPos, int iPower, float Throw, CPlayer* Ow
 	m_ThrowPower = Throw;
 	m_iPower = iPower;
 	m_wEffect = 255;
-	m_iExplosionTime = 65;
+	m_fExplosionTime = 4.f;
 
 	m_fDecreasePower = 5.f;
 
@@ -136,7 +136,7 @@ CBomb* CBomb::Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos, int iPower, fl
 }
 
 void CBomb::Release(void)
-{	
+{		
 }
 
 HRESULT CBomb::AddComponent(void)
@@ -155,15 +155,15 @@ HRESULT CBomb::AddComponent(void)
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Texture", pComponent));
 
 	//Buffer
-	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_CubeTex");
+	pComponent = Engine::Get_ResourceMgr()->CloneResource(Engine::RESOURCE_DYNAMIC, L"Buffer_SphereTex");
 	m_pBuffer = dynamic_cast<Engine::CVIBuffer*>(pComponent);
 	NULL_CHECK_RETURN(m_pBuffer, E_FAIL);
-	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));
+	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Buffer", pComponent));	
 
 	//OBBCollision_OBB	
 	pComponent = m_pCollisionOBB = CCollision_OBB::Create(m_pDevice);
 	NULL_CHECK_RETURN(m_pCollisionOBB, E_FAIL);
-	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-1.f, -1.f, -1.f), &D3DXVECTOR3(1.f, 1.f, 1.f));
+	m_pCollisionOBB->SetColInfo(&m_pInfo->m_matWorld, &D3DXVECTOR3(-0.85f, -0.85f, -0.85f), &D3DXVECTOR3(0.85f, 0.85f, 0.85f));
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Collision_OBB", pComponent));
 	
 	pComponent = m_pGravity = CGravity::Create();
@@ -181,7 +181,7 @@ HRESULT CBomb::AddComponent(void)
 
 Engine::OBJECT_RESULT CBomb::Explosion(void)
 {
-	if(m_wEffect <= 100 || m_bIsDead == TRUE)
+	if(m_fTime >= m_fExplosionTime || m_bIsDead == TRUE)
 	{
 		Engine::CGameObject*	pGameObject = NULL;
 
@@ -209,6 +209,8 @@ Engine::OBJECT_RESULT CBomb::Explosion(void)
 		if(pGameObject != NULL)
 			Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Effect_Explosion", pGameObject);
 
+		VibrationCamera();
+
 		return Engine::OR_DELETE;
 	}
 
@@ -219,8 +221,35 @@ void CBomb::FrameCheck(void)
 {
 	m_fTime += Engine::Get_TimeMgr()->GetTime();
 
-	if(m_wEffect > 100)
-		m_wEffect = 255 - WORD(m_fTime * m_iExplosionTime);
+	if(m_fTime > m_fExplosionTime - 3.f)
+	{
+		if(m_wEffect > 100)
+			m_wEffect = 255 - int((m_fTime - (m_fExplosionTime - 3.f)) * 40);
+	}
+}
+
+void CBomb::VibrationCamera(void)
+{
+	Engine::OBJLIST* listObj = Engine::Get_Management()->GetObjectList(Engine::LAYER_GAMELOGIC, L"Player");
+
+	if(listObj != NULL)
+	{
+		Engine::OBJLIST::iterator iterBegin = listObj->begin();
+		Engine::OBJLIST::iterator iterEnd = listObj->end();
+
+		for (; iterBegin != iterEnd; ++iterBegin)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(*iterBegin);
+
+			float fDist = D3DXVec3Length(&(m_pInfo->m_vPos - pPlayer->GetPos()));
+			if(fDist < 20.f)
+			{
+				pPlayer->SetVibrationPower((20.f - fDist));
+				pPlayer->SetVibration(TRUE);
+			}
+		}
+	}
+
 }
 
 void CBomb::Move(void)

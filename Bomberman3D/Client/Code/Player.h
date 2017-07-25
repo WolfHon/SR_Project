@@ -47,21 +47,49 @@ public:
 	virtual Engine::OBJECT_RESULT Update(void);
 	virtual void Render(void);
 
+	D3DXVECTOR3 GetPos(void);
+
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pDevice, D3DXVECTOR3 vPos);
 
 public:
-	void SetSpeed(float _Speed)
+	void SetVibration(bool bValue) { m_bVibration = bValue; }
+	void SetVibrationPower(float fPower) { m_fVibrationPower = fPower; }
+
+public:
+	bool GetVibration(void) { return m_bVibration; }
+	float GetVibrationPower(void) { return m_fVibrationPower; }
+		
+public:
+	bool SetSpeed(float _Speed)
 	{
 		m_fPlayerSpeed += _Speed;
+		if(m_fPlayerSpeed == 3.5f)
+		{
+			m_fPlayerSpeed = 3.25f;
+			return false;
+		}
+		return true;
 	}
-	void SetPower(int _Power)
+	bool SetPower(int _Power)
 	{
-		m_iPower += m_iPower;
+		m_iPower += _Power;
+		if(m_iPower == 11)
+		{
+			m_iPower = 10;
+			return false;
+		}
+		return true;
 	}
-	void SetAddBomb(int _AddBomb)
+	bool SetAddBomb(int _AddBomb)
 	{
 		m_iAddBomb += _AddBomb;
+		if(m_iAddBomb == 11)
+		{
+			m_iAddBomb = 10;
+			return false;
+		}
+		return true;
 	}
 
 public:
@@ -99,6 +127,9 @@ private:
 	int			m_iPower;
 	float		m_fPress;
 	float		m_fPressValue;
+
+	bool		m_bVibration;
+	float		m_fVibrationPower;
 };
 
 #endif // Player_h__

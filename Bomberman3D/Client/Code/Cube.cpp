@@ -61,42 +61,36 @@ Engine::OBJECT_RESULT CCube::Update(void)
 {	
 	Engine::CGameObject*	pGameObject = NULL;
 
-	int inum = Engine::getInt(0,10);
 	if(m_bIsDead)
 	{
+		int inum = Engine::getInt(0,10);
 		CreateEffect();
 
 		switch(inum)
 		{
-
 		case 0:
 			pGameObject = CItem::Create(m_pDevice, m_pInfo->m_vPos, Engine::ITEM_POWER);
 			if(pGameObject != NULL)
 				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Item", pGameObject);
-
 			break;
 
 		case 1:
 			pGameObject = CItem::Create(m_pDevice, m_pInfo->m_vPos, Engine::ITEM_SPEED);
 			if(pGameObject != NULL)
 				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Item", pGameObject);
-
 			break;
 
 		case 2:
 			pGameObject = CItem::Create(m_pDevice, m_pInfo->m_vPos, Engine::ITEM_ADDBOMB);
 			if(pGameObject != NULL)
 				Engine::Get_Management()->AddObject(Engine::LAYER_GAMELOGIC, L"Item", pGameObject);
-
 			break;
 
 		default:
 			return Engine::OR_DELETE;	
-		}
-
+		}	
 		return Engine::OR_DELETE;
 	}
-
 	return Engine::OR_OK;
 }
 

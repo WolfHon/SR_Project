@@ -3,6 +3,7 @@
 
 #include "Block.h"
 #include "GameObject.h"
+#include "Collision_OBB.h"
 
 #include "Include.h"
 
@@ -45,6 +46,10 @@ void CTerrainInfo::EraseInfo(CBlock* Block)
 
 CBlock* CTerrainInfo::CheckCollision(CCollision_OBB* srcObb, D3DXVECTOR3 vPos)
 {
+
+	if(srcObb == NULL)
+		return NULL;
+
 	float fX = int((vPos.x + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
 	float fY = int((vPos.y + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);
 	float fZ = int((vPos.z + (WORLD_SCALE))/ (WORLD_SCALE * 2.f)) * (WORLD_SCALE * 2.f);

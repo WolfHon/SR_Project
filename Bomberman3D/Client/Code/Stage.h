@@ -37,7 +37,6 @@ public:
 	virtual void Update(void);
 	virtual void Render(void);
 
-
 public:
 	static CStage* Create(LPDIRECT3DDEVICE9 pDevice);
 

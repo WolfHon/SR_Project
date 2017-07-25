@@ -151,22 +151,8 @@ void CSliceBlock::Release(void)
 void CSliceBlock::Move(void)
 {
 	bool bStopDown = m_pGravity->GetStopDown();
-	
 
-	if(bStopDown == FALSE)
-	{		
-		m_pInfo->Update();
-
-		CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
-		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
-
-		if((pGameObj != NULL && pGameObj != this) || pPlayer != NULL)
-		{	
-			m_pInfo->m_vPos.y = m_pGravity->GetExHeight();	
-			m_pInfo->Update();
-		}
-	}	
-	else
+	if(bStopDown == TRUE)
 	{
 		m_pInfo->m_vDir.y = 0.f;
 
@@ -181,12 +167,8 @@ void CSliceBlock::Move(void)
 		m_fDecreasePower = 15.f;	
 
 		m_pInfo->Update();
-
-		CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
-		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
-
-		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
-			(pGameObj != NULL && pGameObj != this) || pPlayer != NULL)
+		
+		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL)
 		{
 			m_pInfo->m_vPos.y = m_pGravity->GetExHeight();
 			m_pInfo->Update();
@@ -207,11 +189,7 @@ void CSliceBlock::Move(void)
 
 		m_pInfo->Update();
 
-		CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
-		CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
-
-		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
-			(pGameObj != NULL && pGameObj != this) || pPlayer != NULL)
+		if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL)
 		{
 			m_fPower = m_fPower * 0.6f;
 
@@ -221,11 +199,7 @@ void CSliceBlock::Move(void)
 			m_pInfo->m_vPos = ExPos + m_fPower * vDir * Engine::Get_TimeMgr()->GetTime();	
 			m_pInfo->Update();
 
-			CGameObject* pGameObj = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Bomb", m_pInfo->m_vPos);
-			CGameObject* pPlayer = m_pCollisionOBB->CheckCollision(Engine::LAYER_GAMELOGIC, L"Player", m_pInfo->m_vPos);
-
-			if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL ||
-				(pGameObj != NULL && pGameObj != this) || pPlayer != NULL)
+			if(CTerrainInfo::GetInstance()->CheckCollision(m_pCollisionOBB, m_pInfo->m_vPos) != NULL)
 			{
 				D3DXVec3Cross(&vDir, &D3DXVECTOR3(0.f, 1.f, 0.f), &m_pInfo->m_vDir);
 			}

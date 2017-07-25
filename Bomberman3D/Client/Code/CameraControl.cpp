@@ -19,14 +19,14 @@ CCameraControl::~CCameraControl(void)
 	Release();
 }
 
-HRESULT CCameraControl::Initialize(const Engine::CTransform* pTargetInfo)
+HRESULT CCameraControl::Initialize(Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo)
 {
 	ShowCursor(FALSE);
 
 	m_pCamera[CAM_ACTION] = CActionCamera::Create(m_pDevice, pTargetInfo);
 	NULL_CHECK_RETURN(m_pCamera[CAM_ACTION], E_FAIL);
 
-	m_pCamera[CAM_FIRST] = CFirstCamera::Create(m_pDevice, pTargetInfo);
+	m_pCamera[CAM_FIRST] = CFirstCamera::Create(m_pDevice, pTarget, pTargetInfo);
 	NULL_CHECK_RETURN(m_pCamera[CAM_FIRST], E_FAIL);
 
 	Engine::Get_InfoSubject()->AddData(L"CameraType", &m_eNowCam);
@@ -54,11 +54,11 @@ void CCameraControl::Render(void)
 	m_pCamera[m_eNowCam]->Render();
 }
 
-CCameraControl* CCameraControl::Create(LPDIRECT3DDEVICE9 pDevice, const Engine::CTransform* pTargetInfo)
+CCameraControl* CCameraControl::Create(LPDIRECT3DDEVICE9 pDevice, Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo)
 {
 	CCameraControl*	pCamera = new CCameraControl(pDevice);
 
-	if(FAILED(pCamera->Initialize(pTargetInfo)))
+	if(FAILED(pCamera->Initialize(pTarget, pTargetInfo)))
 		Engine::Safe_Delete(pCamera);
 
 	return pCamera;

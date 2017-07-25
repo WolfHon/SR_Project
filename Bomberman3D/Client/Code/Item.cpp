@@ -18,7 +18,6 @@ CItem::CItem( LPDIRECT3DDEVICE9 pDevice )
 ,m_pTexture(NULL)
 ,m_pBuffer(NULL)
 ,m_pInfo(NULL)
-,m_inum(0)
 ,m_fPlayerSpeed(0)
 ,m_iAddBomb(0)
 ,m_iPower(0)
@@ -67,6 +66,7 @@ HRESULT CItem::Initialize( D3DXVECTOR3 vPos, Engine::ITEMOPTION _ItemOption )
 			m_iAddBomb = 1;
 			break;
 	}
+	m_bStart = TRUE;
 
 	return S_OK;
 }
@@ -74,20 +74,26 @@ HRESULT CItem::Initialize( D3DXVECTOR3 vPos, Engine::ITEMOPTION _ItemOption )
 
 Engine::OBJECT_RESULT CItem::Update( void )
 {
+	if(m_bIsDead == TRUE)
+	{
+		if(m_bStart == TRUE)
+			m_bIsDead = FALSE;
+		else
+			return Engine::OR_DELETE;
+	}
+
 	m_fTime += Engine::Get_TimeMgr()->GetTime();
 
-	if( m_fTime > 1.f && m_bDungSill == true)
-	{
+	if( (int)m_fTime%2 == 0 && m_bDungSill == true)
 		m_bDungSill = false;
-		m_fTime = 0;
-
-	}
-	else if(m_fTime >1.f && m_bDungSill == false)
-	{
+	else if((int)m_fTime%2 == 1 && m_bDungSill == false)
 		m_bDungSill = true;
-		m_fTime = 0;
-	}
 
+	if(m_fTime > 4.f)
+	{
+		m_fTime = 0.f;
+		m_bStart = FALSE;
+	}
 
 	if(m_bDungSill)
 	{
@@ -98,20 +104,14 @@ Engine::OBJECT_RESULT CItem::Update( void )
 		m_pInfo->m_vPos.y -=1.f *Engine::Get_TimeMgr()->GetTime();
 	}
 
-	
-
 	D3DXVec3TransformNormal(&m_pInfo->m_vDir, &g_vLook, &m_pInfo->m_matWorld);
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] -= D3DXToRadian(120.f) * Engine::Get_TimeMgr()->GetTime();
 
 	if(CheckCollision() == TRUE)
 	{
-		if(m_inum == 1)
-			return Engine::OR_OK;
-		else
-			return Engine::OR_DELETE;
+		return Engine::OR_DELETE;
 	}
-	m_pInfo->m_matWorld = m_pInfo->m_matWorld;
-		
+	m_pInfo->m_matWorld = m_pInfo->m_matWorld;		
 
 	return Engine::CGameObject::Update();
 }
@@ -163,8 +163,6 @@ HRESULT CItem::AddComponent( void )
 void CItem::Release( void )
 {
 
-
-
 }
 
 BOOL CItem::CheckCollision( void )
@@ -179,18 +177,18 @@ BOOL CItem::CheckCollision( void )
 		 switch(m_tagItemOption)
 		 {
 		 case Engine::ITEM_SPEED:
-			 dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed);
-			 dynamic_cast<CShoseNum*>(Shose)->SetiNum(1);
+			 if(dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed))
+				 dynamic_cast<CShoseNum*>(Shose)->SetiNum(1);
 			 break;
 
 		 case Engine::ITEM_POWER:
-			 dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower);
-			 dynamic_cast<CPowerNum*>(Power)->SetiNum(1);
+			 if(dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower))
+				 dynamic_cast<CPowerNum*>(Power)->SetiNum(1);
 			 break;
 
 		 case Engine::ITEM_ADDBOMB:
-			 dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb);
-			 dynamic_cast<CAddBombNum*>(AddBomb)->SetiNum(1);
+			 if(dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb))
+				 dynamic_cast<CAddBombNum*>(AddBomb)->SetiNum(1);
 			 break;
 		 }
 		 return TRUE;

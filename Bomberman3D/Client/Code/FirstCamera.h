@@ -46,10 +46,10 @@ private:
 	void	KeyCheck(void);
 
 public:
-	void SetCameraTarget(const Engine::CTransform* pTargetInfo);
+	void SetCameraTarget(Engine::CGameObject* pTarget, const Engine::CTransform* pTargetInfo);
 
 public:
-	static CFirstCamera* Create(LPDIRECT3DDEVICE9 pDevice
+	static CFirstCamera* Create(LPDIRECT3DDEVICE9 pDevice, Engine::CGameObject* pTarget
 		, const Engine::CTransform* pTargetInfo);
 
 private:
@@ -61,9 +61,11 @@ private:
 
 private:
 	const Engine::CTransform*		m_pTargetInfo;
+	Engine::CGameObject*			m_pTarget;
 
 private:
 	float		m_fAngleY;
+	float		m_fTime;
 
 	D3DXVECTOR3	m_vExMousePos;
 };

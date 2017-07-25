@@ -68,8 +68,8 @@ HRESULT CStage::Initialize(void)
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
-		, Engine::TEXTURE_CUBE, L"Bomb"
-		, L"../bin/Texture/bomb/bomb%d.dds", 2);
+		, Engine::TEXTURE_NORMAL, L"Bomb"
+		, L"../bin/Texture/Bomb/Bomb%d.png", 2);
 	FAILED_CHECK(hr);
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
@@ -81,7 +81,6 @@ HRESULT CStage::Initialize(void)
 		, Engine::TEXTURE_NORMAL, L"Texture_Bomb"
 		, L"../bin/Texture/item/bomb/Bomb%d.png", 3);
 	FAILED_CHECK(hr);
-
 
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::TEXTURE_CUBE, L"Texture_Skybox"
@@ -114,6 +113,10 @@ HRESULT CStage::Initialize(void)
 
 	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
 		, Engine::BUFFER_RCTEX, L"Buffer_RCTex");
+	FAILED_CHECK(hr);
+
+	hr = Engine::Get_ResourceMgr()->AddBuffer(m_pDevice, Engine::RESOURCE_DYNAMIC
+		, Engine::BUFFER_SPHERETEX, L"Buffer_SphereTex");
 	FAILED_CHECK(hr);
 
 	//Model
@@ -172,11 +175,6 @@ HRESULT CStage::Add_GameLogic_Layer(void)
 
 	Engine::CGameObject*	pGameObject = NULL;
 
-
-	//pGameObject = CMonster::Create(m_pDevice);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//pLayer->AddObject(L"Monster", pGameObject);
-
 	LoadData(pLayer,pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_GAMELOGIC, pLayer));
@@ -197,6 +195,15 @@ HRESULT CStage::Add_UI_Layer(void)
 	const Engine::CComponent*	pComponent = iter->second->GetComponent(L"Player", L"Transform");
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 
+	Engine::CGameObject* pPlayer = iter->second->GetObject(L"Player");
+
+	pGameObject = CCameraControl::Create(m_pDevice, pPlayer
+		, dynamic_cast<const Engine::CTransform*>(pComponent));
+	dynamic_cast<CCameraControl*>(pGameObject)->SetCamera(CCameraControl::CAM_FIRST);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+	pLayer->AddObject(L"CameraControl", pGameObject);
+	
 	pGameObject = CItemUi::Create(m_pDevice, D3DXVECTOR3(560.f, -230.f, 0.f));
 	NULL_CHECK_RETURN(pGameObject,E_FAIL);
 
@@ -260,13 +267,6 @@ HRESULT CStage::Add_UI_Layer(void)
 
 	
 
-
-	pGameObject = CCameraControl::Create(m_pDevice
-		, dynamic_cast<const Engine::CTransform*>(pComponent));
-	dynamic_cast<CCameraControl*>(pGameObject)->SetCamera(CCameraControl::CAM_FIRST);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-
-	pLayer->AddObject(L"CameraControl", pGameObject);
 	
 	m_mapLayer.insert(MAPLAYER::value_type(Engine::LAYER_UI, pLayer));
 
