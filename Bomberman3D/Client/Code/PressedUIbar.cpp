@@ -152,7 +152,7 @@ void CPressedUIbar::CalculateOrtho( void )
 
 
 	float fScale[3];
-	fScale[0] = 30.f;
+	fScale[0] = 20.f;
 	fScale[1] = 150.f ;
 	fScale[2] = 1.f;
 

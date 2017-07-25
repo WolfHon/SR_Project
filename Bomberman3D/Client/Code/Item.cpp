@@ -12,6 +12,7 @@
 #include "ShoseNum.h"
 #include "PowerNum.h"
 #include "AddBombNum.h"
+#include "SoundMgr.h"
 
 CItem::CItem( LPDIRECT3DDEVICE9 pDevice )
 :Engine::CGameObject(pDevice)
@@ -179,16 +180,22 @@ BOOL CItem::CheckCollision( void )
 		 case Engine::ITEM_SPEED:
 			 if(dynamic_cast<CPlayer*>(pGameObject)->SetSpeed(m_fPlayerSpeed))
 				 dynamic_cast<CShoseNum*>(Shose)->SetiNum(1);
+			 CSoundMgr::GetInstance()->PlaySound(L"GainItem.wav",CSoundMgr::CHANNEL_EFFECT);
+
 			 break;
 
 		 case Engine::ITEM_POWER:
 			 if(dynamic_cast<CPlayer*>(pGameObject)->SetPower(m_iPower))
 				 dynamic_cast<CPowerNum*>(Power)->SetiNum(1);
+			 CSoundMgr::GetInstance()->PlaySound(L"GainItem.wav",CSoundMgr::CHANNEL_EFFECT);
+
 			 break;
 
 		 case Engine::ITEM_ADDBOMB:
 			 if(dynamic_cast<CPlayer*>(pGameObject)->SetAddBomb(m_iAddBomb))
 				 dynamic_cast<CAddBombNum*>(AddBomb)->SetiNum(1);
+			 CSoundMgr::GetInstance()->PlaySound(L"GainItem.wav",CSoundMgr::CHANNEL_EFFECT);
+
 			 break;
 		 }
 		 return TRUE;

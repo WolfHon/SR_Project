@@ -6,6 +6,7 @@
 #include "SceneSelector.h"
 
 #include "TerrainInfo.h"
+#include "SoundMgr.h"
 
 CMainApp::CMainApp(void) 
 : m_pGraphicDev(Engine::Get_GraphicDev())
@@ -58,6 +59,7 @@ void CMainApp::Update(void)
 	Engine::Get_MouseMgr()->Update();
 	Engine::Get_KeyMgr()->Update();
 	Engine::Get_Management()->Update();
+	CSoundMgr::GetInstance()->UpdateSound();
 }
 
 void CMainApp::Render(void)
@@ -94,4 +96,5 @@ void CMainApp::Release(void)
 	Engine::Get_MouseMgr()->DestroyInstance();
 	Engine::Get_KeyMgr()->DestroyInstance();
 	CTerrainInfo::GetInstance()->DestroyInstance();
+	CSoundMgr::GetInstance()->DestroyInstance();
 }

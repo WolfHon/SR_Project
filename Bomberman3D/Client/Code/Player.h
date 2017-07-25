@@ -59,6 +59,10 @@ public:
 public:
 	bool GetVibration(void) { return m_bVibration; }
 	float GetVibrationPower(void) { return m_fVibrationPower; }
+
+public:
+	void LoadData(void);
+	void SetState(Engine::PLAYERSTATE		m_NowState);
 		
 public:
 	bool SetSpeed(float _Speed)
@@ -122,6 +126,12 @@ private:
 	D3DXVECTOR3 m_vExMousePos;
 
 private:
+	Engine::PLAYERSTATE		m_iState;
+	vector<Engine::ANIFRAME>		m_vecRunAni;
+	vector<Engine::ANIFRAME>		m_vecThrowAni;
+	vector<Engine::ANIFRAME>		m_vecDeadAni;
+	vector<Engine::ANIFRAME>		m_vecThrowStandAni;
+	vector<Engine::ANIFRAME>		m_vecStand;
 	float       m_fPlayerSpeed;
 	int			m_iAddBomb;
 	int			m_iPower;

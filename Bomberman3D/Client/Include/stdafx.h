@@ -18,3 +18,9 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 #include <algorithm>
+
+#include "fmod.hpp"
+#pragma comment(lib, "fmodex_vc.lib")
+
+#include <io.h>
+

@@ -48,6 +48,9 @@ private:
 	HRESULT Add_Enviroment_Layer(void);
 	HRESULT Add_GameLogic_Layer(void);
 	HRESULT Add_UI_Layer(void);
+
+	RECT					m_RcButtonRect;
+	POINT					m_ptMouse;
 };
 
 #endif // __Logo_h__

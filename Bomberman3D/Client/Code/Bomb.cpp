@@ -15,6 +15,7 @@
 #include "Player.h"
 
 #include "Explosion.h"
+#include "SoundMgr.h"
 
 CBomb::CBomb(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
@@ -88,13 +89,20 @@ Engine::OBJECT_RESULT CBomb::Update(void)
 	m_pInfo->m_fAngle[Engine::ANGLE_Y] =  (b.x * a.z - b.z * a.x < 0.0f) ? cosAngle : -cosAngle; 
 
 	if(Engine::CGameObject::Update() == Engine::OR_DELETE)
+	{
+		CSoundMgr::GetInstance()->PlaySound(L"Bomb.wav",CSoundMgr::CHANNEL_EFFECT);
+
 		return Engine::OR_DELETE;
+	}
 
 	FrameCheck();
 	Move();
 
 	if(Explosion() == Engine::OR_DELETE)
+	{
+		CSoundMgr::GetInstance()->PlaySound(L"Bomb.wav",CSoundMgr::CHANNEL_EFFECT);
 		return Engine::OR_DELETE;
+	}
 
 	return Engine::OR_OK;
 }

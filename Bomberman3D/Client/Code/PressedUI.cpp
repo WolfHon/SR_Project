@@ -197,7 +197,7 @@ void CPressedUI::CalculateOrtho( void )
 
 
 	float fScale[3];
-	fScale[0] = 30.f;
+	fScale[0] = 20.f;
 	fScale[1] = 150.f;
 	fScale[2] = 1.f;
 
@@ -207,8 +207,6 @@ void CPressedUI::CalculateOrtho( void )
 			matView(i,j)*=fScale[i];
 
 	}
-
-
 	
 
 	//convertUiPos.y = -UIPos.y;

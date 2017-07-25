@@ -16,6 +16,7 @@
 #include "Block.h"
 
 #include "Bomb.h"
+#include "SoundMgr.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 : Engine::CGameObject(pDevice)
@@ -29,6 +30,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pDevice)
 , m_fPlayerSpeed(0.f)
 , m_pCollisionOBB(NULL)
 , m_pCollSlopeCheck(NULL)
+, m_iState(Engine::STATE_END)
 {
 }
 
@@ -142,6 +144,8 @@ HRESULT CPlayer::AddComponent(void)
 	pGravity->SetInfo(vPoint, &m_pInfo->m_vPos, &m_pInfo->m_matWorld, m_pCollisionOBB->GetMin()->y * - 1.f);
 	m_mapComponent.insert(MAPCOMPONENT::value_type(L"Gravity", pComponent));	
 	
+	LoadData();
+
 	return S_OK;
 }
 
@@ -173,14 +177,17 @@ void CPlayer::MoveCheck(void)
 
 	if(!(~KeyState & Engine::KEY_W_PRESS))
 	{
+	
 		bChange = TRUE;
 		m_pInfo->m_vPos += m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
+		SetState(Engine::STATE_RUN);
 	}
 
 	if(!(~KeyState & Engine::KEY_S_PRESS))
 	{
 		bChange = TRUE;
 		m_pInfo->m_vPos -= m_pInfo->m_vDir * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed * 0.5f;
+		SetState(Engine::STATE_RUN);
 	}
 
 	D3DXVECTOR3		vRight;
@@ -191,14 +198,18 @@ void CPlayer::MoveCheck(void)
 	{
 		bChange = TRUE;
 		m_pInfo->m_vPos -= vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
+		SetState(Engine::STATE_RUN);
 	}
 
 	if(!(~KeyState & Engine::KEY_D_PRESS))
 	{
 		bChange = TRUE;
 		m_pInfo->m_vPos += vRight * m_fSpeed * Engine::Get_TimeMgr()->GetTime() * m_fPlayerSpeed;
+		SetState(Engine::STATE_RUN);
 	}
 
+	if(bChange == FALSE)
+			SetState(Engine::STATE_STAND);
 	if(bChange == TRUE)
 	{
 		m_pInfo->Update();
@@ -248,6 +259,8 @@ void CPlayer::AttackCheck(void)
 			m_fPress = 10.f;
 			m_fPressValue = 1.f;
 		}
+
+		SetState(Engine::STATE_TROWSTAND);
 	}
 
 	if(!(~MouseState & Engine::MOUSE_LBUTTON_CLICK))
@@ -277,6 +290,9 @@ void CPlayer::AttackCheck(void)
 			return;
 		}
 
+
+		SetState(Engine::STATE_TROW);
+
 		D3DXVECTOR3 vBombPos = D3DXVECTOR3(m_pInfo->m_vPos.x, m_pInfo->m_vPos.y + 2.6f, m_pInfo->m_vPos.z);	
 
  		Engine::CGameObject* pGameObject = NULL;
@@ -295,3 +311,148 @@ D3DXVECTOR3 CPlayer::GetPos( void )
 {
 	return m_pInfo->m_vPos;
 }
+
+void CPlayer::LoadData(void)
+{
+	DWORD dwByte = 0;
+
+	HANDLE hFile = CreateFile(L"../../Data/Run.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	m_vecRunAni.clear();
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte, NULL);
+
+		if(dwByte == 0)
+			break;
+
+		m_vecRunAni.push_back(pFrameData);
+	}
+	CloseHandle(hFile);
+
+
+	DWORD dwByte1 = 0;
+
+	HANDLE hFile1 = CreateFile(L"../../Data/Trow.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	m_vecThrowAni.clear();
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile1, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte1, NULL);
+
+		if(dwByte1 == 0)
+			break;
+
+		m_vecThrowAni.push_back(pFrameData);
+	}
+
+	CloseHandle(hFile1);
+
+
+
+	DWORD dwByte2 = 0;
+
+	HANDLE hFile2 = CreateFile(L"../../Data/Dead.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	m_vecDeadAni.clear();
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile2, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte2, NULL);
+
+		if(dwByte2 == 0)
+			break;
+
+		m_vecDeadAni.push_back(pFrameData);
+	}
+
+	CloseHandle(hFile2);
+
+	DWORD dwByte3 = 0;
+
+	HANDLE hFile3 = CreateFile(L"../../Data/ThrowStand.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	m_vecThrowStandAni.clear();
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile3, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte3, NULL);
+
+		if(dwByte3 == 0)
+			break;
+
+		m_vecThrowStandAni.push_back(pFrameData);
+	}
+
+	CloseHandle(hFile3);
+
+	DWORD dwByte4 = 0;
+
+	HANDLE hFile4 = CreateFile(L"../../Data/Stand.dat", GENERIC_READ, 0, 0, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+
+	m_vecStand.clear();
+
+	while(true)
+	{
+		Engine::ANIFRAME pFrameData;
+
+		ReadFile(hFile4, &pFrameData, sizeof(Engine::ANIFRAME), &dwByte4, NULL);
+
+		if(dwByte4 == 0)
+			break;
+
+		m_vecStand.push_back(pFrameData);
+	}
+
+	CloseHandle(hFile4);
+
+
+}
+
+void CPlayer::SetState(Engine::PLAYERSTATE m_NowState)
+{
+	if(m_NowState != m_iState)
+	{
+
+		m_iState = m_NowState;
+
+		switch(m_iState)
+		{
+		case Engine::STATE_STAND:
+			m_pPlayerModel->SetAngle(m_vecStand);
+			break;
+
+		case Engine::STATE_RUN:
+			m_pPlayerModel->SetAngle(m_vecRunAni);
+			break;
+
+		case Engine::STATE_TROWSTAND:
+			m_pPlayerModel->SetAngle(m_vecThrowStandAni);
+			break;
+
+		case Engine::STATE_TROW:
+			m_pPlayerModel->SetAngle(m_vecThrowAni);
+			break;
+
+		case Engine::STATE_DEAD:
+			m_pPlayerModel->SetAngle(m_vecDeadAni);
+			break;
+		}
+	}
+}
+

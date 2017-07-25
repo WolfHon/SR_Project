@@ -66,6 +66,25 @@ namespace Engine
 	private:
 		const TCHAR*				m_pTag;
 	};
+
+	class CStringCmp
+	{
+	public:
+		CStringCmp(const TCHAR* pKey)
+			: m_pKey(pKey) {}
+
+	public:
+		template <typename T>
+		bool operator()(T& dst)
+		{
+			return !_tcscmp(dst.first, m_pKey);
+		}
+
+	private:
+		const TCHAR*	m_pKey;
+	};
 }
+
+
 
 #endif // __Engine_Functor_h__

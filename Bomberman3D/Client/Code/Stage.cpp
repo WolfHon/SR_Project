@@ -25,6 +25,7 @@
 #include "Crosshair.h"
 #include "PressedUIbar.h"
 #include "PressedUI.h"
+#include "SoundMgr.h"
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pDevice)
@@ -40,6 +41,8 @@ CStage::~CStage(void)
 HRESULT CStage::Initialize(void)
 {
 	HRESULT		hr = NULL;
+
+
 
 	//Texture
 	hr = Engine::Get_ResourceMgr()->AddTexture(m_pDevice, Engine::RESOURCE_DYNAMIC
